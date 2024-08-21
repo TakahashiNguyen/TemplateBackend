@@ -1,0 +1,61 @@
+name: Build & Test & Format & Lint
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  TestFormatLint:
+    name: "Build & Test & Format & Lint"
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      contents: write
+
+
+    services:
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - uses: actions/setup-node@v4
+
+      - uses: actions/cache/restore@v4
+        with:
+          path: './node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('./package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - run: 'npm install'
+
+      - run: npm run build && npm run test && npm run format && npm run lint
+        env:
+          ACCESS_SECRET: a
+          REFRESH_SECRET: a
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+      
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: './node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('./package.json') }}
+          
