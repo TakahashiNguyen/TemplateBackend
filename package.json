@@ -23,7 +23,7 @@
 		"test": "jest",
 		"test:debug": "jest --debug",
 		"types": "tsc --project types/tsconfig.build.json --outDir types  --rootDir . --sourceMap false",
-		"pretypes": "npm run buildfile",
+		"pretypes": "npm run buildfile && npm i",
 		"triathlon": "npm run test && npm run format && npm run lint"
 	},
 	"dependencies": {
