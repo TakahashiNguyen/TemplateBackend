@@ -24,23 +24,12 @@ jobs:
       issues: write
       pull-requests: write
 
-    services:
-      postgres:
-        image: postgis/postgis
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
+
+      - uses: ikalnytskyi/action-setup-postgres@v6
 
       - uses: actions/setup-node@v4
         with:
