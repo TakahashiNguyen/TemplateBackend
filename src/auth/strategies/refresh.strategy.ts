@@ -2,44 +2,45 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { PassportStrategy } from '@nestjs/passport';
+import { IPayload } from 'auth/auth.interface';
+import { DeviceService } from 'device/device.service';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { DeviceService } from '@backend/device/device.service';
-import { PayLoad } from '../auth.service';
+import { SessionService } from 'session/session.service';
 
 @Injectable()
 export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
 	constructor(
 		cfgSvc: ConfigService,
-		private dvcSvc: DeviceService,
+		private sesSvc: SessionService,
 		private jwtSvc: JwtService,
+		private dvcSvc: DeviceService,
 	) {
 		super({
 			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-			ignoreExpiration: false,
+			ignoreExpiration: true,
 			secretOrKey: cfgSvc.get('REFRESH_SECRET'),
 		});
 	}
 
-	async validate(payload: PayLoad) {
-		const session = await this.dvcSvc.findOne({ where: { id: payload.id } });
+	async validate(payload: IPayload) {
+		const session = await this.sesSvc.id(payload.id, {
+			withRelations: true,
+			relations: ['device'],
+		});
 		if (session) {
-			if (session.useTimeLeft - 1 > 0) {
-				await this.dvcSvc.save({
-					id: session.id,
-					useTimeLeft: session.useTimeLeft - 1,
-				});
+			if (session.useTimeLeft > 0) {
+				await this.sesSvc.useToken(session.id);
 				return {
 					success: true,
-					id: session.id,
-					ua: session.hashedUserAgent,
-					acsTkn: this.jwtSvc.sign(new PayLoad(session.userId).toPlainObj()),
-					rfsTkn: this.dvcSvc.refreshTokenSign(
-						new PayLoad(payload.id).toPlainObj(),
-					),
+					id: session.device.id, // for logout requests
+					ua: session.device.hashedUserAgent,
+					acsTkn: this.jwtSvc.sign({ id: session.device.owner.id }),
+					rfsTkn: this.dvcSvc.refreshTokenSign(payload.id),
 				};
 			} else {
-				await this.dvcSvc.delete({ id: session.id });
-				return { success: false, userId: session.userId };
+				if ((await this.dvcSvc.id(session.device.id)).child === session.id)
+					return { success: false, id: session.id };
+				else return { lockdown: true, id: session.device.id };
 			}
 		}
 		throw new UnauthorizedException('Invalid refresh token');

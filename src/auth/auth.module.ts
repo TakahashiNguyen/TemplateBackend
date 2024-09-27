@@ -2,8 +2,9 @@ import { forwardRef, MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { DeviceModule } from '@backend/device/device.module';
-import { UserModule } from '@backend/user/user.module';
+import { DeviceModule } from 'device/device.module';
+import { FileModule } from 'file/file.module';
+import { UserModule } from 'user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthMiddleware } from './auth.middleware';
 import { AuthService } from './auth.service';
@@ -21,15 +22,14 @@ import { RefreshStrategy } from './strategies/refresh.strategy';
 			useFactory: (cfgSvc: ConfigService) => {
 				return {
 					secret: cfgSvc.get('ACCESS_SECRET'),
-					signOptions: {
-						expiresIn: cfgSvc.get('ACCESS_EXPIRES'),
-					},
+					signOptions: { expiresIn: cfgSvc.get('ACCESS_EXPIRE') },
 				};
 			},
 		}),
 		// Foreign modules
 		forwardRef(() => DeviceModule),
 		forwardRef(() => UserModule),
+		FileModule,
 	],
 	providers: [
 		AuthService,

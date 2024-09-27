@@ -1,32 +1,27 @@
 {
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "declaration": true,
-    "emitDecoratorMetadata": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "forceConsistentCasingInFileNames": true,
-    "incremental": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "noFallthroughCasesInSwitch": false,
-    "noImplicitAny": false,
-    "outDir": "./dist",
-    "paths": {
-      "@backend/*": [
-        "./src/*"
-      ],
-      "@backend/test": [
-        "./test/test.module.ts"
-      ]
-    },
-    "removeComments": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
-    "strictBindCallApply": false,
-    "strictNullChecks": false,
-    "target": "ESNext",
-    "useDefineForClassFields": false
-  }
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"baseUrl": "src",
+		"declaration": true,
+		"emitDecoratorMetadata": true,
+		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"forceConsistentCasingInFileNames": true,
+		"incremental": false,
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"noFallthroughCasesInSwitch": false,
+		"noImplicitAny": false,
+		"outDir": "dist",
+		"removeComments": false,
+		"rootDir": "src",
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strict": true,
+		"strictBindCallApply": false,
+		"strictNullChecks": false,
+		"target": "ESNext",
+		"useDefineForClassFields": false
+	},
+	"exclude": ["./**/*.d.ts", "dist", "*.config.*", "types.ts"]
 }

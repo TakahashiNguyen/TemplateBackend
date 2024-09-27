@@ -1,21 +1,18 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import cookieParser from 'cookie-parser';
-import { ConfigService } from '@nestjs/config';
-import { readFileSync } from 'fs';
-import { ExpressAdapter } from '@nestjs/platform-express';
-import express from 'express';
+import { existsSync, mkdirSync, readFileSync } from 'fs';
 import http from 'http';
 import https from 'https';
+import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
+import { ExpressAdapter } from '@nestjs/platform-express';
+import cookieParser from 'cookie-parser';
+import express from 'express';
+import { AppModule } from './app.module';
+import { Device } from './device/device.entity';
 import { User } from './user/user.entity';
-import { validate } from 'class-validator';
-import { DeviceSession } from './device/device.entity';
 
 async function bootstrap() {
-	const httpsOptions = {
-			key: readFileSync('./secrets/key.pem'),
-			cert: readFileSync('./secrets/cert.pem'),
-		},
+	const httpsPemFolder = './secrets',
 		{ AdminJS } = await import('adminjs'),
 		{ buildAuthenticatedRouter } = await import('@adminjs/express'),
 		{ Database, Resource } = await import('@adminjs/typeorm'),
@@ -23,18 +20,19 @@ async function bootstrap() {
 		app = (
 			await NestFactory.create(AppModule, new ExpressAdapter(server), {
 				cors: {
-					origin: [
-						/^https:\/\/([.\w]*)(anhvietnguyen.id.vn)(:[0-9]+)?\/?(\/[.\w]*)*$/,
-					],
+					origin:
+						/(https:\/\/){1}(.*)(anhvietnguyen.id.vn|localhost\:(\d*)){1}/,
 					methods: '*',
 					credentials: true,
 				},
 			})
-		).use(cookieParser()),
+		)
+			.use(cookieParser())
+			.useGlobalPipes(new ValidationPipe()),
 		cfgSvc = app.get(ConfigService);
-	Resource.validate = validate;
 	AdminJS.registerAdapter({ Resource, Database });
-	const admin = new AdminJS({ resources: [User, DeviceSession] }),
+	mkdirSync(cfgSvc.get('SERVER_PUBLIC'), { recursive: true });
+	const admin = new AdminJS({ resources: [User, Device] }),
 		adminRouter = buildAuthenticatedRouter(
 			admin,
 			{
@@ -53,8 +51,19 @@ async function bootstrap() {
 
 	// Init multiple connection type
 	await app.use(admin.options.rootPath, adminRouter).init();
-	http.createServer(server).listen(cfgSvc.get('PORT'));
-	https.createServer(httpsOptions, server).listen(2053);
+	http.createServer(server).listen(cfgSvc.get('SERVER_PORT'));
+
+	if (existsSync(httpsPemFolder))
+		https
+			.createServer(
+				{
+					key: readFileSync(`${httpsPemFolder}/key.pem`),
+					cert: readFileSync(`${httpsPemFolder}/cert.pem`),
+				},
+				server,
+			)
+			.listen(2053);
+	else console.warn('Https connection not initialize');
 }
 
-bootstrap();
+void bootstrap();

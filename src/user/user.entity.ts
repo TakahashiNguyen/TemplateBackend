@@ -1,60 +1,97 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { DeviceSession } from '@backend/device/device.entity';
-import { InitClass, Str } from '@backend/utils';
-import {
-	BaseEntity,
-	Column,
-	Entity,
-	OneToMany,
-	PrimaryGeneratedColumn,
-} from 'typeorm';
-
-export enum Role {
-	USER = 'USER',
-	ADMIN = 'ADMIN',
-	STAFF = 'STAFF',
-}
+import { Field, HideField, ObjectType } from '@nestjs/graphql';
+import { IsAlpha, IsEmail, IsString, IsStrongPassword } from 'class-validator';
+import { Device } from 'device/device.entity';
+import { File } from 'file/file.entity';
+import { IFile } from 'file/file.model';
+import { IUserInfoKeys } from 'models';
+import { Column, Entity, OneToMany } from 'typeorm';
+import { hash } from 'utils/auth.utils';
+import { SensitiveInfomations } from 'utils/typeorm.utils';
+import { InterfaceCasting, tstStr } from 'utils/utils';
+import { IUser, Role } from './user.model';
 
 @ObjectType()
 @Entity()
-export class User extends BaseEntity {
-	constructor(payload: InitClass<User>) {
+export class User extends SensitiveInfomations implements IUser {
+	constructor(payload: IUser) {
 		super();
 		Object.assign(this, payload);
 	}
 
-	// Sensitive infomation
-	@PrimaryGeneratedColumn('uuid') id?: string;
-	@Column('text', { nullable: false }) password?: string;
-	@OneToMany(() => DeviceSession, (dvcSess: DeviceSession) => dvcSess.user)
-	deviceSessions?: DeviceSession[];
+	@Column()
+	private _hashedPassword: string;
 
-	// Basic infomation
-	@Field() @Column({ length: 15, nullable: false }) firstName!: string;
-	@Field() @Column({ length: 15, nullable: false }) lastName!: string;
-	@Field()
-	@Column({ length: 128, nullable: false, unique: true })
-	email!: string;
-	@Field(() => [Role])
-	@Column({ type: 'enum', enum: Role, array: true, default: [Role.USER] })
-	roles!: Role[];
-
-	get info() {
-		return {
-			firstName: this.firstName,
-			lastName: this.lastName,
-			email: this.email,
-			roles: this.roles,
-		};
+	get hashedPassword() {
+		if (this.password || this._hashedPassword) {
+			if (this._hashedPassword) return this._hashedPassword;
+			return (this._hashedPassword = hash(this.password));
+		}
+		return this._hashedPassword;
 	}
 
-	static get test() {
-		return new User({
-			email: Str.random(),
-			password: Str.random(),
-			firstName: Str.random(),
-			lastName: Str.random(),
+	set hashedPassword(i: any) {}
+
+	// Relationships
+	@HideField()
+	@OneToMany(() => Device, (_: Device) => _.owner)
+	devices?: Device[];
+
+	@OneToMany(() => File, (_) => _.createdBy)
+	uploadFiles?: IFile[];
+
+	// Infomations
+	@Field({ nullable: true })
+	@Column({ nullable: true })
+	avatarFilePath?: string;
+
+	@IsAlpha()
+	@Field()
+	@Column()
+	firstName: string;
+
+	@IsAlpha()
+	@Field()
+	@Column()
+	lastName: string;
+
+	@IsEmail()
+	@Field()
+	@Column()
+	email: string;
+
+	@IsString()
+	@Field()
+	@Column()
+	description: string = '';
+
+	@Field(() => [Role])
+	@Column({ type: 'enum', enum: Role, array: true, default: [Role.USER] })
+	roles: Role[];
+
+	@IsStrongPassword({
+		minLength: 16,
+		minLowercase: 1,
+		minUppercase: 1,
+		minNumbers: 1,
+		minSymbols: 1,
+	})
+	password: string;
+
+	// Methods
+	get info() {
+		return InterfaceCasting.quick(this, IUserInfoKeys);
+	}
+
+	static test(from: string) {
+		const n = new User({
+			avatarFilePath: null,
+			email: tstStr() + '@gmail.com',
+			password: 'Aa1!000000000000',
+			firstName: from,
+			lastName: tstStr(),
 			roles: [Role.USER],
+			description: new Date().toISOString(),
 		});
+		if (n.hashedPassword) return n;
 	}
 }
