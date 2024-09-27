@@ -1,4 +1,5 @@
 import {
+	createParamDecorator,
 	ExecutionContext,
 	Injectable,
 	InternalServerErrorException,
@@ -6,15 +7,38 @@ import {
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
-import { Role, User } from '@backend/user/user.entity';
+import UAParser from 'ua-parser-js';
+import { Role } from 'user/user.model';
+import { matching } from 'utils/utils';
 
-const matchRoles = (roles: Role[], userRoles: Role[]) =>
-	roles.some((i) => userRoles.some((j) => i === j));
-export const Roles = Reflector.createDecorator<Role[]>(),
-	AllowPublic = Reflector.createDecorator<boolean>();
-export class ServerContext extends GqlExecutionContext {
-	user: User;
+/**
+ * * Convert context's request to graphql's request
+ * @param {ExecutionContext} context - context's request
+ * ! Cautious: Since using GraphQL, it's NOT recommend to DELETE this
+ */
+function convertForGql(context: ExecutionContext) {
+	const ctx = GqlExecutionContext.create(context);
+	return ctx.getContext().req;
 }
+
+/**
+ * Decorators
+ * ! WARNING: it's must be (data: unknown, context: ExecutionContext) => {}
+ * ! to void error [ExceptionsHandler] Cannot read properties of undefined (reading 'getType')
+ */
+export const Roles = Reflector.createDecorator<Role[]>(),
+	AllowPublic = Reflector.createDecorator<boolean>(),
+	CurrentUser = createParamDecorator(
+		(data: unknown, context: ExecutionContext) => convertForGql(context).user,
+	),
+	MetaData = createParamDecorator(
+		(data: unknown, context: ExecutionContext): string =>
+			JSON.stringify(
+				new UAParser()
+					.setUA(convertForGql(context).headers['user-agent'])
+					.getResult(),
+			),
+	);
 
 @Injectable()
 export class RoleGuard extends AuthGuard('access') {
@@ -22,22 +46,10 @@ export class RoleGuard extends AuthGuard('access') {
 		super();
 	}
 
-	/**
-	 * * Convert context's request to graphql's request
-	 * @param {ExecutionContext} context - context's request
-	 * @return {GqlExecutionContext} graphql's request
-	 * ! Cautious: Since using GraphQL, it's NOT recommend to DELETE this
-	 */
-	getRequest(context: ExecutionContext): ServerContext {
-		const ctx = GqlExecutionContext.create(context);
-		return ctx.getContext().req;
+	getRequest(ctx: ExecutionContext) {
+		return convertForGql(ctx);
 	}
 
-	/**
-	 * * Check user's role
-	 * @param {ExecutionContext} context - context from request
-	 * @return {boolean} allow user proceed process
-	 */
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 		if (this.reflector.get(AllowPublic, context.getHandler())) return true;
 		await super.canActivate(context); // ! Must run to check passport
@@ -46,7 +58,7 @@ export class RoleGuard extends AuthGuard('access') {
 			const req = this.getRequest(context),
 				user = req.user;
 
-			return matchRoles(roles, user.roles);
+			return matching(user.roles, roles);
 		}
 		throw new InternalServerErrorException(
 			'Function not defined roles/permissions',

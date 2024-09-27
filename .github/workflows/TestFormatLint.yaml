@@ -1,25 +1,32 @@
-name: Build & Test & Format & Lint
+name: Test Format Lint
 
 on:
   pull_request:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  TestFormatLint:
-    name: "Build & Test & Format & Lint"
+  build:
+    name: 'The triathlon'
 
     runs-on: ubuntu-latest
 
-    permissions:
-      # Give the default GITHUB_TOKEN write permission to commit and push the
-      # added or changed files to the repository.
-      contents: write
+    timeout-minutes: 5
 
+    permissions:
+      contents: write
+      actions: write
+      checks: write
+      issues: write
+      pull-requests: write
 
     services:
       postgres:
-        image: postgres:12
+        image: postgis/postgis
         env:
           POSTGRES_PASSWORD: postgres
         options: >-
@@ -36,26 +43,28 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - uses: actions/setup-node@v4
-
-      - uses: actions/cache/restore@v4
         with:
-          path: './node_modules'
+          node-version: 22
+
+      - uses: actions/cache@v4
+        with:
+          path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('./package.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - run: 'npm install'
-
-      - run: npm run build && npm run test && npm run format && npm run lint
-        env:
-          ACCESS_SECRET: a
-          REFRESH_SECRET: a
+      - run: npm run triathlon
 
       - uses: stefanzweifel/git-auto-commit-action@v5
-      
-      - uses: actions/cache/save@v4
-        if: always()
         with:
-          path: './node_modules'
-          key: ${{ runner.os }}-node-${{ hashFiles('./package.json') }}
-          
+          skip_dirty_check: false
+
+      - name: Jest Coverage Comment
+        uses: MishaKav/jest-coverage-comment@main
+        id: coverageComment
+        with:
+          title: Test report
+          coverage-title: Coverage result
+          coverage-path: ./coverage/coverage.txt
+          create-new-comment: true
+          junitxml-path: ./reports/junit.xml

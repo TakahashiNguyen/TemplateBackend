@@ -1,7 +1,9 @@
 import { BadRequestException, UseGuards } from '@nestjs/common';
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { AllowPublic, RoleGuard, Roles } from '@backend/auth/auth.guard';
-import { Role, User } from './user.entity';
+import { RoleGuard, Roles } from 'auth/auth.guard';
+import { isUUID } from 'class-validator';
+import { User } from './user.entity';
+import { Role } from './user.model';
 import { UserService } from './user.service';
 
 @Resolver(() => User)
@@ -11,16 +13,18 @@ export class UserResolver {
 
 	// Queries
 	@Query(() => User)
-	@AllowPublic(true)
-	async findOne(@Args('id') id: string) {
-		const user = await this.usrSvc.findOne({ id });
-		if (user) return user;
+	@Roles([Role.USER])
+	async user(@Args('id') id: string) {
+		if (isUUID(id)) {
+			const user = await this.usrSvc.id(id);
+			if (user) return user.info;
+		}
 		throw new BadRequestException('User not found');
 	}
 
 	@Query(() => [User])
-	@Roles([Role.ADMIN, Role.USER])
-	findAll() {
-		return this.usrSvc.find();
+	@Roles([Role.ADMIN])
+	async userAll() {
+		return (await this.usrSvc.all()).map((_) => _.info);
 	}
 }

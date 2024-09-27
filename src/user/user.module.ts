@@ -1,10 +1,11 @@
 import { forwardRef, MiddlewareConsumer, Module } from '@nestjs/common';
 import { registerEnumType } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthMiddleware } from '@backend/auth/auth.middleware';
-import { AuthModule } from '@backend/auth/auth.module';
+import { AuthMiddleware } from 'auth/auth.middleware';
+import { AuthModule } from 'auth/auth.module';
 import { UserController } from './user.controller';
-import { Role, User } from './user.entity';
+import { User } from './user.entity';
+import { Role } from './user.model';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 

@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
+import { IPayload } from 'auth/auth.interface';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { UserService } from '@backend/user/user.service';
-import { PayLoad } from '../auth.service';
+import { UserService } from 'user/user.service';
 
 @Injectable()
 export class AccessStrategy extends PassportStrategy(Strategy, 'access') {
@@ -18,8 +18,8 @@ export class AccessStrategy extends PassportStrategy(Strategy, 'access') {
 		});
 	}
 
-	async validate(payload: PayLoad) {
-		const user = await this.usrSvc.findOne({ id: payload.id });
+	async validate(payload: IPayload) {
+		const user = await this.usrSvc.id(payload.id);
 		if (user) return user;
 		throw new UnauthorizedException('Login first to access this endpoint.');
 	}

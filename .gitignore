@@ -1,8 +1,18 @@
 # compiled output
-/dist
+**/dist
 /node_modules
-/build
 package-lock.json
+.adminjs
+src/models.ts
+src/types.ts
+*.tsbuildinfo
+types/src
+src/**/*.js*
+**/*.d.ts
+public/*
+!public/*.server.*
+**/*.js.map
+**/*.js
 
 # Logs
 logs
@@ -18,6 +28,7 @@ lerna-debug.log*
 
 # Tests
 /coverage
+/reports
 /.nyc_output
 
 # IDEs and editors
@@ -55,3 +66,9 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# GraphQl files
+**/schema.gql
+
+# Secret files
+secrets/*.pem

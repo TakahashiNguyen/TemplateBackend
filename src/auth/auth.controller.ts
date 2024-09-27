@@ -1,17 +1,35 @@
-import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+	Body,
+	Controller,
+	HttpStatus,
+	ParseFilePipeBuilder,
+	Post,
+	Req,
+	Res,
+	UploadedFile,
+	UseGuards,
+	UseInterceptors,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
+import { FileInterceptor, NoFilesInterceptor } from '@nestjs/platform-express';
 import { compareSync } from 'bcrypt';
-import { CookieOptions, Request as Rqt, Response as Rsp } from 'express';
-import { DeviceService, UserRecieve } from '@backend/device/device.service';
-import { LogInDto, SignUpDto } from './auth.dto';
-import { AuthService, UserMetadata as UsrMtdt } from './auth.service';
+import { DeviceService } from 'device/device.service';
+import { CookieOptions, Request, Response } from 'express';
+import { memoryStorage } from 'multer';
+import { SessionService } from 'session/session.service';
+import { UserRecieve } from 'user/user.class';
+import { ILogin, ISignUp } from 'user/user.model';
+import { hash } from 'utils/auth.utils';
+import { MetaData } from './auth.guard';
+import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
 	constructor(
 		private authSvc: AuthService,
 		private dvcSvc: DeviceService,
+		private sesSvc: SessionService,
 		private cfgSvc: ConfigService,
 	) {}
 
@@ -24,71 +42,106 @@ export class AuthController {
 	private readonly rfsKey = this.cfgSvc.get('REFRESH_KEY');
 	private readonly acsKey = this.cfgSvc.get('ACCESS_KEY');
 
-	clearCookies(req: Rqt, res: Rsp, acs = true, rfs = true) {
-		for (const cki in req.cookies)
+	clearCookies(request: Request, response: Response, acs = true, rfs = true) {
+		for (const cki in request.cookies)
 			if (
 				(compareSync(this.acsKey, cki.substring(this.ckiPfx.length)) && acs) ||
 				(compareSync(this.rfsKey, cki.substring(this.ckiPfx.length)) && rfs)
 			)
-				res.clearCookie(cki, this.ckiOpt);
+				response.clearCookie(cki, this.ckiOpt);
 	}
 
-	sendBack(req: Rqt, res: Rsp, usrRcv: UserRecieve) {
-		this.clearCookies(req, res);
-		res
+	sendBack(request: Request, response: Response, usrRcv: UserRecieve): void {
+		this.clearCookies(request, response);
+		response
 			.cookie(
-				this.ckiPfx + this.authSvc.hash(this.acsKey),
-				this.authSvc.encrypt(usrRcv.accessToken),
+				this.ckiPfx + hash(this.rfsKey),
+				this.authSvc.encrypt(usrRcv.refreshToken),
 				this.ckiOpt,
 			)
 			.cookie(
-				this.ckiPfx + this.authSvc.hash(this.rfsKey),
+				this.ckiPfx + hash(this.acsKey),
 				this.authSvc.encrypt(
-					usrRcv.refreshToken,
-					usrRcv.accessToken.split('.')[2],
+					usrRcv.accessToken,
+					usrRcv.refreshToken.split('.')[2],
 				),
 				this.ckiOpt,
 			)
-			.send({ success: true });
+			.status(HttpStatus.ACCEPTED)
+			.json(true);
 	}
 
 	@Post('login')
+	@UseInterceptors(NoFilesInterceptor())
 	async login(
-		@Req() req: Rqt,
-		@Body() dto: LogInDto,
-		@Res({ passthrough: true }) res: Rsp,
+		@Req() request: Request,
+		@Body() body: ILogin,
+		@Res({ passthrough: true }) response: Response,
+		@MetaData() mtdt: string,
 	) {
-		this.sendBack(req, res, await this.authSvc.login(dto, new UsrMtdt(req)));
+		return this.sendBack(
+			request,
+			response,
+			await this.authSvc.login(body, mtdt),
+		);
 	}
 
 	@Post('signup')
-	async signup(
-		@Req() req: Rqt,
-		@Body() dto: SignUpDto,
-		@Res({ passthrough: true }) res: Rsp,
+	@UseInterceptors(FileInterceptor('avatar', { storage: memoryStorage() }))
+	async signUp(
+		@Req() request: Request,
+		@Body() body: ISignUp,
+		@UploadedFile(
+			new ParseFilePipeBuilder()
+				.addFileTypeValidator({ fileType: '.(png|jpeg|jpg)' })
+				.addMaxSizeValidator({ maxSize: (0.3).mb })
+				.build({
+					fileIsRequired: false,
+					errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+				}),
+		)
+		avatar: Express.Multer.File,
+		@Res({ passthrough: true }) response: Response,
+		@MetaData() mtdt: string,
 	) {
-		this.sendBack(req, res, await this.authSvc.signup(dto, new UsrMtdt(req)));
+		return this.sendBack(
+			request,
+			response,
+			await this.authSvc.signUp(body, mtdt, avatar || null),
+		);
 	}
 
 	@Post('logout')
 	@UseGuards(AuthGuard('refresh'))
-	async logout(@Req() req: Rqt, @Res({ passthrough: true }) res: Rsp) {
-		this.clearCookies(req, res);
-		await this.dvcSvc.delete({ id: req.user['id'] });
+	async logout(
+		@Req() request: Request,
+		@Res({ passthrough: true }) response: Response,
+	) {
+		await this.dvcSvc.remove(request.user['id']);
+		this.sendBack(request, response, { refreshToken: '', accessToken: '' });
 	}
 
-	@Post('refreshToken')
+	@Post('refresh')
 	@UseGuards(AuthGuard('refresh'))
-	async refresh(@Req() req: Rqt, @Res({ passthrough: true }) res: Rsp) {
-		const sendBack = (usrRcv: UserRecieve) => this.sendBack(req, res, usrRcv);
-		if (
-			req.user['success'] &&
-			compareSync(new UsrMtdt(req).toString(), req.user['ua'])
-		) {
-			sendBack(new UserRecieve(req.user['acsTkn'], req.user['rfsTkn']));
-		} else
-			sendBack(
-				await this.dvcSvc.getTokens(req.user['userId'], new UsrMtdt(req)),
-			);
+	async refresh(
+		@Req() request: Request,
+		@Res({ passthrough: true }) response: Response,
+		@MetaData() mtdt: string,
+	) {
+		const sendBack = (usrRcv: UserRecieve) =>
+			this.sendBack(request, response, usrRcv);
+		if (request.user['lockdown']) {
+			await this.dvcSvc.remove(request.user['id']);
+			sendBack({ refreshToken: '', accessToken: '' });
+		} else {
+			if (request.user['success'] && compareSync(mtdt, request.user['ua'])) {
+				sendBack(
+					new UserRecieve({
+						accessToken: request.user['acsTkn'],
+						refreshToken: request.user['rfsTkn'],
+					}),
+				);
+			} else sendBack(await this.sesSvc.addTokens(request.user['id']));
+		}
 	}
 }

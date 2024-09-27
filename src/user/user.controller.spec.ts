@@ -1,34 +1,56 @@
-import { BadRequestException } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { createRequest } from 'node-mocks-http';
-import { UserController } from './user.controller';
+import cookieParser from 'cookie-parser';
+import { TestModule } from 'module/test.module';
+import request from 'supertest';
+import TestAgent from 'supertest/lib/agent';
+import { execute } from 'utils/test.utils';
 import { User } from './user.entity';
+import { UserModule } from './user.module';
 
-describe('UserController', () => {
-	let usrCon: UserController;
+const fileName = curFile(__filename);
+let usr: User, req: TestAgent, app: INestApplication;
 
-	beforeEach(async () => {
-		const module: TestingModule = await Test.createTestingModule({
-			controllers: [UserController],
-		}).compile();
+beforeAll(async () => {
+	const module: TestingModule = await Test.createTestingModule({
+		imports: [UserModule, TestModule],
+	}).compile();
 
-		usrCon = module.get<UserController>(UserController);
+	app = module.createNestApplication();
+
+	await app.use(cookieParser()).init();
+});
+
+beforeEach(() => {
+	(req = request(app.getHttpServer())), (usr = User.test(fileName));
+});
+
+describe('getUser', () => {
+	let headers: object;
+
+	beforeEach(
+		async () => ({ headers } = await req.post('/auth/signup').send(usr)),
+	);
+
+	it('success', async () => {
+		await execute(
+			() => req.post('/user').set('Cookie', headers['set-cookie']),
+			{
+				exps: [
+					{
+						type: 'toHaveProperty',
+						params: ['text', JSON.stringify(usr.info)],
+					},
+				],
+			},
+		);
 	});
 
-	it('should be defined', () => expect(usrCon).toBeDefined());
-
-	describe('getUser', () => {
-		it("should return user's infomation", () => {
-			const user = User.test,
-				req = createRequest({ user });
-			expect(usrCon.getUser(req)).toEqual(user.info);
-		});
-
-		it('should return error', () => {
-			const req = createRequest();
-			expect(async () => usrCon.getUser(req)).rejects.toThrow(
-				BadRequestException,
-			);
+	it('fail', async () => {
+		await execute(() => req.post('/user').send(usr), {
+			exps: [
+				{ type: 'toHaveProperty', params: ['status', HttpStatus.UNAUTHORIZED] },
+			],
 		});
 	});
 });

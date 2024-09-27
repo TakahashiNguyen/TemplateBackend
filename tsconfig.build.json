@@ -1,10 +1,11 @@
 {
-  "exclude": [
-    "node_modules",
-    "test",
-    "dist",
-    "**/*spec.ts",
-    "**/schema.gql"
-  ],
-  "extends": "./tsconfig.json"
+	"exclude": [
+		"**/*.spec.ts",
+		"**/schema.gql",
+		"*.config.*",
+		"dist",
+		"./*.d.ts",
+		"**/build.ts"
+	],
+	"extends": "./tsconfig.json"
 }

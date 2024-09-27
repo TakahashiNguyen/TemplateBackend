@@ -1,22 +1,22 @@
 {
 	"explorerExclude.backup": {},
 	"files.exclude": {
-		"**/.git": true,
-		"**/.svn": true,
-		"**/.hg": true,
-		"**/CVS": true,
-		"**/.DS_Store": true,
-		"**/Thumbs.db": true,
 		"**/*.spec.ts": true,
+		"**/.DS_Store": true,
+		"**/.git": true,
+		"**/.hg": true,
+		"**/.svn": true,
+		"**/CVS": true,
+		"**/Thumbs.db": true,
+		".env.example": true,
 		".github": true,
 		".gitignore": true,
 		".prettierrc": true,
 		".vscode": true,
 		"LICENSE": true,
+		"dist": true,
 		"nest-cli.json": true,
 		"node_modules": true,
-		"package-lock.json": true,
-		".env.example": true,
-		"dist": true
+		"package-lock.json": true
 	}
 }
