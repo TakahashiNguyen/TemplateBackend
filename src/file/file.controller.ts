@@ -1,4 +1,4 @@
-import { existsSync } from 'fs';
+import { existsSync, realpathSync } from 'fs';
 import { resolve } from 'path';
 import { Controller, Get, HttpStatus, Param, Res } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -23,14 +23,8 @@ export class FileController {
 		@Res() res: Response,
 		@CurrentUser() user: User,
 	) {
-		const filePath = resolve(this.rootDir, filename);
-		if (
-			this.rootDir
-				.split('/')
-				.filter((i: string) => i !== '.')
-				.every((i: string) => filePath.includes(i)) &&
-			existsSync(filePath)
-		) {
+		const filePath = realpathSync(resolve(this.rootDir, filename));
+		if (filePath.startsWith(resolve(this.rootDir)) && existsSync(filePath)) {
 			if (filename.match(this.serverFilesReg))
 				return res
 					.status(HttpStatus.ACCEPTED)
