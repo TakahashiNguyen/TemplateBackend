@@ -1,0 +1,11 @@
+export declare const IPayloadKeys: readonly ["id"];
+export declare const IDeviceKeys: readonly ["child", "hashedUserAgent", "owner", "sessions"];
+export declare const IFileKeys: readonly ["createdBy", "forEveryone", "path"];
+export declare const ISessionKeys: readonly ["child", "device", "parrent", "useTimeLeft"];
+export declare const IUserAuthenticationKeys: readonly ["email", "password"];
+export declare const IUserInfoKeys: readonly ["avatarFilePath", "description", "email", "firstName", "lastName", "roles"];
+export declare const IUserKeys: readonly ["avatarFilePath", "description", "devices", "email", "firstName", "lastName", "password", "roles", "uploadFiles"];
+export declare const IUserRecieveKeys: readonly ["accessToken", "refreshToken"];
+export declare const ILoginKeys: readonly ["email", "password"];
+export declare const ISignUpKeys: readonly ["avatarFilePath", "description", "email", "firstName", "lastName", "password", "roles"];
+export declare const ExpectationKeys: readonly ["debug", "not", "params", "type"];
