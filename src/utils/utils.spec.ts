@@ -19,7 +19,7 @@ describe('Number', () => {
 
 	describe('string', () => {
 		it('success', () => {
-			const randomLength = (100).random;
+			const randomLength = (100).random + 1;
 			expect(randomLength.string.length).toEqual(randomLength);
 		});
 	});
