@@ -7,8 +7,8 @@ import { Response } from 'express';
 import { FileService } from 'file/file.service';
 import { User } from 'user/user.entity';
 
-@Controller('')
-export class AppController {
+@Controller('file')
+export class FileController {
 	constructor(
 		private cfgSvc: ConfigService,
 		private fileSvc: FileService,

@@ -1,9 +1,9 @@
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { AppController } from 'app.controller';
 import { AuthModule } from 'auth/auth.module';
 import cookieParser from 'cookie-parser';
+import { FileController } from 'file/file.controller';
 import { FileModule } from 'file/file.module';
 import { TestModule } from 'module/test.module';
 import request from 'supertest';
@@ -21,7 +21,7 @@ let rawUsr: User,
 beforeAll(async () => {
 	const module: TestingModule = await Test.createTestingModule({
 		imports: [TestModule, FileModule, AuthModule],
-		controllers: [AppController],
+		controllers: [FileController],
 	}).compile();
 
 	(app = module.createNestApplication()),
@@ -51,7 +51,9 @@ describe('seeUploadedFile', () => {
 	it('success on server files', async () => {
 		await execute(
 			() =>
-				req.get('/testcard.server.png').set('Cookie', headers['set-cookie']),
+				req
+					.get('/file/testcard.server.png')
+					.set('Cookie', headers['set-cookie']),
 			{
 				exps: [
 					{ type: 'toHaveProperty', params: ['status', HttpStatus.ACCEPTED] },
@@ -63,7 +65,9 @@ describe('seeUploadedFile', () => {
 	it('success', async () => {
 		await execute(
 			() =>
-				req.get(`/${usr.avatarFilePath}`).set('Cookie', headers['set-cookie']),
+				req
+					.get(`/file/${usr.avatarFilePath}`)
+					.set('Cookie', headers['set-cookie']),
 			{
 				exps: [
 					{ type: 'toHaveProperty', params: ['status', HttpStatus.ACCEPTED] },
@@ -73,7 +77,7 @@ describe('seeUploadedFile', () => {
 	});
 
 	it('failed', async () => {
-		await execute(() => req.get(`/${usr.avatarFilePath}`), {
+		await execute(() => req.get(`/file/${usr.avatarFilePath}`), {
 			exps: [
 				{ type: 'toHaveProperty', params: ['status', HttpStatus.BAD_REQUEST] },
 				{
