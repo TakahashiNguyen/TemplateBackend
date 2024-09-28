@@ -19,6 +19,6 @@ import { loadEnv } from './config.module';
 })
 export class TestModule {
 	configure(consumer: MiddlewareConsumer) {
-		consumer.apply(AuthMiddleware).forRoutes('graphql');
+		consumer.apply(AuthMiddleware).forRoutes('/');
 	}
 }
