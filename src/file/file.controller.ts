@@ -24,7 +24,13 @@ export class FileController {
 		@CurrentUser() user: User,
 	) {
 		const filePath = resolve(this.rootDir, filename);
-		if (existsSync(filePath)) {
+		if (
+			this.rootDir
+				.split('/')
+				.filter((i: string) => i !== '.')
+				.every((i: string) => filePath.includes(i)) &&
+			existsSync(filePath)
+		) {
 			if (filename.match(this.serverFilesReg))
 				return res
 					.status(HttpStatus.ACCEPTED)
