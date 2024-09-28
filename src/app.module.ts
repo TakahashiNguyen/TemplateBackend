@@ -38,7 +38,6 @@ import { SqlModule } from './module/sql.module';
 })
 export class AppModule {
 	configure(consumer: MiddlewareConsumer) {
-		consumer.apply(AuthMiddleware).forRoutes('graphql');
-		consumer.apply(AuthMiddleware).forRoutes(AppController);
+		consumer.apply(AuthMiddleware).forRoutes('/');
 	}
 }

@@ -14,7 +14,7 @@ export class AppController {
 		private fileSvc: FileService,
 	) {}
 
-	private serverFilesReg = /^\.*\.server\.(.*)/g;
+	private serverFilesReg = /^.*\.server\.(.*)/g;
 	private rootDir = this.cfgSvc.get('SERVER_PUBLIC');
 
 	@Get(':filename')
@@ -24,19 +24,23 @@ export class AppController {
 		@CurrentUser() user: User,
 	) {
 		const filePath = resolve(this.rootDir, filename);
-		if (filePath.startsWith(this.rootDir) && existsSync(filePath)) {
+		if (existsSync(filePath)) {
 			if (filename.match(this.serverFilesReg))
-				return res.sendFile(filename, { root: this.rootDir });
+				return res
+					.status(HttpStatus.ACCEPTED)
+					.sendFile(filename, { root: this.rootDir });
 
 			const file = await this.fileSvc.path(filename, user?.id, {
 				withRelations: true,
 				relations: ['createdBy'],
 			});
 			if (user?.id === file.createdBy.id || file.forEveryone)
-				return res.sendFile(filename, { root: this.rootDir });
+				return res
+					.status(HttpStatus.ACCEPTED)
+					.sendFile(filename, { root: this.rootDir });
 		}
 		return res
 			.status(HttpStatus.BAD_REQUEST)
-			.json({ error: 'Invalid request' });
+			.send({ error: 'Invalid request' });
 	}
 }
