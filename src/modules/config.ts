@@ -2,12 +2,10 @@ import { ConfigModule } from '@nestjs/config';
 import Joi from 'joi';
 
 /**
- * Server configuration module.
  * Loads environment variables from a .env file and validates them using Joi.
- * This module is global, meaning its configuration is available throughout the application.
  */
 export const configModule = ConfigModule.forRoot({
-	isGlobal: true,
+	isGlobal: true, // Makes the configuration available globally
 	validationSchema: Joi.object({
 		// PostgreSQL database connection
 		POSTGRES_HOST: Joi.string().default('localhost'),
