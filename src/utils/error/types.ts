@@ -33,7 +33,8 @@ export type ErrorObject =
 	| 'Enterprise'
 	| 'Event'
 	| 'Password'
-	| 'Input';
+	| 'Input'
+	| 'Server';
 
 /**
  * Error action type for server responses

@@ -1,14 +1,15 @@
+import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import {
 	FastifyAdapter,
 	NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-import { createServer, Server } from 'http';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import Fastify, { FastifyServerOptions } from 'fastify';
-import { ValidationPipe, VersioningType } from '@nestjs/common';
-import { AppExceptionFilter } from 'app.filter';
-import { AppModule } from 'app.module';
-import { ConfigService } from '@nestjs/config';
+import { Server, createServer } from 'http';
+import { MainModule } from 'modules/main';
+import { AppExceptionFilter } from 'utils/app/filter';
 
 const fastifyServerOptions: FastifyServerOptions = {
 		maxParamLength: 128,
@@ -24,7 +25,7 @@ async function bootstrap() {
 				(server = createServer((req, res) => handler(req, res))),
 		}),
 		app = await NestFactory.create<NestFastifyApplication>(
-			AppModule,
+			MainModule,
 			new FastifyAdapter(fastify),
 			{
 				cors: {
@@ -58,5 +59,21 @@ async function bootstrap() {
 
 		server.listen(config.get<string>('SERVER_PORT'));
 	});
+
+	// Swagger initialization
+	SwaggerModule.setup('api', app, () =>
+		SwaggerModule.createDocument(
+			app,
+			new DocumentBuilder()
+				.setTitle('API Documentation')
+				.setDescription('API documentation for the application')
+				.addSecurity('CsrfToken', {
+					type: 'apiKey',
+					in: 'header',
+					name: 'csrf-token',
+				})
+				.build(),
+		),
+	);
 }
 bootstrap();

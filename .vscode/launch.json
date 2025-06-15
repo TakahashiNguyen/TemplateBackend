@@ -1,0 +1,11 @@
+{
+	"configurations": [
+		{
+			"command": "npm run start:debug -- -- --localhost",
+			"name": "Debug NestJS",
+			"request": "launch",
+			"type": "node-terminal"
+		}
+	],
+	"version": "0.2.0"
+}

@@ -32,47 +32,49 @@ export class AppExceptionFilter
 	 * Handles exceptions caught by the filter.
 	 * It checks the type of the host and modifies the exception based on its status.
 	 * If the exception is a ServerException, it modifies the message based on the status code.
-	 * @param {ServerException} exception - The exception to handle.
+	 * @param {unknown} exception - The exception to handle.
 	 * @param {ArgumentsHost} host - The arguments host containing the context of the request.
 	 */
-	catch(exception: ServerException, host: ArgumentsHost) {
+	catch(exception: unknown, host: ArgumentsHost) {
 		if ((host.getType() as ContextType | 'graphql') === 'graphql')
 			return exception;
 
-		const { message } = exception;
+		if (exception instanceof ServerException) {
+			const { message } = exception;
 
-		switch (exception.getStatus()) {
-			case 403:
-				if (message.includes('csrf')) {
-					if (message.includes('secret'))
-						exception = new ServerException(
-							'Invalid',
-							'CsrfCookie',
-							'',
-							exception,
-						);
-					else if (message.includes('token'))
-						exception = new ServerException(
-							'Invalid',
-							'CsrfToken',
-							'',
-							exception,
-						);
-				}
-				break;
+			switch (exception.getStatus()) {
+				case 403:
+					if (message.includes('csrf')) {
+						if (message.includes('secret'))
+							exception = new ServerException(
+								'Invalid',
+								'CsrfCookie',
+								'',
+								exception,
+							);
+						else if (message.includes('token'))
+							exception = new ServerException(
+								'Invalid',
+								'CsrfToken',
+								'',
+								exception,
+							);
+					}
+					break;
 
-			case 401:
-				exception = new ServerException(
-					'Unauthorized',
-					'User',
-					'Access',
-					exception,
-				);
-				break;
+				case 401:
+					exception = new ServerException(
+						'Unauthorized',
+						'User',
+						'Access',
+						exception,
+					);
+					break;
+			}
+
+			if (typeof (exception as ServerException)['terminalLogging'] === 'function')
+				(exception as ServerException).terminalLogging();
 		}
-
-		if (typeof exception['terminalLogging'] === 'function')
-			exception.terminalLogging();
 
 		super.catch(exception, host);
 	}

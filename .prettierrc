@@ -1,11 +1,18 @@
 {
-	"singleQuote": true,
-	"trailingComma": "all",
-	"useTabs": true,
-	"printWidth": 80,
 	"endOfLine": "lf",
-	"plugins": ["prettier-plugin-sort-json"],
+	"importOrder": ["^[./]"],
+	"importOrderParserPlugins": ["typescript", "jsx", "decorators"],
+	"importOrderSeparation": true,
+	"importOrderSortSpecifiers": true,
 	"jsonRecursiveSort": true,
 	"jsonSortOrder": "{\"*\": \"lexical\"}",
-	"tabWidth": 2
+	"plugins": [
+		"prettier-plugin-sort-json",
+		"@trivago/prettier-plugin-sort-imports"
+	],
+	"printWidth": 80,
+	"singleQuote": true,
+	"tabWidth": 2,
+	"trailingComma": "all",
+	"useTabs": true
 }

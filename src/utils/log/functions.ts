@@ -1,4 +1,5 @@
 import pc from 'picocolors';
+
 import { ColorLogOptions } from '.';
 
 /**
