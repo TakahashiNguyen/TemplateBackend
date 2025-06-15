@@ -1,7 +1,11 @@
 {
-  "singleQuote": true,
-  "trailingComma": "all",
-  "useTabs": true,
-  "printWidth": 80,
-  "endOfLine": "lf"
+	"singleQuote": true,
+	"trailingComma": "all",
+	"useTabs": true,
+	"printWidth": 80,
+	"endOfLine": "lf",
+	"plugins": ["prettier-plugin-sort-json"],
+	"jsonRecursiveSort": true,
+	"jsonSortOrder": "{\"*\": \"lexical\"}",
+	"tabWidth": 2
 }

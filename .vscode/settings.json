@@ -1,12 +1,12 @@
 {
-  "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/.DS_Store": true,
-    "**/Thumbs.db": true,
-    "**/node_modules": true,
-    "**/pnpm-lock.yaml": true
-  },
-  "explorerExclude.backup": {}
+	"explorerExclude.backup": {},
+	"files.exclude": {
+		"**/.DS_Store": true,
+		"**/.git": true,
+		"**/.hg": true,
+		"**/.svn": true,
+		"**/Thumbs.db": true,
+		"**/node_modules": true,
+		"**/pnpm-lock.yaml": true
+	}
 }
