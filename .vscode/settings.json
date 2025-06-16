@@ -8,14 +8,15 @@
 	},
 	"explorerExclude.backup": {},
 	"files.exclude": {
-		"**/.DS_Store": true,
 		"**/.git": true,
-		"**/.hg": true,
 		"**/.svn": true,
+		"**/.hg": true,
+		"**/.DS_Store": true,
 		"**/Thumbs.db": true,
-		"**/dist": true,
 		"**/node_modules": true,
-		"**/pnpm-lock.yaml": true
+		"**/pnpm-lock.yaml": true,
+		"**/dist": true,
+		"docs": true
 	},
 	"todohighlight.keywords": [
 		{

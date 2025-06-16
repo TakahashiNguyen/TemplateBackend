@@ -2,11 +2,11 @@ import {
 	ArgumentsHost,
 	Catch,
 	ContextType,
-	HttpServer,
 	ExceptionFilter,
+	HttpServer,
 } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
-import { ServerException } from 'utils/error';
+import { ErrorObject, ServerException } from 'utils/error';
 
 /**
  * It handles exceptions thrown in the application, particularly focusing on server exceptions.
@@ -22,7 +22,7 @@ export class AppExceptionFilter
 	 * Creates an instance of AppExceptionFilter.
 	 * @param {HttpServer} applicationRef - The HTTP server reference.
 	 * @example
-	 * const appExceptionFilter = new AppExceptionFilter(httpServer);	
+	 * const appExceptionFilter = new AppExceptionFilter(httpServer);
 	 */
 	constructor(applicationRef: HttpServer) {
 		super(applicationRef);
@@ -45,20 +45,26 @@ export class AppExceptionFilter
 			switch (exception.getStatus()) {
 				case 403:
 					if (message.includes('csrf')) {
-						if (message.includes('secret'))
-							exception = new ServerException(
-								'Invalid',
-								'CsrfCookie',
-								'',
-								exception,
-							);
-						else if (message.includes('token'))
-							exception = new ServerException(
-								'Invalid',
-								'CsrfToken',
-								'',
-								exception,
-							);
+						let type: ErrorObject;
+
+						switch (true) {
+							case message.includes('secret'):
+								type = 'CsrfCookie';
+								break;
+							case message.includes('token'):
+								type = 'CsrfToken';
+								break;
+							default:
+								type = 'Client';
+								break;
+						}
+
+						exception = new ServerException(
+							'Invalid',
+							type,
+							type == 'Client' ? 'Request' : '',
+							exception,
+						);
 					}
 					break;
 
@@ -72,8 +78,7 @@ export class AppExceptionFilter
 					break;
 			}
 
-			if (typeof (exception as ServerException)['terminalLogging'] === 'function')
-				(exception as ServerException).terminalLogging();
+			(exception as ServerException).terminalLogging?.();
 		}
 
 		super.catch(exception, host);

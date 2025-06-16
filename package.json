@@ -7,6 +7,7 @@
 	"license": "MIT",
 	"scripts": {
 		"build": "nest build",
+		"doc": "compodoc src -p tsconfig.doc.json --disableSourceCode --hideGenerator -d ./docs",
 		"format": "prettier --write \"./**/*.ts\" \"./**/*.json\"",
 		"start": "nest start",
 		"start:dev": "nest start --watch",
@@ -35,6 +36,7 @@
 		"rxjs": "^7.8.1"
 	},
 	"devDependencies": {
+		"@compodoc/compodoc": "^1.1.26",
 		"@eslint/eslintrc": "^3.2.0",
 		"@eslint/js": "^9.29.0",
 		"@eslint/json": "^0.12.0",
