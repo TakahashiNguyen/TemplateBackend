@@ -9,6 +9,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import Fastify, { FastifyServerOptions } from 'fastify';
 import { Server, createServer } from 'http';
 import { MainModule } from 'modules/main';
+import { setupStaticFastify } from 'utils/app/fastify';
 import { AppExceptionFilter } from 'utils/app/filter';
 
 const fastifyServerOptions: FastifyServerOptions = {
@@ -51,7 +52,9 @@ async function bootstrap() {
 		.init();
 
 	// Fastify initialization
-	fastify.ready((err) => {
+	setupStaticFastify(fastify);
+
+	fastify.ready((err) => {	
 		if (err) {
 			console.error('Fastify initialization error:', err);
 			process.exit(1);
