@@ -1,4 +1,4 @@
-import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { HttpException, ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import {
@@ -6,16 +6,16 @@ import {
 	NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import Fastify, { FastifyServerOptions } from 'fastify';
+import Fastify from 'fastify';
 import { Server, createServer } from 'http';
 import { MainModule } from 'modules/main';
-import { setupStaticFastify } from 'utils/app/fastify';
+import { fastifyServerOptions, serverOrigin } from 'utils/app/constants';
+import {
+	initializePluginsFastify,
+	setupStaticFastify,
+} from 'utils/app/fastify';
 import { AppExceptionFilter } from 'utils/app/filter';
-
-const fastifyServerOptions: FastifyServerOptions = {
-		maxParamLength: 128,
-	},
-	serverOrigin = /^https?:\/\/(.*)$/;
+import { ServerException } from 'utils/error';
 
 async function bootstrap() {
 	let server: Server;
@@ -54,13 +54,24 @@ async function bootstrap() {
 	// Fastify initialization
 	setupStaticFastify(fastify);
 
-	fastify.ready((err) => {	
+	await initializePluginsFastify(fastify, {
+		name: process.env.npm_package_name || 'app',
+		password: config.get<string>('SERVER_SECRET', (32).string),
+	});
+
+	fastify.ready((err) => {
 		if (err) {
-			console.error('Fastify initialization error:', err);
+			new ServerException(
+				'Fatal',
+				'Server',
+				'Implementation',
+				new HttpException('Fastify initialization error', 500),
+			).terminalLogging();
+
 			process.exit(1);
 		}
 
-		server.listen(config.get<string>('SERVER_PORT'));
+		server.listen(config.get<number>('SERVER_PORT'));
 	});
 
 	// Swagger initialization

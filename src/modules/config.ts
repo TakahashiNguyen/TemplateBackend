@@ -24,7 +24,6 @@ export const configModule = ConfigModule.forRoot({
 		// Server settings
 		SERVER_SECRET: Joi.string().required(),
 		SERVER_PORT: Joi.number().default(3000),
-		SERVER_PUBLIC: Joi.string().default('./public/'),
 		SERVER_FILE_SIZE_LIMIT: Joi.number().default(256),
 		// Admin settings
 		ADMIN_EMAIL: Joi.string().default('test@test.test'),
