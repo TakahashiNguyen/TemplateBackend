@@ -37,5 +37,6 @@
 			"isWholeLine": true,
 			"text": "// String.prototype"
 		}
-	]
+	],
+	"postman.settings.dotenv-detection-notification-visibility": false
 }

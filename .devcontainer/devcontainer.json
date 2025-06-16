@@ -1,0 +1,24 @@
+{
+	"name": "Node.js & TypeScript",
+	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"GitHub.vscode-pull-request-github",
+				"dbaeumer.vscode-eslint",
+				"PeterSchmalfeldt.explorer-exclude",
+				"GitHub.copilot",
+				"GraphQL.vscode-graphql-syntax",
+				"NicholasHsiang.vscode-javascript-comment",
+				"Orta.vscode-jest",
+				"PKief.material-icon-theme",
+				"esbenp.prettier-vscode",
+				"vscodevim.vim"
+			]
+		}
+	},
+	"forwardPorts": [
+		3000
+	],
+	"postCreateCommand": "pnpm install"
+}
