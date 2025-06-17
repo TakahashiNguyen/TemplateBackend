@@ -91,10 +91,11 @@ export class FastifyFramework {
 	 * @example
 	 * await this.initializePlugins({ name: 'session', password: 'your-secure-password' });
 	 */
-	private async initializePlugins({
-		name,
-		password,
-	}: CookieCredential): Promise<void> {
+	private async initializePlugins(
+		cookieCredential: CookieCredential,
+	): Promise<void> {
+		const { name, password } = cookieCredential;
+
 		await this.fastify
 			.register(fastifyCompress, {
 				encodings: ['gzip', 'deflate'],

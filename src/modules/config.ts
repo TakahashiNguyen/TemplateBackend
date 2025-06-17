@@ -8,12 +8,11 @@ export const configModule = ConfigModule.forRoot({
 	isGlobal: true, // Makes the configuration available globally
 	validationSchema: Joi.object({
 		// PostgreSQL database connection
-		POSTGRES_HOST: Joi.string().default('localhost'),
-		POSTGRES_PORT: Joi.number().default(5432),
-		POSTGRES_USER: Joi.string().default('postgres'),
-		POSTGRES_DB: Joi.string().default('postgres'),
-		POSTGRES_PASS: Joi.string().default('postgres'),
-		POSTGRES_SSL: Joi.string().default(false),
+		DB_HOST: Joi.string().default('localhost'),
+		DB_PORT: Joi.number().default(5432),
+		DB_USER: Joi.string().default('postgres'),
+		DB_NAME: Joi.string().default('postgres'),
+		DB_PASS: Joi.string().default('postgres'),
 		// JWT tokens
 		// Access token
 		ACCESS_SECRET: Joi.string().required(),

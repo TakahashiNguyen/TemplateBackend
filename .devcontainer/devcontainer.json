@@ -1,6 +1,4 @@
 {
-	"name": "Typescript",
-	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -17,8 +15,23 @@
 			]
 		}
 	},
-	"forwardPorts": [
-		3000
-	],
-	"postCreateCommand": "pnpm install"
+	"features": {
+		"ghcr.io/devcontainers-extra/features/redis-homebrew:1": {},
+		"ghcr.io/devcontainers/features/git:1": {
+			"ppa": "false",
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/node:1": {
+			"nodeGypDependencies": false,
+			"nvmVersion": "latest",
+			"pnpmVersion": "latest",
+			"version": "latest"
+		}
+	},
+	"forwardPorts": [3000, 6379],
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+	"postAttachCommand": "/home/linuxbrew/.linuxbrew/bin/redis-server --daemonize yes",
+
+	"postCreateCommand": "pnpm install",
+	"runArgs": ["--add-host=host.docker.internal:host-gateway"]
 }

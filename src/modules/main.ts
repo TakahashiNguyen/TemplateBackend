@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
-import { configModule } from 'modules/config';
+
+import { cacheModule } from './cache';
+import { configModule } from './config';
+import { typeOrmModule } from './typeorm';
 
 @Module({
-	imports: [configModule],
+	imports: [configModule, typeOrmModule('postgres'), cacheModule],
 })
 export class MainModule {}

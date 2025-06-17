@@ -1,5 +1,6 @@
 import { CookieSerializeOptions } from '@fastify/csrf-protection';
 import { FastifyServerOptions } from 'fastify';
+import 'utils';
 
 /**
  * Fastify server options for configuration.
@@ -23,3 +24,8 @@ export const cookieOptions: CookieSerializeOptions = {
 	signed: true,
 	path: '/',
 };
+
+/**
+ * Cache duration for database queries.
+ */
+export const cacheDurationMs = (5).m2s.s2ms; // Cache duration in milliseconds (5 minute)
