@@ -1,4 +1,4 @@
-import { HttpException, ValidationPipe, VersioningType } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import {
@@ -6,28 +6,16 @@ import {
 	NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import Fastify from 'fastify';
-import { Server, createServer } from 'http';
 import { MainModule } from 'modules/main';
-import { fastifyServerOptions, serverOrigin } from 'utils/app/constants';
-import {
-	initializePluginsFastify,
-	setupStaticFastify,
-} from 'utils/app/fastify';
+import { serverOrigin } from 'utils/app/constants';
+import { FastifyFramework } from 'utils/app/fastify';
 import { AppExceptionFilter } from 'utils/app/filter';
-import { ServerException } from 'utils/error';
 
 async function bootstrap() {
-	let server: Server;
-
-	const fastify = Fastify({
-			...fastifyServerOptions,
-			serverFactory: (handler) =>
-				(server = createServer((req, res) => handler(req, res))),
-		}),
+	const fastifyFramework = new FastifyFramework(),
 		app = await NestFactory.create<NestFastifyApplication>(
 			MainModule,
-			new FastifyAdapter(fastify),
+			new FastifyAdapter(fastifyFramework.fastify),
 			{
 				cors: {
 					origin: process.argv.some((i) => i == '--localhost')
@@ -52,26 +40,9 @@ async function bootstrap() {
 		.init();
 
 	// Fastify initialization
-	setupStaticFastify(fastify);
-
-	await initializePluginsFastify(fastify, {
+	fastifyFramework.setup(config, {
 		name: process.env.npm_package_name || 'app',
 		password: config.get<string>('SERVER_SECRET', (32).string),
-	});
-
-	fastify.ready((err) => {
-		if (err) {
-			new ServerException(
-				'Fatal',
-				'Server',
-				'Implementation',
-				new HttpException('Fastify initialization error', 500),
-			).terminalLogging();
-
-			process.exit(1);
-		}
-
-		server.listen(config.get<number>('SERVER_PORT'));
 	});
 
 	// Swagger initialization
@@ -90,4 +61,6 @@ async function bootstrap() {
 		),
 	);
 }
+
+// Start the application
 bootstrap();
