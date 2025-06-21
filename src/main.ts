@@ -6,7 +6,7 @@ import {
 	NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { MainModule } from 'modules/main';
+import Modules from 'modules';
 import { serverOrigin } from 'utils/app/constants';
 import { FastifyFramework } from 'utils/app/fastify';
 import { AppExceptionFilter } from 'utils/app/filter';
@@ -14,7 +14,7 @@ import { AppExceptionFilter } from 'utils/app/filter';
 async function bootstrap() {
 	const fastifyFramework = new FastifyFramework(),
 		app = await NestFactory.create<NestFastifyApplication>(
-			MainModule,
+			Modules,
 			new FastifyAdapter(fastifyFramework.fastify),
 			{
 				cors: {

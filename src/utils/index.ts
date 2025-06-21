@@ -217,42 +217,42 @@ declare global {
 // String.prototype
 Object.defineProperty(String.prototype, 'toBase64Url', {
 	get: function () {
-		return Buffer.from(this as string, 'utf8').toString('base64url');
+		return Buffer.from(this, 'utf8').toString('base64url');
 	},
 	enumerable: true,
 	configurable: true,
 });
 Object.defineProperty(String.prototype, 'fromBase64Url', {
 	get: function () {
-		return Buffer.from(this as string, 'base64url').toString('utf8');
+		return Buffer.from(this, 'base64url').toString('utf8');
 	},
 	enumerable: true,
 	configurable: true,
 });
 Object.defineProperty(String.prototype, 'randChar', {
 	get: function () {
-		return (this as string).charAt((this as string).length.random);
+		return (this).charAt((this).length.random);
 	},
 	enumerable: true,
 	configurable: true,
 });
 Object.defineProperty(String.prototype, 'lower', {
 	get: function () {
-		return (this as string).toLowerCase();
+		return (this ).toLowerCase();
 	},
 	enumerable: true,
 	configurable: true,
 });
 Object.defineProperty(String.prototype, 'capitalize', {
 	get: function () {
-		return (this || '').at(0).toUpperCase() + (this as string).slice(1);
+		return (this || '').at(0).toUpperCase() + (this ).slice(1);
 	},
 	enumerable: true,
 	configurable: true,
 });
 Object.defineProperty(String.prototype, 'uncapitalize', {
 	get: function () {
-		return (this || '').at(0).toLowerCase() + (this as string).slice(1);
+		return (this || '').at(0).toLowerCase() + (this).slice(1);
 	},
 	enumerable: true,
 	configurable: true,
@@ -281,7 +281,7 @@ Number.prototype.range = async function (input: () => void) {
 };
 Object.defineProperty(Number.prototype, 'random', {
 	get: function () {
-		return Math.floor(Math.random() * (this as number));
+		return Math.floor(Math.random() * (this));
 	},
 	enumerable: true,
 	configurable: true,

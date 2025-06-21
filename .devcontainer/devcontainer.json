@@ -31,7 +31,6 @@
 	"forwardPorts": [3000, 6379],
 	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 	"postAttachCommand": "/home/linuxbrew/.linuxbrew/bin/redis-server --daemonize yes",
-
 	"postCreateCommand": "pnpm install",
 	"runArgs": ["--add-host=host.docker.internal:host-gateway"]
 }

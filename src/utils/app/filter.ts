@@ -36,8 +36,7 @@ export class AppExceptionFilter
 	 * @param {ArgumentsHost} host - The arguments host containing the context of the request.
 	 */
 	catch(exception: unknown, host: ArgumentsHost) {
-		if ((host.getType() as ContextType | 'graphql') === 'graphql')
-			return exception;
+		if (host.getType<ContextType | 'graphql'>() === 'graphql') return exception;
 
 		if (exception instanceof ServerException) {
 			const { message } = exception;

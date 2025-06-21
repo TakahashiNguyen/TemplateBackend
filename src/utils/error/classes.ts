@@ -21,11 +21,11 @@ export class ServerException extends HttpException {
 		type: ErrorType,
 		object: ErrorObject,
 		action: ErrorAction,
-		private err: HttpException = new HttpException('Unknown error', 500),
+		private err: HttpException | Error = new Error('Unknown error'),
 	) {
 		super(
-			(6).string + '_' + type + '_' + object + (action ? '_' : '') + action,
-			err.getStatus(),
+			(6).toString() + '_' + type + '_' + object + (action ? '_' : '') + action,
+			err instanceof HttpException ? err.getStatus() : 500,
 		);
 	}
 
@@ -38,7 +38,7 @@ export class ServerException extends HttpException {
 	 */
 	terminalLogging() {
 		const { cause, message, stack } = this.err,
-			title = `${'-'.repeat(6)}${this.message}-${this.err.getStatus()}${'-'.repeat(6)}`;
+			title = `${'-'.repeat(6)}${this.message}-${this.getStatus()}${'-'.repeat(6)}`;
 
 		console.error(
 			colorLogging({ bg: 'bgRed', msg: title }) +

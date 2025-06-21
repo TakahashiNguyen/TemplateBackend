@@ -19,7 +19,6 @@
 		".pnpm-store": true,
 		"docs": true
 	},
-	"postman.settings.dotenv-detection-notification-visibility": false,
 	"todohighlight.keywords": [
 		{
 			"backgroundColor": "#FCBA04",
@@ -38,6 +37,54 @@
 			"color": "#022B3A",
 			"isWholeLine": true,
 			"text": "// String.prototype"
+		},
+		{
+			"backgroundColor": "#ECB0E1",
+			"color": "#A31621",
+			"isWholeLine": true,
+			"text": "// Interfaces"
+		},
+		{
+			"backgroundColor": "#E94F37",
+			"color": "#F6F7EB",
+			"isWholeLine": true,
+			"text": "// Enums"
+		},
+		{
+			"backgroundColor": "#4464AD",
+			"color": "#FFC759",
+			"isWholeLine": true,
+			"text": "// Methods"
+		},
+		{
+			"backgroundColor": "#CDE7B0",
+			"color": "#BE6E46",
+			"isWholeLine": true,
+			"text": "// Infomations"
+		},
+		{
+			"backgroundColor": "#61E8E1",
+			"color": "#071E22",
+			"isWholeLine": true,
+			"text": "// Read"
+		},
+		{
+			"backgroundColor": "#E3C567",
+			"color": "#16302B",
+			"isWholeLine": true,
+			"text": "// Create"
+		},
+		{
+			"backgroundColor": "#8C1C13",
+			"color": "#D3D0CB",
+			"isWholeLine": true,
+			"text": "// Delete"
+		},
+		{
+			"backgroundColor": "#C6D4FF",
+			"color": "#14281D",
+			"isWholeLine": true,
+			"text": "// Update"
 		}
 	]
 }
