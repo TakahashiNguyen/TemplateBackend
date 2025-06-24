@@ -54,8 +54,8 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	/**
 	 * Initiate database methods for entity.
 	 *
-	 * @param {Repository<T>} repo
-	 * @param {Class} ctor
+	 * @param {Repository<T>} repo - Entity's repository.
+	 * @param {Class} ctor - Entity's constructor.
 	 */
 	constructor(repo: Repository<T>, ctor: Class<T>) {
 		this.relations = repo.metadata.relations
@@ -230,7 +230,7 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * ```
 	 *
 	 * @param {DeepPartial<GetAttributes<T>>} entity - The saving entity.
-	 * @param {ExtendedSaveOptions} options
+	 * @param {ExtendedSaveOptions} options - Entity save options.
 	 */
 	public readonly create = async (
 		entity: DeepPartial<GetAttributes<T>>,
@@ -283,7 +283,7 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 *
 	 * @param {FindOptionsWhere<T>} targetEntity - Target entity.
 	 * @param {DeepPartial<T>} updatedEntity - Updated entity.
-	 * @param {ExtendedSaveOptions} options
+	 * @param {ExtendedSaveOptions} options - Update entity options.
 	 */
 	public readonly update = async (
 		targetEntity: FindOptionsWhere<T>,

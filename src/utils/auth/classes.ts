@@ -39,7 +39,12 @@ export class SecurityService {
 	/** JSON web token service. */
 	private jwt: JwtService;
 
-	/** Initializes SecurityService with JwtService and ConfigService. */
+	/**
+	 * Initializes SecurityService with JwtService and ConfigService.
+	 *
+	 * @param {JwtService} jwt - JSON web token service.
+	 * @param {ConfigService} config - Config service.
+	 */
 	constructor(jwt: JwtService, config: ConfigService) {
 		this.jwt = jwt;
 		this.accessSecret = config.getOrThrow('ACCESS_SECRET');
