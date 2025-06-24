@@ -39,6 +39,7 @@ export class SecurityService {
 	/** JSON web token service. */
 	private jwt: JwtService;
 
+	/** Initializes SecurityService with JwtService and ConfigService. */
 	constructor(jwt: JwtService, config: ConfigService) {
 		this.jwt = jwt;
 		this.accessSecret = config.getOrThrow('ACCESS_SECRET');
@@ -50,6 +51,12 @@ export class SecurityService {
 
 	/**
 	 * Refresh token signer.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * const jwtRefresh = this.refresh(str);
+	 * ```
 	 *
 	 * @param {string} input - Input string to sign.
 	 * @returns {string} Signed string from `input`.
@@ -65,6 +72,12 @@ export class SecurityService {
 	/**
 	 * Access token signer.
 	 *
+	 * @example
+	 *
+	 * ```ts
+	 * cosnt jwtAccess = this.access(str);
+	 * ```
+	 *
 	 * @param {string} input - Input string to sign.
 	 * @returns {string} Signed string from `input`.
 	 * @access public
@@ -79,9 +92,15 @@ export class SecurityService {
 	/**
 	 * The function to verifying `input` and return tokens.
 	 *
-	 * @param {string} input - Input token.
-	 * @param {TokenType} [type] - Token type selection (default: 'access').
-	 * @returns {TYPE} Description.
+	 * @example
+	 *
+	 * ```ts
+	 * const tokens = this.verify(str, 'access');
+	 * ```
+	 *
+	 * @param {string} input - Input signed string.
+	 * @param {TokenType} [type] - `input` signed type.
+	 * @returns {ITokens} Contents server tokens.
 	 */
 	verify(input: string, type: TokenType = 'access'): ITokens {
 		return this.jwt.verify(input, {
@@ -91,6 +110,12 @@ export class SecurityService {
 
 	/**
 	 * Convert signature to key.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * const key = signatureToKey(signature, 32);
+	 * ```
 	 *
 	 * @param {string} input - The signature to be converted.
 	 * @param {number} length - Key length.
@@ -102,6 +127,12 @@ export class SecurityService {
 
 	/**
 	 * The function to encrypt a string.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * const encryptedString = this.encrypt(str, 'foo');
+	 * ```
 	 *
 	 * @param {string} input - The string is going to be encrypted.
 	 * @param {string} key - The key to encrypt `input` (default:
@@ -129,6 +160,12 @@ export class SecurityService {
 
 	/**
 	 * The function to decrypt a string.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * const decryptedString = this.decrypt(str, 'foo');
+	 * ```
 	 *
 	 * @param {string} input - The encrypted string.
 	 * @param {string} [key] - The key to decrypt `input` (default:

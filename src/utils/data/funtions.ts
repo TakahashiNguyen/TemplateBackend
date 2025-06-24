@@ -3,7 +3,11 @@ import { h64 } from 'xxhashjs';
 /**
  * The function generated a hash from `input`.
  *
- * @example UnidirectionalHash('Hello, world!') // '3152ec65f921afc0'
+ * @example
+ *
+ * ```ts
+ * unidirectionalHash('Hello, world!'); // '3152ec65f921afc0'
+ * ```
  *
  * @param {string} input - The string is going to be hashed.
  * @returns {string} Hashed string from `input`.

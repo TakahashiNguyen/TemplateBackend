@@ -5,8 +5,16 @@ import { ModifiedArgon2Options } from './types';
 /**
  * The function generated a hash from `input` that verifiable.
  *
- * @example BidirectionalHash('Hello, world!', {parallelism: 1, memoryCost: 16,
- * timeCost: 2, hashLength: 16})
+ * @example
+ *
+ * ```ts
+ * bidirectionalHash('Hello, world!', {
+ * 	parallelism: 1,
+ * 	memoryCost: 16,
+ * 	timeCost: 2,
+ * 	hashLength: 16,
+ * });
+ * ```
  *
  * @param {string} input - The string is going to be hashed.
  * @param {ModifiedArgon2Options} option - Customize function arguments for
@@ -24,8 +32,13 @@ export async function bidirectionalHash(
  * The function verifies if `input` matches the hash generated `origin`.
  *
  * @example
- * VerifyBidirectionalHash('$argon2id$v=19$m=16,t=2,p=1$Zm9vYmFyZm9vYmFy$Jehr9E7oAOOrp8speaahJA',
- * 'Hello, world!') // true.
+ *
+ * ```ts
+ * verifyBidirectionalHash(
+ * 	'$argon2id$v=19$m=16,t=2,p=1$Zm9vYmFyZm9vYmFy$Jehr9E7oAOOrp8speaahJA',
+ * 	'Hello, world!',
+ * ); // true
+ * ```
  *
  * @param {string} origin - The string verifies the `input` string.
  * @param {string} input - The string to verify if it matches `original`.

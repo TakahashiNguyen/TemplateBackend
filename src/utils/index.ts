@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/require-jsdoc */
 export {};
 
 /** @ignore */
@@ -196,7 +197,6 @@ declare global {
 		 *   executed for each iteration.
 		 * @returns A Promise that resolves when all iterations are complete.
 		 */
-
 		range<T>(input: () => Promise<T> | T): Promise<void>;
 	}
 
@@ -427,6 +427,7 @@ Object.defineProperty(Number.prototype, 'h2s', {
 	configurable: true,
 });
 
+/** Basic class declaration. */
 export interface Class<T> {
 	new (...args: unknown[]): T;
 }

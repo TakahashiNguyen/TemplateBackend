@@ -13,8 +13,11 @@ export class ServerException extends HttpException {
 	/**
 	 * Creates an instance of ServerException.
 	 *
-	 * @example Const error = new ServerException('Database', 'Connection',
-	 * 'Failed');
+	 * @example
+	 *
+	 * ```ts
+	 * const error = new ServerException('Database', 'Connection', 'Failed');
+	 * ```
 	 *
 	 * @param {ErrorType} type - The type of error (e.g., 'Database', 'Network').
 	 * @param {ErrorObject} object - The object related to the error (e.g.,

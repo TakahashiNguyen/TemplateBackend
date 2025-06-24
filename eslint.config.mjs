@@ -18,6 +18,29 @@ export default defineConfig([
 			'jsdoc/require-asterisk-prefix': ['error', 'always'],
 			'jsdoc/require-description': ['error'],
 			'jsdoc/require-description-complete-sentence': ['error'],
+			'jsdoc/require-example': ['error', { checkConstructors: false }],
+			'jsdoc/require-hyphen-before-param-description': ['error', 'always'],
+			'jsdoc/require-jsdoc': [
+				'error',
+				{
+					contexts: [
+						'TSInterfaceDeclaration',
+						'TSMethodSignature',
+						'TSPropertySignature',
+						'TSTypeAliasDeclaration',
+						'TSMethodSignature',
+						'TSEnumDeclaration',
+					],
+					require: {
+						ClassDeclaration: false,
+						ClassExpression: true,
+						FunctionExpression: true,
+						FunctionDeclaration: false,
+						MethodDefinition: true,
+						ArrowFunctionExpression: false,
+					},
+				},
+			],
 			'jsdoc/require-param-type': [
 				'error',
 				{ setDefaultDestructuredRootType: true },

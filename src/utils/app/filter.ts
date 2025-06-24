@@ -20,6 +20,12 @@ export class AppExceptionFilter
 	/**
 	 * Handles exceptions caught by the filter.
 	 *
+	 * @example
+	 *
+	 * ```ts
+	 * this.catch(exception, host);
+	 * ```
+	 *
 	 * @param {unknown} exception - The exception to handle.
 	 * @param {ArgumentsHost} host - The arguments host containing the context of
 	 *   the request.

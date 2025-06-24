@@ -5,6 +5,7 @@ import { configModule } from './config';
 import { graphqlModule } from './graphql';
 import { typeOrmModule } from './typeorm';
 
+/** Module collection. */
 @Module({
 	imports: [
 		configModule,

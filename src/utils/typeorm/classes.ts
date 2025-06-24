@@ -105,6 +105,12 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	/**
 	 * Get entity from id.
 	 *
+	 * @example
+	 *
+	 * ```ts
+	 * const entity = await this.id(entityId);
+	 * ```
+	 *
 	 * @param {string} id - The entity's id.
 	 * @returns Found entity.
 	 * @throws {ServerException} If the id is null or undefined.
@@ -120,6 +126,12 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 
 	/**
 	 * Finding objects.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * const entities = await this.find(entityWithSpecificFields);
+	 * ```
 	 *
 	 * @param {FindWhereExtend<T, ExtendedFindOptions>} options - Function's
 	 *   option.
@@ -156,9 +168,14 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	/**
 	 * Finding an entity.
 	 *
+	 * @example
+	 *
+	 * ```ts
+	 * const entity = await this.findOne(entityWithSpecificFields);
+	 * ```
+	 *
 	 * @param {FindWhereExtend<T, ExtendedFindOneOptions>} options - Function's
 	 *   option.
-	 * @returns
 	 */
 	public readonly findOne = async (
 		options: FindWhereExtend<T, ExtendedFindOneOptions>,
@@ -189,6 +206,12 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	/**
 	 * Get total of entity.
 	 *
+	 * @example
+	 *
+	 * ```ts
+	 * const count = this.total();
+	 * ```
+	 *
 	 * @returns
 	 */
 	public readonly total = async (): Promise<number> => {
@@ -199,6 +222,12 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 
 	/**
 	 * Saving an entity.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * entity = this.create(entity, { raw: true, validate: false });
+	 * ```
 	 *
 	 * @param {DeepPartial<GetAttributes<T>>} entity - The saving entity.
 	 * @param {ExtendedSaveOptions} options
@@ -223,6 +252,12 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	/**
 	 * Push many entities to field's array.
 	 *
+	 * @example
+	 *
+	 * ```ts
+	 * this.pushMany(entityId, field, entities);
+	 * ```
+	 *
 	 * @param {string} id - The id of entity.
 	 * @param {K} field - The pushing field.
 	 * @param {T[K]} entities - The push entities.
@@ -231,7 +266,7 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 		id: string,
 		field: K,
 		entities: T[K],
-	) => {
+	): Promise<void> => {
 		const obj = await this.id(id);
 		(obj[field] as T[K][]).push(entities);
 		await this.update({ id } as FindOptionsWhere<T>, obj);
@@ -239,6 +274,12 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 
 	/**
 	 * Updating entity.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * this.update({ id: entityId }, updatedEntity);
+	 * ```
 	 *
 	 * @param {FindOptionsWhere<T>} targetEntity - Target entity.
 	 * @param {DeepPartial<T>} updatedEntity - Updated entity.
@@ -248,7 +289,7 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 		targetEntity: FindOptionsWhere<T>,
 		updatedEntity: DeepPartial<T>,
 		options?: ExtendedSaveOptions,
-	) => {
+	): Promise<void> => {
 		if (
 			updatedEntity != null &&
 			Object.keys(updatedEntity).length &&
@@ -263,6 +304,12 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 
 	/**
 	 * Removing an entity by identifier string.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * this.delete(entityId);
+	 * ```
 	 *
 	 * @param {string} id - The entity identifier string.
 	 * @returns Resolves when the entity is deleted.

@@ -38,8 +38,13 @@ export const graphqlModule =
 
 						return result;
 					},
-					set: (key: string, value: unknown, options: { ttl: number }) =>
-						cacheManager.set(key, value, options.ttl.s2ms) as Promise<void>,
+					set: (
+						key: string,
+						value: unknown,
+						options: {
+							/** Cache time to live. */ ttl: number;
+						},
+					) => cacheManager.set(key, value, options.ttl.s2ms) as Promise<void>,
 					delete: (key: string) => cacheManager.del(key),
 				},
 				// Fix request context
