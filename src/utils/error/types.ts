@@ -1,6 +1,4 @@
-/**
- * Error type for server responses
- */
+/** Error type for server responses. */
 export type ErrorType =
 	| 'Invalid'
 	| 'Success'
@@ -8,9 +6,7 @@ export type ErrorType =
 	| 'Forbidden'
 	| 'Unauthorized';
 
-/**
- * Error object type for server responses
- */
+/** Error object type for server responses. */
 export type ErrorObject =
 	| 'Client'
 	| 'ID'
@@ -36,9 +32,7 @@ export type ErrorObject =
 	| 'Input'
 	| 'Server';
 
-/**
- * Error action type for server responses
- */
+/** Error action type for server responses. */
 export type ErrorAction =
 	| ''
 	| 'Request'

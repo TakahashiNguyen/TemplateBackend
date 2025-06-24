@@ -5,10 +5,11 @@ import {
 	FindOptionsWhere,
 	PrimaryGeneratedColumn,
 	Repository,
+	BaseEntity as TypeOrmBaseEntity,
 	UpdateDateColumn,
-  BaseEntity as TypeOrmBaseEntity
 } from 'typeorm';
 import { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
+import { Class } from 'utils';
 import { validateObject } from 'utils/app/functions';
 import { ServerException } from 'utils/error';
 
@@ -17,50 +18,62 @@ import {
 	ExtendedFindOptions,
 	ExtendedSaveOptions,
 	FindWhereExtend,
-	NonFunctionProperties,
+	GetAttributes,
 } from './types';
 
-/**
- * Base entity class that provides common fields for all entities
- * @abstract
- */
+/** Base entity class that provides common fields for all entities. */
 export abstract class BaseEntity extends TypeOrmBaseEntity {
-	/**
-	 * Unique identifier for the entity
-	 */
+	/** Unique identifier for the entity. */
 	@PrimaryGeneratedColumn('uuid')
 	id!: string;
 
-	/**
-	 * Creation date record
-	 */
+	/** Creation date record. */
 	@CreateDateColumn()
 	createdAt!: Date;
 
-	/**
-	 * Last update date record
-	 */
+	/** Last update date record. */
 	@UpdateDateColumn()
 	updatedAt!: Date;
 }
 
 /**
- * Base class for database requests
- * @abstract
- * @template T - Type of the entity
+ * Base class for database requests.
+ *
+ * @template T - Type of the entity.
  */
 export abstract class DatabaseRequests<T extends BaseEntity> {
-	/**
-	 * Entity relationships
-	 */
+	/** Entity relationships. */
 	private relations: string[];
 
+	/** Entity's repository. */
+	private repo: Repository<T>;
+
+	/** Entity's constructor. */
+	private ctor: Class<T>;
+
 	/**
-	 * Exploring entity relationships
-	 * @param {RelationMetadata} input - the entity with relationships
-	 * @param {string} parentName - discovered relationships
-	 * @param {string} avoidNames - relationships must be avoid
-	 * @return {Array<string>} array of relationships
+	 * Initiate database methods for entity.
+	 *
+	 * @param {Repository<T>} repo
+	 * @param {Class} ctor
+	 */
+	constructor(repo: Repository<T>, ctor: Class<T>) {
+		this.relations = repo.metadata.relations
+			.map((i) => this.exploreEntityMetadata(i))
+			.flat();
+		this.repo = repo;
+		this.ctor = ctor;
+	}
+
+	/**
+	 * Exploring entity relationships.
+	 *
+	 * @example This.exploreEntityMetadata(repo.metadata.relations[0]);
+	 *
+	 * @param {RelationMetadata} input - The entity with relationships.
+	 * @param {string} parentName - Discovered relationships.
+	 * @param {string} avoidNames - Relationships must be avoid.
+	 * @returns Array of relationships.
 	 */
 	private exploreEntityMetadata(
 		input: RelationMetadata,
@@ -88,24 +101,13 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 		);
 	}
 
-	/**
-	 * Initiate database for entity
-	 */
-	constructor(
-		private repo: Repository<T>,
-		private ctor: new (...args: unknown[]) => T,
-	) {
-		this.relations = this.repo.metadata.relations
-			.map((i) => this.exploreEntityMetadata(i))
-			.flat();
-	}
-
 	// Read
 	/**
-	 * Get entity from id
-	 * @param {string} id - the entity's id
-	 * @throws {ServerException} if the id is null or undefined
-	 * @return {Promise<T>} found entity
+	 * Get entity from id.
+	 *
+	 * @param {string} id - The entity's id.
+	 * @returns Found entity.
+	 * @throws {ServerException} If the id is null or undefined.
 	 */
 	public readonly id = (id: string): Promise<T> => {
 		if (id == null) throw new ServerException('Invalid', 'ID', '');
@@ -117,9 +119,11 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	};
 
 	/**
-	 * Finding objects
-	 * @param {FindOptionsWithCustom<T>} options - function's option
-	 * @return {Promise<T[]>} array of found objects
+	 * Finding objects.
+	 *
+	 * @param {FindWhereExtend<T, ExtendedFindOptions>} options - Function's
+	 *   option.
+	 * @returns Array of found objects.
 	 */
 	public readonly find = async (
 		options?: FindWhereExtend<T, ExtendedFindOptions>,
@@ -150,9 +154,11 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	};
 
 	/**
-	 * Finding an entity
-	 * @param {FindWhereExtended<T>} options - function's option
-	 * @return {Promise<T>}
+	 * Finding an entity.
+	 *
+	 * @param {FindWhereExtend<T, ExtendedFindOneOptions>} options - Function's
+	 *   option.
+	 * @returns
 	 */
 	public readonly findOne = async (
 		options: FindWhereExtend<T, ExtendedFindOneOptions>,
@@ -181,20 +187,24 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	};
 
 	/**
-	 * Get total of entity
-	 * @return {Promise<number>}
+	 * Get total of entity.
+	 *
+	 * @returns
 	 */
 	public readonly total = async (): Promise<number> => {
 		return this.repo.count();
 	};
 
 	// Create
+
 	/**
-	 * Saving an entity
-	 * @param {NonFunctionProperties<T>} entity - the saving entity
+	 * Saving an entity.
+	 *
+	 * @param {DeepPartial<GetAttributes<T>>} entity - The saving entity.
+	 * @param {ExtendedSaveOptions} options
 	 */
 	public readonly create = async (
-		entity: DeepPartial<NonFunctionProperties<T>>,
+		entity: DeepPartial<GetAttributes<T>>,
 		options?: ExtendedSaveOptions,
 	): Promise<T> => {
 		if (entity == null) throw new ServerException('Invalid', 'Input', '');
@@ -209,11 +219,13 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	};
 
 	// Update
+
 	/**
-	 * Push many entities to field's array
-	 * @param {string} id - the id of entity
-	 * @param {K} field - the pushing field
-	 * @param {T[K]} entities - the push entities
+	 * Push many entities to field's array.
+	 *
+	 * @param {string} id - The id of entity.
+	 * @param {K} field - The pushing field.
+	 * @param {T[K]} entities - The push entities.
 	 */
 	public readonly pushMany = async <K extends keyof T>(
 		id: string,
@@ -226,9 +238,11 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	};
 
 	/**
-	 * Updating entity
-	 * @param {DeepPartial<T>} targetEntity - target entity
-	 * @param {DeepPartial<T>} updatedEntity - updated entity
+	 * Updating entity.
+	 *
+	 * @param {FindOptionsWhere<T>} targetEntity - Target entity.
+	 * @param {DeepPartial<T>} updatedEntity - Updated entity.
+	 * @param {ExtendedSaveOptions} options
 	 */
 	public readonly update = async (
 		targetEntity: FindOptionsWhere<T>,
@@ -246,11 +260,13 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	};
 
 	// Delete
+
 	/**
-	 * Removing an entity by identifier string
-	 * @param {string} id - the entity identifier string
-	 * @throws {ServerException} if the id is null or undefined
-	 * @return {Promise<void>} resolves when the entity is deleted
+	 * Removing an entity by identifier string.
+	 *
+	 * @param {string} id - The entity identifier string.
+	 * @returns Resolves when the entity is deleted.
+	 * @throws {ServerException} If the id is null or undefined.
 	 */
 	public readonly delete = async (id: string): Promise<void> => {
 		if (id == null) throw new ServerException('Invalid', 'ID', '');

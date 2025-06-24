@@ -5,9 +5,7 @@ import { Cacheable } from 'cacheable';
 import Keyv from 'keyv';
 import { cacheDurationMs } from 'utils/app/constants';
 
-/**
- * Cache module configuration for NestJS.
- */
+/** Cache module configuration for NestJS. */
 export const cacheModule = CacheModule.registerAsync({
 	imports: [ConfigModule],
 	useFactory: (config: ConfigService) => ({

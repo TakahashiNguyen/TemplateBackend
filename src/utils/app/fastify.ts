@@ -15,25 +15,26 @@ import { cookieOptions, fastifyServerOptions } from './constants';
 import { CookieCredential } from './types';
 
 /**
- * FastifyFramework class encapsulates the Fastify server setup and configuration.
- * It initializes the server, registers plugins, and sets up static file serving.
+ * FastifyFramework class encapsulates the Fastify server setup and
+ * configuration. It initializes the server, registers plugins, and sets up
+ * static file serving.
  */
 export class FastifyFramework {
-	/**
-	 * The Fastify instance used for server operations.
-	 */
+	/** The Fastify instance used for server operations. */
 	private _fastify: FastifyInstance;
 
-	/**
-	 * The underlying HTTP server instance.
-	 */
+	/** The underlying HTTP server instance. */
 	private server: Server;
 
 	/**
-	 * Creates a new instance of the FastifyFramework.
-	 * It initializes the Fastify server with custom options and sets up the server factory.
+	 * Creates a new instance of the FastifyFramework. It initializes the Fastify
+	 * server with custom options and sets up the server factory.
+	 *
 	 * @example
+	 *
+	 * ```ts
 	 * const fastifyFramework = new FastifyFramework();
+	 * ```
 	 */
 	constructor() {
 		this._fastify = Fastify({
@@ -45,9 +46,14 @@ export class FastifyFramework {
 
 	/**
 	 * Gets the Fastify instance.
-	 * @returns {FastifyInstance} The Fastify instance.
+	 *
 	 * @example
+	 *
+	 * ```ts
 	 * const fastifyInstance = fastifyFramework.fastify;
+	 * ```
+	 *
+	 * @returns {FastifyInstance} The Fastify instance.
 	 */
 	get fastify(): FastifyInstance {
 		return this._fastify;
@@ -55,11 +61,12 @@ export class FastifyFramework {
 
 	/**
 	 * Initializes static file serving for the Fastify server.
-	 * It sets up a not found handler to serve the main index.html file
-	 * and registers static file serving for the main page and documentation.
-	 * @private
+	 *
 	 * @example
+	 *
+	 * ```ts
 	 * this.initializeStatic();
+	 * ```
 	 */
 	private initializeStatic(): void {
 		this.fastify
@@ -84,12 +91,20 @@ export class FastifyFramework {
 
 	/**
 	 * Initializes Fastify plugins for the server.
-	 * It registers plugins for compression, secure sessions, CSRF protection, and security headers.
-	 * @param {CookieCredential} cookieCredential - An object containing the name and password for secure session cookies.
-	 * @returns {Promise<void>} A promise that resolves when the plugins are initialized.
-	 * @private
+	 *
 	 * @example
-	 * await this.initializePlugins({ name: 'session', password: 'your-secure-password' });
+	 *
+	 * ```ts
+	 * await this.initializePlugins({
+	 * 	name: 'session',
+	 * 	password: 'your-secure-password',
+	 * });
+	 * ```
+	 *
+	 * @param {CookieCredential} cookieCredential - An object containing the name
+	 *   and password for secure session cookies.
+	 * @returns {Promise<void>} A promise that resolves when the plugins are
+	 *   initialized.
 	 */
 	private async initializePlugins(
 		cookieCredential: CookieCredential,
@@ -157,13 +172,25 @@ export class FastifyFramework {
 	}
 
 	/**
-	 * Sets up the Fastify server with the provided configuration and cookie credentials.
-	 * It initializes static file serving and registers necessary plugins.
-	 * @param {ConfigService} config - The configuration service to retrieve server settings.
-	 * @param {CookieCredential} cookieCredential - An object containing the name and password for secure session cookies.
-	 * @returns {Promise<void>} A promise that resolves when the server is set up and ready to listen.
+	 * Sets up the Fastify server with the provided configuration and cookie
+	 * credentials. It initializes static file serving and registers necessary
+	 * plugins.
+	 *
 	 * @example
-	 * await fastifyFramework.setup(configService, { name: 'session', password: 'your-secure-password' });
+	 *
+	 * ```ts
+	 * await fastifyFramework.setup(configService, {
+	 * 	name: 'foo',
+	 * 	password: 'bar',
+	 * });
+	 * ```
+	 *
+	 * @param {ConfigService} config - The configuration service to retrieve
+	 *   server settings.
+	 * @param {CookieCredential} cookieCredential - An object containing the name
+	 *   and password for secure session cookies.
+	 * @returns {Promise<void>} A promise that resolves when the server is set up
+	 *   and ready to listen.
 	 */
 	public async setup(
 		config: ConfigService,

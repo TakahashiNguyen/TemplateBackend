@@ -4,15 +4,18 @@
 	"importOrderParserPlugins": ["typescript", "jsx", "decorators"],
 	"importOrderSeparation": true,
 	"importOrderSortSpecifiers": true,
+	"jsdocDescriptionWithDot": true,
 	"jsonRecursiveSort": true,
 	"jsonSortOrder": "{\"*\": \"lexical\"}",
 	"plugins": [
 		"prettier-plugin-sort-json",
-		"@trivago/prettier-plugin-sort-imports"
+		"@trivago/prettier-plugin-sort-imports",
+		"prettier-plugin-jsdoc"
 	],
 	"printWidth": 80,
 	"singleQuote": true,
 	"tabWidth": 2,
 	"trailingComma": "all",
+	"tsdoc": true,
 	"useTabs": true
 }

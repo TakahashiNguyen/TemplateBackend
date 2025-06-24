@@ -11,6 +11,15 @@ import { serverOrigin } from 'utils/app/constants';
 import { FastifyFramework } from 'utils/app/fastify';
 import { AppExceptionFilter } from 'utils/app/filter';
 
+/**
+ * Server bootstrap.
+ *
+ * @example
+ *
+ * ```ts
+ * bootstrap();
+ * ```
+ */
 async function bootstrap() {
 	const fastifyFramework = new FastifyFramework(),
 		app = await NestFactory.create<NestFastifyApplication>(

@@ -14,9 +14,7 @@ import {
 } from 'graphql';
 import { cacheDurationMs } from 'utils/app/constants';
 
-/**
- * GraphQL module configuration for NestJS with Apollo Federation.
- */
+/** GraphQL module configuration for NestJS with Apollo Federation. */
 export const graphqlModule =
 	GraphQLModule.forRootAsync<ApolloFederationDriverConfig>({
 		driver: ApolloFederationDriver,

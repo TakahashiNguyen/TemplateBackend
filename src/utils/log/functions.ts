@@ -4,6 +4,7 @@ import { ColorLogOptions } from '.';
 
 /**
  * Logs a message with specified background and font colors.
+ *
  * @param {ColorLogOptions} args - The options for color logging.
  * @returns {string} The formatted message with colors applied.
  */

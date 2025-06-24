@@ -4,18 +4,25 @@ import { colorLogging } from 'utils/log';
 import { ErrorAction, ErrorObject, ErrorType } from '.';
 
 /**
- * This class extends the HttpException class and is used to handle both server-side and client-side errors.
- * @extends HttpException
+ * This class extends the HttpException class and is used to handle both
+ * server-side and client-side errors.
+ *
+ * @extends {HttpException}
  */
 export class ServerException extends HttpException {
 	/**
 	 * Creates an instance of ServerException.
-	 * @param type - The type of error (e.g., 'Database', 'Network').
-	 * @param object - The object related to the error (e.g., 'Connection', 'Request').
-	 * @param action - The action that caused the error (e.g., 'Failed', 'Timeout').
-	 * @param err - An optional HttpException instance that provides additional error details.
-	 * @example
-	 * const error = new ServerException('Database', 'Connection', 'Failed');
+	 *
+	 * @example Const error = new ServerException('Database', 'Connection',
+	 * 'Failed');
+	 *
+	 * @param {ErrorType} type - The type of error (e.g., 'Database', 'Network').
+	 * @param {ErrorObject} object - The object related to the error (e.g.,
+	 *   'Connection', 'Request').
+	 * @param {ErrorAction} action - The action that caused the error (e.g.,
+	 *   'Failed', 'Timeout').
+	 * @param {HttpException | Error} err - An optional HttpException instance
+	 *   that provides additional error details.
 	 */
 	constructor(
 		type: ErrorType,
@@ -30,11 +37,15 @@ export class ServerException extends HttpException {
 	}
 
 	/**
-	 * This method logs the error details to the terminal.
-	 * It formats the error information with colors for better visibility.
+	 * This method logs the error details to the terminal. It formats the error
+	 * information with colors for better visibility.
+	 *
 	 * @example
+	 *
+	 * ```ts
 	 * const error = new ServerException('Database', 'Connection', 'Failed');
 	 * error.terminalLogging();
+	 * ```
 	 */
 	terminalLogging() {
 		const { cause, message, stack } = this.err,

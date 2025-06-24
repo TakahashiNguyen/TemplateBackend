@@ -3,15 +3,14 @@ import {
 	Catch,
 	ContextType,
 	ExceptionFilter,
-	HttpServer,
+	HttpException,
 } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 import { ErrorObject, ServerException } from 'utils/error';
 
 /**
- * It handles exceptions thrown in the application, particularly focusing on server exceptions.
- * @extends BaseExceptionFilter
- * @implements {ExceptionFilter}
+ * It handles exceptions thrown in the application, particularly focusing on
+ * server exceptions.
  */
 @Catch()
 export class AppExceptionFilter
@@ -19,26 +18,17 @@ export class AppExceptionFilter
 	implements ExceptionFilter
 {
 	/**
-	 * Creates an instance of AppExceptionFilter.
-	 * @param {HttpServer} applicationRef - The HTTP server reference.
-	 * @example
-	 * const appExceptionFilter = new AppExceptionFilter(httpServer);
-	 */
-	constructor(applicationRef: HttpServer) {
-		super(applicationRef);
-	}
-
-	/**
 	 * Handles exceptions caught by the filter.
-	 * It checks the type of the host and modifies the exception based on its status.
-	 * If the exception is a ServerException, it modifies the message based on the status code.
+	 *
 	 * @param {unknown} exception - The exception to handle.
-	 * @param {ArgumentsHost} host - The arguments host containing the context of the request.
+	 * @param {ArgumentsHost} host - The arguments host containing the context of
+	 *   the request.
+	 * @returns {unknown} `exception` if the host type is GraphQL.
 	 */
-	catch(exception: unknown, host: ArgumentsHost) {
+	catch(exception: unknown, host: ArgumentsHost): unknown {
 		if (host.getType<ContextType | 'graphql'>() === 'graphql') return exception;
 
-		if (exception instanceof ServerException) {
+		if (exception instanceof HttpException) {
 			const { message } = exception;
 
 			switch (exception.getStatus()) {

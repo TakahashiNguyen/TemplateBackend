@@ -1,12 +1,30 @@
 import js from '@eslint/js';
-import globals from 'globals';
-import tseslint from 'typescript-eslint';
 import json from '@eslint/json';
 import markdown from '@eslint/markdown';
-import { defineConfig } from 'eslint/config';
 import pluginJest from 'eslint-plugin-jest';
+import jsdoc from 'eslint-plugin-jsdoc';
+import { defineConfig } from 'eslint/config';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 export default defineConfig([
+	tseslint.configs.strict,
+	{
+		files: ['**/*.ts'],
+		plugins: {
+			jsdoc,
+		},
+		rules: {
+			'jsdoc/require-asterisk-prefix': ['error', 'always'],
+			'jsdoc/require-description': ['error'],
+			'jsdoc/require-description-complete-sentence': ['error'],
+			'jsdoc/require-param-type': [
+				'error',
+				{ setDefaultDestructuredRootType: true },
+			],
+		},
+		settings: { jsdoc: { exemptDestructuredRootsFromChecks: true } },
+	},
 	{
 		files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
 		plugins: { js },
@@ -16,8 +34,11 @@ export default defineConfig([
 	{
 		files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
 		languageOptions: { globals: globals.node },
+		rules: {
+			'no-unused-vars': 'off',
+			'no-undef': 'off',
+		},
 	},
-	tseslint.configs.recommended,
 	{
 		files: ['**/*.json'],
 		plugins: { json },

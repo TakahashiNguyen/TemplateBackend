@@ -1,9 +1,7 @@
 import { ConfigModule } from '@nestjs/config';
 import Joi from 'joi';
 
-/**
- * Loads environment variables from a .env file and validates them using Joi.
- */
+/** Loads environment variables from a .env file and validates them using Joi. */
 export const configModule = ConfigModule.forRoot({
 	isGlobal: true, // Makes the configuration available globally
 	validationSchema: Joi.object({
