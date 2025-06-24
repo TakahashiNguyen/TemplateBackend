@@ -76,6 +76,6 @@ export class AppExceptionFilter
 			(exception as ServerException).terminalLogging?.();
 		}
 
-		super.catch(exception, host);
+		return super.catch(exception, host);
 	}
 }

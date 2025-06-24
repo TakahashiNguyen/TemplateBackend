@@ -73,7 +73,7 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * @param {RelationMetadata} input - The entity with relationships.
 	 * @param {string} parentName - Discovered relationships.
 	 * @param {string} avoidNames - Relationships must be avoid.
-	 * @returns Array of relationships.
+	 * @returns {string[]} Array of relationships.
 	 */
 	private exploreEntityMetadata(
 		input: RelationMetadata,
@@ -112,7 +112,7 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * ```
 	 *
 	 * @param {string} id - The entity's id.
-	 * @returns Found entity.
+	 * @returns {Promise<T>} Found entity.
 	 * @throws {ServerException} If the id is null or undefined.
 	 */
 	public readonly id = (id: string): Promise<T> => {
@@ -135,7 +135,7 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 *
 	 * @param {FindWhereExtend<T, ExtendedFindOptions>} options - Function's
 	 *   option.
-	 * @returns Array of found objects.
+	 * @returns {Promise<T[]>} Array of found objects.
 	 */
 	public readonly find = async (
 		options?: FindWhereExtend<T, ExtendedFindOptions>,
@@ -176,6 +176,7 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 *
 	 * @param {FindWhereExtend<T, ExtendedFindOneOptions>} options - Function's
 	 *   option.
+	 * @returns {Promise<T>} An entity match `option` request.
 	 */
 	public readonly findOne = async (
 		options: FindWhereExtend<T, ExtendedFindOneOptions>,
@@ -212,7 +213,8 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * const count = this.total();
 	 * ```
 	 *
-	 * @returns
+	 * @returns {Promise<number>} Return a value representing the number of
+	 *   entities in table.
 	 */
 	public readonly total = async (): Promise<number> => {
 		return this.repo.count();
@@ -231,6 +233,7 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 *
 	 * @param {DeepPartial<GetAttributes<T>>} entity - The saving entity.
 	 * @param {ExtendedSaveOptions} options - Entity save options.
+	 * @returns {Promise<T>} An entity that created in database.
 	 */
 	public readonly create = async (
 		entity: DeepPartial<GetAttributes<T>>,
@@ -312,7 +315,7 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * ```
 	 *
 	 * @param {string} id - The entity identifier string.
-	 * @returns Resolves when the entity is deleted.
+	 * @returns {Promise<void>} Resolves when the entity is deleted.
 	 * @throws {ServerException} If the id is null or undefined.
 	 */
 	public readonly delete = async (id: string): Promise<void> => {

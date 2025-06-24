@@ -30,10 +30,19 @@ export type ExtendedSaveOptions = {
 	validate?: boolean;
 };
 
-/** Extended find where. */
+/**
+ * Extended find where.
+ *
+ * @template T
+ * @template K
+ */
 export type FindWhereExtend<T, K> = FindOptionsWhere<T> & K;
 
-/** Non function properties. */
+/**
+ * Non function properties.
+ *
+ * @template T
+ */
 export type GetAttributes<T> = Pick<
 	T,
 	{

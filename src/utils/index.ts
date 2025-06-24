@@ -427,7 +427,11 @@ Object.defineProperty(Number.prototype, 'h2s', {
 	configurable: true,
 });
 
-/** Basic class declaration. */
+/**
+ * Basic class declaration.
+ *
+ * @template T
+ */
 export interface Class<T> {
 	new (...args: unknown[]): T;
 }

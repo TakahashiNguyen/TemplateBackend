@@ -21,7 +21,7 @@ import { unidirectionalHash } from 'utils/data/funtions';
  *   'mysql').
  * @param {ConfigService} configService - The configuration service to retrieve
  *   database settings.
- * @returns The database connection options.
+ * @returns {DataSourceOptions} The database connection options.
  */
 function getDatabaseConnection(
 	type: DatabaseType,
@@ -103,7 +103,7 @@ class DatabaseCacheManager implements QueryResultCache {
 	 * ```
 	 *
 	 * @param {string} query - The query string to generate the identifier from.
-	 * @returns A unique identifier for the cache entry.
+	 * @returns {string} A unique identifier for the cache entry.
 	 */
 	private generateIdentifier(query: string): string {
 		return unidirectionalHash(query);
@@ -118,6 +118,8 @@ class DatabaseCacheManager implements QueryResultCache {
 	 * ```ts
 	 * this.connect();
 	 * ```
+	 *
+	 * @returns {Promise<void>}
 	 */
 	connect(): Promise<void> {
 		return Promise.resolve();
@@ -131,6 +133,8 @@ class DatabaseCacheManager implements QueryResultCache {
 	 * ```ts
 	 * this.disconnect();
 	 * ```
+	 *
+	 * @returns {Promise<void>} Description.
 	 */
 	disconnect(): Promise<void> {
 		return this.cache.disconnect();
@@ -144,6 +148,7 @@ class DatabaseCacheManager implements QueryResultCache {
 	 * @example Operations.
 	 *
 	 * @param {QueryRunner} [queryRunner] - The query runner used for database.
+	 * @returns {Promise<void>}
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	synchronize(queryRunner?: QueryRunner): Promise<void> {
@@ -214,7 +219,8 @@ class DatabaseCacheManager implements QueryResultCache {
 	 *
 	 * @param {QueryResultCacheOptions} savedCache - The cache options that were
 	 *   saved.
-	 * @returns Always returns false, as this implementation does not handle.
+	 * @returns {boolean} Always returns false, as this implementation does not
+	 *   handle.
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	isExpired(savedCache: QueryResultCacheOptions): boolean {

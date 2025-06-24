@@ -17,8 +17,8 @@ import { ServerException } from 'utils/error';
  * @template T - Type that extended `object`.
  * @param {T} input - The value extends `object` and has `class-validator`
  *   decorators.
- * @returns `input` if `input` meets all `class-validatior` decorators
- *   requirements.
+ * @returns {Promise<T>} `input` if `input` meets all `class-validatior`
+ *   decorators requirements.
  * @throws {ServerException} Throw an error when `input` doesn't meet all
  *   `class-validator` decorators.
  */

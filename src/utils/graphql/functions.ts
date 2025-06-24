@@ -14,7 +14,8 @@ import { CacheControlOptions } from './interfaces';
  * ```
  *
  * @param {CacheControlOptions} options - The cache control options.
- * @returns A GraphQL directive with the specified cache control settings.
+ * @returns {ReturnType<typeof Directive>} A GraphQL directive with the
+ *   specified cache control settings.
  */
 export function CacheControl(
 	options: CacheControlOptions,
