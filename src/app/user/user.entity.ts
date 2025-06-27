@@ -20,10 +20,16 @@ export class User extends BaseEntity {
 	 */
 	constructor(object: GetAttributes<Subtract<User, BaseEntity>>) {
 		super();
-		this.name = object.name;
-		this.email = object.email;
-		this.role = object.role;
-		this.authentication = object.authentication;
+		if (object == undefined) {
+			this.name = this.email = '';
+			this.role = UserRole.undefined;
+			this.authentication = new Authentication();
+		} else {
+			this.name = object.name;
+			this.email = object.email;
+			this.role = object.role;
+			this.authentication = object.authentication;
+		}
 	}
 
 	/** User authentication. */

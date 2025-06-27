@@ -1,9 +1,8 @@
-import { Inject, Injectable, Module, forwardRef } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
-
-import { UserService } from './user/user.service';
+import { HealthController } from './app.controller';
 
 const modules = readdirSync(__dirname, { withFileTypes: true })
 	.filter((dirent) => dirent.isDirectory())
@@ -19,20 +18,8 @@ const modules = readdirSync(__dirname, { withFileTypes: true })
 		}),
 		...modules.map((i) => forwardRef(() => i)),
 	],
+	controllers: [HealthController],
 	exports: [...modules],
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class AppModule {}
-
-/** Collection of app services. */
-@Injectable()
-export class AppService {
-	/**
-	 * Initialize service.
-	 *
-	 * @param {UserService} user - User service.
-	 */
-	constructor(
-		@Inject(forwardRef(() => UserService)) public user: UserService,
-	) {}
-}

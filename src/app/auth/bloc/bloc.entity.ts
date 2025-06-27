@@ -23,8 +23,13 @@ export class Bloc extends BaseEntity {
 		>,
 	) {
 		super();
-		this.owner = object.owner;
-		this.previousHash = object.previousHash;
+		if (object == undefined) {
+			this.owner = new User(undefined as never);
+			this.previousHash = '';
+		} else {
+			this.owner = object.owner;
+			this.previousHash = object.previousHash;
+		}
 		this.metadata = new Metadata();
 	}
 

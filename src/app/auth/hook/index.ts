@@ -1,13 +1,12 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppModule } from 'app';
 
 import { Hook } from './hook.entity';
 import { HookService } from './hook.service';
 
 /** Hook module class. */
 @Module({
-	imports: [TypeOrmModule.forFeature([Hook]), forwardRef(() => AppModule)],
+	imports: [TypeOrmModule.forFeature([Hook])],
 	providers: [HookService],
 	exports: [HookService],
 })

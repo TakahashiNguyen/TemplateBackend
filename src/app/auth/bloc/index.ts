@@ -1,13 +1,12 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppModule } from 'app';
 
 import { Bloc } from './bloc.entity';
 import { BlocService } from './bloc.service';
 
 /** Bloc module class. */
 @Module({
-	imports: [TypeOrmModule.forFeature([Bloc]), forwardRef(() => AppModule)],
+	imports: [TypeOrmModule.forFeature([Bloc])],
 	providers: [BlocService],
 	exports: [BlocService],
 })

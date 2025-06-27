@@ -13,6 +13,6 @@ import { UserRole } from './user.model';
 export default class UserModule {
 	/** Initiatialize user module. */
 	constructor() {
-		registerEnumType(UserRole);
+		registerEnumType(UserRole, { name: 'UserRole' });
 	}
 }

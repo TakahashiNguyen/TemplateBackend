@@ -10,7 +10,7 @@ import { IMetadata } from '../guards';
 
 /** Hook entity. */
 @CacheControl({ maxAge: (2).m2s })
-@Entity({ name: 'auth_hook' })
+@Entity({ name: 'authentication_hooks' })
 export class Hook extends BaseEntity {
 	/**
 	 * Create hook with infomations.
@@ -25,9 +25,15 @@ export class Hook extends BaseEntity {
 		>,
 	) {
 		super();
-		this.owner = object.owner;
-		this.signature = object.signature;
-		this.note = object.note;
+		if (object == undefined) {
+			this.owner = new User(undefined as never);
+			this.signature = '';
+			this.note = {};
+		} else {
+			this.owner = object.owner;
+			this.signature = object.signature;
+			this.note = object.note;
+		}
 		this.metadata = new Metadata();
 	}
 
