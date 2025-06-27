@@ -1,6 +1,11 @@
 import { CookieSerializeOptions } from '@fastify/csrf-protection';
+import { Bloc } from 'app/auth/bloc/bloc.entity';
+import { IMetadata } from 'app/auth/guards';
+import { Hook } from 'app/auth/hook/hook.entity';
 import { FastifyServerOptions } from 'fastify';
+import { DatabaseType } from 'typeorm';
 import 'utils';
+import { IServerKey } from 'utils/auth/interfaces';
 
 /** Fastify server options for configuration. */
 export const fastifyServerOptions: FastifyServerOptions = {
@@ -21,3 +26,31 @@ export const cookieOptions: CookieSerializeOptions = {
 
 /** Cache duration for database queries. */
 export const cacheDurationMs = (5).m2s.s2ms; // Cache duration in milliseconds (5 minute)
+
+/** Server database type. */
+export const databaseType: DatabaseType = 'postgres';
+
+/** Modified fastify interfaces. */
+declare module 'fastify' {
+	/** Server request. */
+	interface FastifyRequest {
+		/** Server key. */
+		key: IServerKey;
+		/** Hook information. */
+		hook: Hook;
+		/** Bloc infomation. */
+		bloc: Bloc;
+		/** Serving multipart request. */
+		isMultipart: boolean;
+		/** Client metadata. */
+		metadata: IMetadata;
+	}
+
+	/** Server session addition fields. */
+	interface Session {
+		/** Session access key. */
+		accessKey: string;
+		/** Session identifier. */
+		sessionId: string;
+	}
+}

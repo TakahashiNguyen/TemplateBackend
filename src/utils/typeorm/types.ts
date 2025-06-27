@@ -4,12 +4,16 @@ import { FindOptionsWhere } from 'typeorm';
 export type ExtendedFindOneOptions = {
 	/** Find depth. */
 	deep?: number;
+
 	/** Find order. */
 	order?: object;
+
 	/** Find entity with relations. */
 	relations?: string[];
+
 	/** Find in cache. */
 	cache?: boolean;
+
 	/** Find without race conditions. */
 	writeLock?: boolean;
 };
@@ -18,6 +22,7 @@ export type ExtendedFindOneOptions = {
 export type ExtendedFindOptions = ExtendedFindOneOptions & {
 	/** Number of retrieved entity. */
 	take?: number;
+
 	/** Number of skipped entity. */
 	skip?: number;
 };
@@ -26,6 +31,7 @@ export type ExtendedFindOptions = ExtendedFindOneOptions & {
 export type ExtendedSaveOptions = {
 	/** Raw saving. */
 	raw?: boolean;
+
 	/** Validate before saving. */
 	validate?: boolean;
 };
@@ -37,15 +43,3 @@ export type ExtendedSaveOptions = {
  * @template K
  */
 export type FindWhereExtend<T, K> = FindOptionsWhere<T> & K;
-
-/**
- * Non function properties.
- *
- * @template T
- */
-export type GetAttributes<T> = Pick<
-	T,
-	{
-		[K in keyof T]: T[K] extends (..._: unknown[]) => unknown ? never : K;
-	}[keyof T]
->;

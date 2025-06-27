@@ -1,3 +1,5 @@
+import { User } from 'app/user/user.entity';
+
 /** Server tokens. */
 export interface ITokens {
 	/** Access token. */
@@ -5,4 +7,10 @@ export interface ITokens {
 
 	/** Refresh token. */
 	refreshToken?: string;
+}
+
+/** Server key. */
+export interface IServerKey {
+	/** User type key. */
+	user: User;
 }

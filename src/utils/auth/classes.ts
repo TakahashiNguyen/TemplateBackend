@@ -1,17 +1,21 @@
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { IMetadata } from 'app/auth/guards';
 import {
 	CipherGCMTypes,
 	createCipheriv,
 	createDecipheriv,
 	randomBytes,
 } from 'node:crypto';
+import { Column } from 'typeorm';
+import { sortObjectKeys } from 'utils/app/functions';
+import { unidirectionalHash } from 'utils/data/funtions';
 
 import { ITokens } from './interfaces';
 import { TokenType } from './types';
 
 /** Security service. */
-export class SecurityService {
+export abstract class SecurityService {
 	/** Encrypt encoding. */
 	private encoding: BufferEncoding = 'base64url';
 
@@ -196,5 +200,57 @@ export class SecurityService {
 		} catch {
 			return '';
 		}
+	}
+}
+
+/** Metadata class. */
+export class Metadata {
+	/** Hashed metadata. */
+	@Column({ nullable: false }) private metadataHash!: string;
+
+	/** Set `metadataHash` by hashing `input`. */
+	set set(input: IMetadata) {
+		this.metadataHash = this.hashMetadata(input);
+	}
+
+	/**
+	 * Get hashed metadata value.
+	 *
+	 * @returns {string} Hashed metadata.
+	 */
+	get get(): string {
+		return this.metadataHash;
+	}
+
+	/**
+	 * Hashing metadata.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * this.hashMetadata(mtdt);
+	 * ```
+	 *
+	 * @param {IMetadata} input - Input metadata.
+	 * @returns {string} Hashed metadata.
+	 */
+	private hashMetadata(input: IMetadata): string {
+		return unidirectionalHash(sortObjectKeys(input).toString());
+	}
+
+	/**
+	 * Verify `input` if it matches with `metadataHash`.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * this.verify(mtdt);
+	 * ```
+	 *
+	 * @param {IMetadata} input - Input metadata.
+	 * @returns {boolean} True if `input` matched with `metadataHash`.
+	 */
+	verify(input: IMetadata): boolean {
+		return this.hashMetadata(input) == this.metadataHash;
 	}
 }

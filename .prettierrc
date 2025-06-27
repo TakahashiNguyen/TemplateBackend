@@ -1,7 +1,7 @@
 {
 	"endOfLine": "lf",
 	"importOrder": ["^[./]"],
-	"importOrderParserPlugins": ["typescript", "jsx", "decorators"],
+	"importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
 	"importOrderSeparation": true,
 	"importOrderSortSpecifiers": true,
 	"jsdocDescriptionWithDot": true,

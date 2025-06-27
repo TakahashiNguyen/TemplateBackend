@@ -44,4 +44,5 @@ export type ErrorAction =
 	| 'SignUp'
 	| 'Assign'
 	| 'LogOut'
-	| 'Access';
+	| 'Access'
+	| 'Authenticate';

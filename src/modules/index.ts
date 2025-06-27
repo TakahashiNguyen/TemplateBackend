@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { AppModule } from 'app';
+import { databaseType } from 'utils/app/constants';
 
 import { cacheModule } from './cache';
 import { configModule } from './config';
@@ -9,9 +11,10 @@ import { typeOrmModule } from './typeorm';
 @Module({
 	imports: [
 		configModule,
-		typeOrmModule('postgres'),
 		cacheModule,
 		graphqlModule,
+		typeOrmModule(databaseType),
+		AppModule,
 	],
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class

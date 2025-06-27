@@ -9,7 +9,6 @@ import {
 	UpdateDateColumn,
 } from 'typeorm';
 import { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
-import { Class } from 'utils';
 import { validateObject } from 'utils/app/functions';
 import { ServerException } from 'utils/error';
 
@@ -18,7 +17,6 @@ import {
 	ExtendedFindOptions,
 	ExtendedSaveOptions,
 	FindWhereExtend,
-	GetAttributes,
 } from './types';
 
 /** Base entity class that provides common fields for all entities. */
@@ -49,7 +47,8 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	private repo: Repository<T>;
 
 	/** Entity's constructor. */
-	private ctor: Class<T>;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	private ctor: new (...args: any[]) => T;
 
 	/**
 	 * Initiate database methods for entity.
@@ -57,7 +56,7 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * @param {Repository<T>} repo - Entity's repository.
 	 * @param {Class} ctor - Entity's constructor.
 	 */
-	constructor(repo: Repository<T>, ctor: Class<T>) {
+	constructor(repo: Repository<T>, ctor: typeof this.ctor) {
 		this.relations = repo.metadata.relations
 			.map((i) => this.exploreEntityMetadata(i))
 			.flat();
@@ -102,6 +101,7 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	}
 
 	// Read
+
 	/**
 	 * Get entity from id.
 	 *
@@ -116,8 +116,6 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * @throws {ServerException} If the id is null or undefined.
 	 */
 	public readonly id = (id: string): Promise<T> => {
-		if (id == null) throw new ServerException('Invalid', 'ID', '');
-
 		return this.findOne({ id, cache: false } as FindWhereExtend<
 			T,
 			ExtendedFindOneOptions
@@ -197,27 +195,13 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 			where = new ctor(entity) as FindOptionsWhere<T>,
 			lock: FindOneOptions['lock'] = writeLock
 				? { mode: 'pessimistic_write' }
-				: undefined;
+				: undefined,
+			found = await this.repo.findOne({ where, order, relations, cache, lock });
 
-		return new this.ctor(
-			await this.repo.findOne({ where, order, relations, cache, lock }),
-		);
-	};
+		if (found == null)
+			throw new ServerException('Invalid', 'Server', 'Request');
 
-	/**
-	 * Get total of entity.
-	 *
-	 * @example
-	 *
-	 * ```ts
-	 * const count = this.total();
-	 * ```
-	 *
-	 * @returns {Promise<number>} Return a value representing the number of
-	 *   entities in table.
-	 */
-	public readonly total = async (): Promise<number> => {
-		return this.repo.count();
+		return new this.ctor(found);
 	};
 
 	// Create
@@ -231,16 +215,14 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * entity = this.create(entity, { raw: true, validate: false });
 	 * ```
 	 *
-	 * @param {DeepPartial<GetAttributes<T>>} entity - The saving entity.
+	 * @param {T} entity - The saving entity.
 	 * @param {ExtendedSaveOptions} options - Entity save options.
 	 * @returns {Promise<T>} An entity that created in database.
 	 */
-	public readonly create = async (
-		entity: DeepPartial<GetAttributes<T>>,
+	protected readonly $create = async (
+		entity: T,
 		options?: ExtendedSaveOptions,
 	): Promise<T> => {
-		if (entity == null) throw new ServerException('Invalid', 'Input', '');
-
 		const { raw = false, validate = true } = options || {},
 			forgedEntity = raw ? entity : new this.ctor(entity),
 			validatedEntity = (
@@ -250,30 +232,9 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 		return new this.ctor(await this.repo.save(validatedEntity));
 	};
 
-	// Update
+	public abstract create(...args: unknown[]): Promise<T>;
 
-	/**
-	 * Push many entities to field's array.
-	 *
-	 * @example
-	 *
-	 * ```ts
-	 * this.pushMany(entityId, field, entities);
-	 * ```
-	 *
-	 * @param {string} id - The id of entity.
-	 * @param {K} field - The pushing field.
-	 * @param {T[K]} entities - The push entities.
-	 */
-	public readonly pushMany = async <K extends keyof T>(
-		id: string,
-		field: K,
-		entities: T[K],
-	): Promise<void> => {
-		const obj = await this.id(id);
-		(obj[field] as T[K][]).push(entities);
-		await this.update({ id } as FindOptionsWhere<T>, obj);
-	};
+	// Update
 
 	/**
 	 * Updating entity.
@@ -288,7 +249,7 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * @param {DeepPartial<T>} updatedEntity - Updated entity.
 	 * @param {ExtendedSaveOptions} options - Update entity options.
 	 */
-	public readonly update = async (
+	protected readonly $update = async (
 		targetEntity: FindOptionsWhere<T>,
 		updatedEntity: DeepPartial<T>,
 		options?: ExtendedSaveOptions,
@@ -300,8 +261,13 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 			Object.keys(targetEntity).length &&
 			(await this.find(targetEntity)).length
 		)
-			await this.create({ ...targetEntity, ...updatedEntity }, options);
+			await this.create(
+				new this.ctor({ ...targetEntity, ...updatedEntity }),
+				options,
+			);
 	};
+
+	public abstract update(...args: unknown[]): Promise<void>;
 
 	// Delete
 
@@ -319,8 +285,6 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * @throws {ServerException} If the id is null or undefined.
 	 */
 	public readonly delete = async (id: string): Promise<void> => {
-		if (id == null) throw new ServerException('Invalid', 'ID', '');
-
 		await this.repo.delete({ id } as FindOptionsWhere<T>);
 	};
 }

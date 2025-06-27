@@ -426,12 +426,3 @@ Object.defineProperty(Number.prototype, 'h2s', {
 	enumerable: true,
 	configurable: true,
 });
-
-/**
- * Basic class declaration.
- *
- * @template T
- */
-export interface Class<T> {
-	new (...args: unknown[]): T;
-}

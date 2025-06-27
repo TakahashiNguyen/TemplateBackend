@@ -31,3 +31,45 @@ export async function validateObject<T extends object>(input: T): Promise<T> {
 		throw new ServerException('Invalid', 'Entity', '', error as Error);
 	}
 }
+
+/**
+ * Sort object by keys.
+ *
+ * @example
+ *
+ * ```ts
+ * const foo = { b: 'bar', a: 'alpha' };
+ * sortObjectKeys(foo); // {a: 'alpha', b: 'bar'}
+ * ```
+ *
+ * @param {object} input - Object needs to sort by keys.
+ * @returns {object} Sorted `input`.
+ */
+export function sortObjectKeys(input: object): object {
+	return Object.keys(input)
+		.sort()
+		.reduce((obj: object, key: string) => {
+			if (typeof input[key as keyof typeof input] == 'object')
+				Object.assign(obj, {
+					[key]: sortObjectKeys(input[key as keyof typeof input]),
+				});
+			else Object.assign(obj, { [key]: input[key as keyof typeof input] });
+
+			return obj;
+		}, {});
+}
+
+/**
+ * Get current system time.
+ *
+ * @example
+ *
+ * ```ts
+ * const time = currentTime();
+ * ```
+ *
+ * @returns {number} Current system time.
+ */
+export function currentTime(): number {
+	return Math.floor(new Date().getTime() / 1000);
+}

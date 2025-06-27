@@ -31,7 +31,7 @@ export class ServerException extends HttpException {
 		type: ErrorType,
 		object: ErrorObject,
 		action: ErrorAction,
-		private err: HttpException | Error = new Error('Unknown error'),
+		private err: HttpException | Error = new Error('Unexpected error'),
 	) {
 		super(
 			(6).toString() + '_' + type + '_' + object + (action ? '_' : '') + action,

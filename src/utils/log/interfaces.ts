@@ -1,4 +1,5 @@
 import { Colors } from 'picocolors/types';
+import { Omitting } from 'utils/app/types';
 
 import { KeepBgKeys, RemoveBgKeys } from '.';
 
@@ -8,10 +9,10 @@ interface ColorLogOptions {
 	msg: string;
 
 	/** Background color for the message. */
-	bg?: keyof Omit<KeepBgKeys<Colors>, 'isColorSupported'> | '';
+	bg?: keyof KeepBgKeys<Colors> | '';
 
 	/** Font color for the message. */
-	font?: keyof Omit<RemoveBgKeys<Colors>, 'isColorSupported'> | '';
+	font?: keyof Omitting<RemoveBgKeys<Colors>, 'isColorSupported'> | '';
 }
 
 export { ColorLogOptions };

@@ -55,3 +55,21 @@ export async function verifyBidirectionalHash(
 		return false;
 	}
 }
+
+/**
+ * Check if `required` has a value equal to `input`.
+ *
+ * @example
+ *
+ * ```ts
+ * const valid = roleMatching('foo', ['foo', 'bar']); // true
+ * ```
+ *
+ * @template T
+ * @param {T} input - Input role.
+ * @param {T[]} required - Check roles.
+ * @returns {boolean} True if `input` is in `required`.
+ */
+export function roleMatching<T>(input: T, required: T[]): boolean {
+	return required.some((i) => i === input);
+}
