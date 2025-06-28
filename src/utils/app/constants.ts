@@ -30,6 +30,9 @@ export const cacheDurationMs = (5).m2s.s2ms; // Cache duration in milliseconds (
 /** Server database type. */
 export const databaseType: DatabaseType = 'postgres';
 
+/** Server's maximum file uploading size in megabytes. */
+export const fileSizeMaximum = 50;
+
 /** Modified fastify interfaces. */
 declare module 'fastify' {
 	/** Server request. */
@@ -45,9 +48,11 @@ declare module 'fastify' {
 		/** Client metadata. */
 		metadata: IMetadata;
 	}
+}
 
-	/** Server session addition fields. */
-	interface Session {
+declare module '@fastify/secure-session' {
+	/** Modified session data. */
+	interface SessionData {
 		/** Session access key. */
 		accessKey: string;
 		/** Session identifier. */

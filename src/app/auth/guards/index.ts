@@ -11,14 +11,14 @@ import { IResult } from 'ua-parser-js';
  * @example
  *
  * ```ts
- * const convertedContext = convertForGql(ctx);
+ * const convertedContext = convertForGraphQl(ctx);
  * ```
  *
  * @param {ExecutionContext} context - Context's request.
  * @returns {FastifyRequest} Fastify request interface.
  */
 // ! Cautious: Since using GraphQL, it's NOT recommend to DELETE this.
-export function convertForGql(context: ExecutionContext): FastifyRequest {
+export function convertForGraphQl(context: ExecutionContext): FastifyRequest {
 	const { req, request } = GqlExecutionContext.create(context).getContext();
 	return req || request;
 }
@@ -36,14 +36,14 @@ export const Allow = Reflector.createDecorator<UserRole[]>(),
 	AllowPublic = Reflector.createDecorator<boolean>(),
 	GetRequest = createParamDecorator(
 		<K extends keyof FastifyRequest>(args: K, context: ExecutionContext) =>
-			convertForGql(context)[args],
+			convertForGraphQl(context)[args],
 	),
 	GetServerKey = createParamDecorator(
 		<K extends keyof FastifyRequest['key']>(
 			args: K,
 			context: ExecutionContext,
 		) => {
-			const res = convertForGql(context).key;
+			const res = convertForGraphQl(context).key;
 
 			if (!res) return null;
 

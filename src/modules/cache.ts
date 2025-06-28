@@ -14,7 +14,7 @@ export const cacheModule = CacheModule.registerAsync({
 				store: new Cacheable({
 					secondary: createRedisKeyv({ url: config.get('REDIS_URL') }),
 					ttl: cacheDurationMs,
-					namespace: process.env.package_name,
+					namespace: process.env.npm_package_name || 'app',
 					nonBlocking: true,
 				}),
 			}),

@@ -5,7 +5,7 @@ import { FastifyRequest } from 'fastify';
 import { roleMatching } from 'utils/auth/functions';
 import { ServerException } from 'utils/error';
 
-import { Allow, AllowPublic, Forbid, convertForGql } from '.';
+import { Allow, AllowPublic, Forbid, convertForGraphQl } from '.';
 
 /** Access token guard class. */
 @Injectable()
@@ -16,7 +16,7 @@ export class AccessGuard extends AuthGuard('access') {
 	 * @param {Reflector} reflector - Get method reflector.
 	 */
 	constructor(private reflector: Reflector) {
-		super({ property: 'key' });
+		super({ property: 'key.user' });
 	}
 
 	/**
@@ -32,7 +32,7 @@ export class AccessGuard extends AuthGuard('access') {
 	 * @returns {FastifyRequest} Convert to fastify request.
 	 */
 	getRequest(ctx: ExecutionContext): FastifyRequest {
-		return convertForGql(ctx);
+		return convertForGraphQl(ctx);
 	}
 
 	/**
@@ -54,9 +54,10 @@ export class AccessGuard extends AuthGuard('access') {
 
 		const allowRoles = this.reflector.get(Allow, context.getHandler()) || [],
 			forbidRoles = this.reflector.get(Forbid, context.getHandler()) || [],
-			{ role: userRole } = this.getRequest(context).key.user;
+			userRole = this.getRequest(context).key.user?.role;
 
-		if (allowRoles.some((i) => roleMatching(i, forbidRoles)))
+		if (!userRole) throw new ServerException('Invalid', 'User', '');
+		else if (allowRoles.some((i) => roleMatching(i, forbidRoles)))
 			throw new ServerException('Fatal', 'Method', 'Implementation');
 		else if (!allowRoles.length && !forbidRoles.length) return true;
 

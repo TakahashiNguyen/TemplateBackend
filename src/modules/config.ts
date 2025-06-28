@@ -33,6 +33,7 @@ export const configModule = ConfigModule.forRoot({
 		// Email settings
 		SMTP_USER: Joi.string().default(''),
 		SMTP_PASS: Joi.string().default(''),
+		SMTP_HOST: Joi.string().default('smtp.gmail.com'),
 		// Redis settings
 		REDIS_URL: Joi.string().default('redis://default:@localhost:6379'),
 	}),

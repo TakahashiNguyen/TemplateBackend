@@ -182,7 +182,6 @@ export abstract class SecurityService {
 	 * @returns {string} The decrypted `input`.
 	 */
 	decrypt(input: string, key: string = this.serverSecret): string {
-		if (!input || !key) return '';
 		const { encoding, algorithm, separator } = this,
 			[iv, encrypted, authTag] = input.split(separator),
 			decipher = createDecipheriv(

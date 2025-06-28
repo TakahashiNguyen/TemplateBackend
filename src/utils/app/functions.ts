@@ -1,4 +1,7 @@
+import { DynamicModule } from '@nestjs/common';
 import { validateOrReject } from 'class-validator';
+import { readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import { ServerException } from 'utils/error';
 
 /**
@@ -72,4 +75,27 @@ export function sortObjectKeys(input: object): object {
  */
 export function currentTime(): number {
 	return Math.floor(new Date().getTime() / 1000);
+}
+
+/**
+ * Get default export from each subdirectory from `directory`.
+ *
+ * @example
+ *
+ * ```ts
+ * getDefaultExportFromSubdirectory(__dirname);
+ * ```
+ *
+ * @param {string} directory - Current directory.
+ * @returns {DynamicModule[]} Array of nestjs modules.
+ */
+export function getDefaultExportFromSubdirectory(
+	directory: string,
+): DynamicModule[] {
+	return (
+		readdirSync(directory, { withFileTypes: true })
+			.filter((i) => i.isDirectory())
+			// eslint-disable-next-line @typescript-eslint/no-require-imports
+			.map((i) => require(join(i.parentPath, i.name)).default)
+	);
 }

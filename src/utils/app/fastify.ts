@@ -189,8 +189,7 @@ export class FastifyFramework {
 	 *   server settings.
 	 * @param {CookieCredential} cookieCredential - An object containing the name
 	 *   and password for secure session cookies.
-	 * @returns {Promise<void>} A promise that resolves when the server is set up
-	 *   and ready to listen.
+	 * @returns {Promise<void>}
 	 */
 	public async setup(
 		config: ConfigService,
@@ -211,7 +210,22 @@ export class FastifyFramework {
 				process.exit(1);
 			}
 
-			this.server.listen(config.get<number>('SERVER_PORT'));
+			this.server.listen(config.getOrThrow('SERVER_PORT'));
 		});
+	}
+
+	/**
+	 * Initialization for testing purpose.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * this.testSetup();
+	 * ```
+	 *
+	 * @returns {Promise<void>}
+	 */
+	public async testSetup(): Promise<void> {
+		await this.initializePlugins({ name: (6).string, password: (6).string });
 	}
 }

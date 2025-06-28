@@ -1,13 +1,10 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
-import { readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { getDefaultExportFromSubdirectory } from 'utils/app/functions';
+
 import { HealthController } from './app.controller';
 
-const modules = readdirSync(__dirname, { withFileTypes: true })
-	.filter((dirent) => dirent.isDirectory())
-	// eslint-disable-next-line @typescript-eslint/no-require-imports
-	.map((i) => require(join(i.parentPath, i.name)).default);
+const modules = getDefaultExportFromSubdirectory(__dirname);
 
 /** Collection of app modules. */
 @Module({
