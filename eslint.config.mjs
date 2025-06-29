@@ -76,6 +76,8 @@ export default defineConfig([
 		rules: {
 			'no-unused-vars': 'off',
 			'no-undef': 'off',
+			'no-redeclare': 'off',
+			'@typescript-eslint/no-redeclare': ['error'],
 		},
 	},
 	{
