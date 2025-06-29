@@ -12,7 +12,7 @@ import {
 	writeFileSync,
 } from 'node:fs';
 import { Readable } from 'stream';
-import { ServerInitializationClass } from 'utils/app/class';
+import { ServerInitializationClass } from 'utils/app/classes';
 
 /** Testing module. */
 @Global()
