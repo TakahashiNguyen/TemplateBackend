@@ -8,3 +8,6 @@ enum CacheControlScope {
   PRIVATE
   PUBLIC
 }
+
+"""DateTime custom scalar type"""
+scalar DateTime

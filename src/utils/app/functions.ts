@@ -92,10 +92,15 @@ export function currentTime(): number {
 export function getDefaultExportFromSubdirectory(
 	directory: string,
 ): DynamicModule[] {
-	return (
-		readdirSync(directory, { withFileTypes: true })
-			.filter((i) => i.isDirectory())
-			// eslint-disable-next-line @typescript-eslint/no-require-imports
-			.map((i) => require(join(i.parentPath, i.name)).default)
-	);
+	return readdirSync(directory, { withFileTypes: true })
+		.filter((i) => i.isDirectory())
+		.map((i) => {
+			try {
+				// eslint-disable-next-line @typescript-eslint/no-require-imports
+				return require(join(i.parentPath, i.name)).default;
+			} catch {
+				return undefined;
+			}
+		})
+		.filter((i) => i != undefined);
 }
