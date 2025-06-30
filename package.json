@@ -14,11 +14,10 @@
 		"start:debug": "nest start --debug --watch",
 		"start:prod": "node dist/main",
 		"lint": "eslint ./src --fix",
-		"test": "jest",
-		"test:watch": "jest --watch",
-		"test:cov": "jest --coverage",
-		"test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-		"test:e2e": "jest --config ./test/jest-e2e.json"
+		"test": "jest --config=./test/jest.all.config.ts",
+		"test:requesters": "jest --config=./test/jest.requesters.config.ts",
+		"test:service": "jest --config=./test/jest.service.config.ts",
+		"test:etc": "jest --config=./test/jest.etc.config.ts"
 	},
 	"dependencies": {
 		"@apollo/server": "^4.12.2",
@@ -46,6 +45,7 @@
 		"@nestjs/schedule": "^6.0.0",
 		"@nestjs/swagger": "^11.2.0",
 		"@nestjs/terminus": "^11.0.0",
+		"@nestjs/throttler": "^6.4.0",
 		"@nestjs/typeorm": "^11.0.0",
 		"argon2": "^0.43.0",
 		"cacheable": "^1.10.0",
@@ -101,23 +101,6 @@
 		"tsconfig-paths": "^4.2.0",
 		"typescript": "^5.7.3",
 		"typescript-eslint": "^8.34.0"
-	},
-	"jest": {
-		"moduleFileExtensions": [
-			"js",
-			"json",
-			"ts"
-		],
-		"rootDir": "src",
-		"testRegex": ".*\\.spec\\.ts$",
-		"transform": {
-			"^.+\\.(t|j)s$": "ts-jest"
-		},
-		"collectCoverageFrom": [
-			"**/*.(t|j)s"
-		],
-		"coverageDirectory": "../coverage",
-		"testEnvironment": "node"
 	},
 	"packageManager": "pnpm@10.0.0+sha512.b8fef5494bd3fe4cbd4edabd0745df2ee5be3e4b0b8b08fa643aa3e4c6702ccc0f00d68fa8a8c9858a735a0032485a44990ed2810526c875e416f001b17df12b"
 }

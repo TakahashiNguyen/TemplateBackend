@@ -7,6 +7,7 @@ import { HttpAdapterHost } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
 import { ApiHideProperty } from '@nestjs/swagger';
+import { ThrottlerGuard } from '@nestjs/throttler';
 import { Bloc } from 'app/auth/bloc/bloc.entity';
 import { convertForGraphQl } from 'app/auth/guards';
 import { Hook } from 'app/auth/hook/hook.entity';
@@ -21,6 +22,7 @@ import { UAParser } from 'ua-parser-js';
 import { SecurityService } from 'utils/auth/classes';
 
 import { cookieOptions, fileSizeMaximum } from './constants';
+import { RequestResponse } from './interfaces';
 import { GetAttributes } from './types';
 
 /** Modified cache interceptor. */
@@ -332,4 +334,27 @@ export class UserRecieve {
 
 	/** Server's message. */
 	@ApiHideProperty() message: string;
+}
+
+/** Modified throttler guard class. */
+export class ModifiedThrottlerGuard extends ThrottlerGuard {
+	/**
+	 * Handle both GraphQL and RestAPI request, response.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * this.getRequestResponse(context);
+	 * ```
+	 *
+	 * @param {ExecutionContext} context - Client's context.
+	 * @returns {RequestResponse} Client's request and response.
+	 */
+	protected getRequestResponse(context: ExecutionContext): RequestResponse {
+		if (context.getType() == 'http') return super.getRequestResponse(context);
+
+		const { res, req } = GqlExecutionContext.create(context).getContext();
+
+		return { req, res };
+	}
 }
