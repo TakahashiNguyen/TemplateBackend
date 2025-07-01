@@ -3,6 +3,7 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
+import { AppModule } from 'app';
 import { AWSRecieve, AWSService } from 'app/aws/aws.service';
 import { lookup } from 'mime-types';
 import {
@@ -14,10 +15,12 @@ import {
 import { Readable } from 'stream';
 import { ServerInitializationClass } from 'utils/app/classes';
 
+import { BaseModule } from './base';
+
 /** Testing module. */
 @Global()
 @Module({
-	imports: [],
+	imports: [AppModule, BaseModule],
 	providers: [
 		{ provide: MailerService, useValue: { sendMail: jest.fn() } },
 		{

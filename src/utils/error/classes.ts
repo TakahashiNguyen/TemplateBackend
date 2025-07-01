@@ -2,6 +2,7 @@ import { HttpException } from '@nestjs/common';
 import { colorLogging } from 'utils/log';
 
 import { ErrorAction, ErrorObject, ErrorType } from '.';
+import { serverException } from './functions';
 
 /**
  * This class extends the HttpException class and is used to handle both
@@ -16,14 +17,14 @@ export class ServerException extends HttpException {
 	 * @example
 	 *
 	 * ```ts
-	 * const error = new ServerException('Database', 'Connection', 'Failed');
+	 * const error = new ServerException('Invalid', 'Client', 'Request');
 	 * ```
 	 *
-	 * @param {ErrorType} type - The type of error (e.g., 'Database', 'Network').
+	 * @param {ErrorType} type - The type of error (e.g., 'Invalid', 'Success').
 	 * @param {ErrorObject} object - The object related to the error (e.g.,
-	 *   'Connection', 'Request').
+	 *   'Client', 'Server').
 	 * @param {ErrorAction} action - The action that caused the error (e.g.,
-	 *   'Failed', 'Timeout').
+	 *   'Request', 'Sent').
 	 * @param {HttpException | Error} err - An optional HttpException instance
 	 *   that provides additional error details.
 	 */
@@ -34,7 +35,7 @@ export class ServerException extends HttpException {
 		private err: HttpException | Error = new Error('Unexpected error'),
 	) {
 		super(
-			(6).toString() + '_' + type + '_' + object + (action ? '_' : '') + action,
+			(6).toString() + '_' + serverException(type, object, action),
 			err instanceof HttpException ? err.getStatus() : 500,
 		);
 	}

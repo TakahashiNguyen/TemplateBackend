@@ -249,18 +249,25 @@ export class ServerMiddleware extends SecurityService {
 				...cookieOptions,
 				maxAge: 2 ** 31,
 			},
-			{ id, currentHash: hash } = req.key.bloc,
 			accessKey = req.session.get('accessKey');
 
-		if (accessKey) {
+		if (accessKey && req.bloc.currentHash) {
 			res.setCookie(
 				'access',
-				this.encrypt(this.access(hash), this.decrypt(accessKey, req.ip)),
+				this.encrypt(
+					this.access(req.bloc.currentHash),
+					this.decrypt(accessKey, req.ip),
+				),
 				cookieOpts,
 			);
 		}
 
-		res.setCookie('refresh', this.encrypt(this.refresh(id)), cookieOpts);
+		if (req.bloc.id)
+			res.setCookie(
+				'refresh',
+				this.encrypt(this.refresh(req.bloc.id)),
+				cookieOpts,
+			);
 
 		done(null, payload);
 	}

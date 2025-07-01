@@ -17,8 +17,8 @@ export interface IServerKey {
 	user?: User;
 
 	/** Bloc key type. */
-	bloc: Bloc;
+	bloc?: Bloc;
 
 	/** Hook key type. */
-	hook: Hook;
+	hook?: Hook;
 }

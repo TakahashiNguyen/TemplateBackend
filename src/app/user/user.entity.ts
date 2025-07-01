@@ -48,9 +48,7 @@ export class User extends BaseEntity {
 	@Field(() => UserRole)
 	@Column({
 		type: 'enum',
-
 		enum: UserRole,
-
 		default: UserRole.undefined,
 	})
 	role: UserRole;
@@ -68,31 +66,24 @@ export class User extends BaseEntity {
 	 *
 	 * @param {string} unit - The unit its testing from.
 	 * @param root
+	 * @param root.role
+	 * @param root.authentication
 	 * @param root.email
-	 * @param root.password
 	 * @returns {User} Test user.
 	 */
 	static test(
 		unit: string,
 		{
 			email = (20).string + '@example.com',
-			password = (12).string + 'aA1!',
-		}: {
-			/** User email. */ email: string;
-			/** User password. */ password: string;
-		},
+			authentication = { password: new Password({ password: 'password' }) },
+			role = UserRole.guest,
+		}: Partial<ConstructorParameters<typeof User>[0]>,
 	): User {
-		const passIns = new Password({ password }),
-			user = new User({
-				name: unit + (10).string,
-
-				email,
-
-				role: UserRole.undefined,
-
-				authentication: { password: passIns },
-			});
-
-		return user;
+		return new User({
+			name: unit + '_' + (5).string,
+			email,
+			role,
+			authentication,
+		});
 	}
 }

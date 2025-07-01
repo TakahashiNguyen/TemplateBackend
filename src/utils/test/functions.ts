@@ -3,7 +3,6 @@ import {
 	NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from 'app';
 import { AppService } from 'app/app.service';
 import {
 	InjectOptions,
@@ -58,7 +57,7 @@ export function getCurrentTestFileName(file: string): string {
  */
 export async function jestInitialization(): Promise<JestInitializationReturns> {
 	const module: TestingModule = await Test.createTestingModule({
-			imports: [TestModule, AppModule],
+			imports: [TestModule],
 		}).compile(),
 		appService = module.get(AppService),
 		fastifyFramework = new FastifyFramework();
