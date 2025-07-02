@@ -1,3 +1,4 @@
+import { IsOptional } from 'class-validator';
 import {
 	CreateDateColumn,
 	DeepPartial,
@@ -10,6 +11,7 @@ import {
 } from 'typeorm';
 import { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
 import { validateObject } from 'utils/app/functions';
+import { GetAttributes, Subtract } from 'utils/app/types';
 import { ServerException } from 'utils/error';
 
 import {
@@ -19,19 +21,36 @@ import {
 	FindWhereExtend,
 } from './types';
 
+export { TypeOrmBaseEntity };
+
 /** Base entity class that provides common fields for all entities. */
 export abstract class BaseEntity extends TypeOrmBaseEntity {
 	/** Unique identifier for the entity. */
 	@PrimaryGeneratedColumn('uuid')
-	id!: string;
+	@IsOptional()
+	id?: string;
 
 	/** Creation date record. */
 	@CreateDateColumn()
-	createdAt!: Date;
+	@IsOptional()
+	createdAt?: Date;
 
 	/** Last update date record. */
 	@UpdateDateColumn()
-	updatedAt!: Date;
+	@IsOptional()
+	updatedAt?: Date;
+
+	/**
+	 * Create an instance of BaseEntity.
+	 *
+	 * @param {GetAttributes<BaseEntity>} object - Input base entity fields.
+	 */
+	constructor(object: GetAttributes<Subtract<BaseEntity, TypeOrmBaseEntity>>) {
+		super();
+		this.id = object?.id;
+		this.createdAt = object?.createdAt;
+		this.updatedAt = object?.updatedAt;
+	}
 }
 
 /**
@@ -111,11 +130,13 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * const entity = await this.id(entityId);
 	 * ```
 	 *
-	 * @param {string} id - The entity's id.
+	 * @param {string | undefined} id - The entity's id.
 	 * @returns {Promise<T>} Found entity.
 	 * @throws {ServerException} If the id is null or undefined.
 	 */
-	public readonly id = (id: string): Promise<T> => {
+	public readonly id = (id: string | undefined): Promise<T> => {
+		if (id == undefined) throw new ServerException('Invalid', 'ID', '');
+
 		return this.findOne({ id, cache: false } as FindWhereExtend<
 			T,
 			ExtendedFindOneOptions

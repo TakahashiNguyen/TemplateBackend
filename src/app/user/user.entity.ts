@@ -1,6 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Password } from 'app/auth/api/password';
 import { Authentication } from 'app/auth/classes';
+import { Type } from 'class-transformer';
+import { ValidateNested } from 'class-validator';
 import { Column, Entity } from 'typeorm';
 import { GetAttributes, Subtract } from 'utils/app/types';
 import { CacheControl } from 'utils/graphql/functions';
@@ -33,6 +35,8 @@ export class User extends BaseEntity {
 	}
 
 	/** User authentication. */
+	@ValidateNested()
+	@Type(() => Authentication)
 	@Column(() => Authentication)
 	authentication: Authentication;
 

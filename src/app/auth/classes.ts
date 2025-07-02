@@ -1,3 +1,5 @@
+import { Type } from 'class-transformer';
+import { ValidateNested } from 'class-validator';
 import { Column } from 'typeorm';
 import { AmbiguousReturn } from 'utils/app/types';
 
@@ -16,5 +18,8 @@ export abstract class IBaseAuthentication {
 /** Authentication class. */
 export class Authentication {
 	/** Password method. */
-	@Column(() => Password) password?: Password;
+	@ValidateNested()
+	@Type(() => Password)
+	@Column(() => Password)
+	password?: Password;
 }

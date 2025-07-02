@@ -35,7 +35,7 @@ export class ServerException extends HttpException {
 		private err: HttpException | Error = new Error('Unexpected error'),
 	) {
 		super(
-			(6).toString() + '_' + serverException(type, object, action),
+			(6).string + '_' + serverException(type, object, action),
 			err instanceof HttpException ? err.getStatus() : 500,
 		);
 	}
