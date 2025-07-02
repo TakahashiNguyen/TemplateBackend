@@ -120,7 +120,7 @@ describe('update', () => {
 		const { id } = await testEntityService.create(testEntity),
 			newStr = 'new' + (5).string;
 
-		await execute(() => testEntityService.update(id, { str: newStr }), {
+		await execute(() => testEntityService.update({ id }, { str: newStr }), {
 			expectations: [{ type: 'toThrow', not: true, parameters: [] }],
 			onFinish: async () => {
 				await execute(() => testEntityService.id(id), {

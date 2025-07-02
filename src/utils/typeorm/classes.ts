@@ -28,7 +28,7 @@ export abstract class BaseEntity extends TypeOrmBaseEntity {
 	/** Unique identifier for the entity. */
 	@PrimaryGeneratedColumn('uuid')
 	@IsOptional()
-	id?: string;
+	id!: string;
 
 	/** Creation date record. */
 	@CreateDateColumn()
@@ -43,11 +43,16 @@ export abstract class BaseEntity extends TypeOrmBaseEntity {
 	/**
 	 * Create an instance of BaseEntity.
 	 *
-	 * @param {GetAttributes<BaseEntity>} object - Input base entity fields.
+	 * @param {Partial<
+	 * 	GetAttributes<Subtract<BaseEntity, TypeOrmBaseEntity>>
+	 * >} object
+	 *   - Input base entity fields.
 	 */
-	constructor(object: GetAttributes<Subtract<BaseEntity, TypeOrmBaseEntity>>) {
+	constructor(
+		object: Partial<GetAttributes<Subtract<BaseEntity, TypeOrmBaseEntity>>>,
+	) {
 		super();
-		this.id = object?.id;
+		this.id = object?.id || (undefined as never);
 		this.createdAt = object?.createdAt;
 		this.updatedAt = object?.updatedAt;
 	}
@@ -263,17 +268,27 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * this.update({ id: entityId }, updatedEntity);
 	 * ```
 	 *
-	 * @param {string | undefined} id - Target entity id.
+	 * @param {FindOptionsWhere<T>} targetEntity - Target entity.
 	 * @param {DeepPartial<T>} updatedEntity - Updated entity.
 	 * @param {ExtendedSaveOptions} options - Update entity options.
 	 */
 	protected readonly $update = async (
-		id: string | undefined,
+		targetEntity: FindOptionsWhere<T>,
 		updatedEntity: DeepPartial<T>,
 		options?: ExtendedSaveOptions,
 	): Promise<void> => {
-		if (updatedEntity != null && Object.keys(updatedEntity).length && id)
-			await this.create(new this.ctor({ id, ...updatedEntity }), options);
+		const entities = await this.find(targetEntity);
+
+		if (
+			updatedEntity != null &&
+			Object.keys(updatedEntity).length &&
+			targetEntity != null &&
+			Object.keys(targetEntity).length &&
+			entities.length
+		)
+			await Promise.all(
+				entities.map((i) => this.$create({ ...i, ...updatedEntity }, options)),
+			);
 	};
 
 	public abstract update(...args: unknown[]): Promise<void>;
@@ -294,6 +309,8 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * @throws {ServerException} If the id is null or undefined.
 	 */
 	public readonly delete = async (id: string | undefined): Promise<void> => {
+		if (id == undefined) throw new ServerException('Invalid', 'ID', '');
+
 		await this.repo.delete({ id } as FindOptionsWhere<T>);
 	};
 }

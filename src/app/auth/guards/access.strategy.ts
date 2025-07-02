@@ -44,9 +44,13 @@ export class AccessStrategy extends PassportStrategy(Strategy, 'access') {
 		if (accessToken == null)
 			throw new ServerException('Invalid', 'Client', 'Request');
 
-		const { owner } = await this.bloc.findBlocByHash(accessToken);
+		const bloc = await this.bloc.currentHash(accessToken);
+
+		if (bloc == undefined)
+			throw new ServerException('Invalid', 'Client', 'Request');
+
 		await this.bloc.issue({ currentHash: accessToken });
 
-		return owner;
+		return bloc.owner;
 	}
 }

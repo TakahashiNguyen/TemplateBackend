@@ -54,7 +54,6 @@ export class ModifiedCacheInterceptor extends CacheInterceptor {
 	 *
 	 * @param {ExecutionContext} context - Client's request context.
 	 * @param {unknown} value - Checking value.
-	 * @returns {void}
 	 */
 	protected setHeadersWhenHttp(
 		context: ExecutionContext,

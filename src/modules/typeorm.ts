@@ -135,7 +135,7 @@ class DatabaseCacheManager implements QueryResultCache {
 	 * this.disconnect();
 	 * ```
 	 *
-	 * @returns {Promise<void>} Description.
+	 * @returns {Promise<void>}
 	 */
 	disconnect(): Promise<void> {
 		return this.cache.disconnect();

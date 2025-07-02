@@ -4,6 +4,7 @@ import { User } from 'app/user/user.entity';
 import { Repository } from 'typeorm';
 import { currentTime } from 'utils/app/functions';
 import { GetAttributes, RequireOnlyOne } from 'utils/app/types';
+import { ServerException } from 'utils/error';
 import { DatabaseRequests } from 'utils/typeorm/classes';
 
 import { Bloc } from './bloc.entity';
@@ -67,18 +68,28 @@ export class BlocService extends DatabaseRequests<Bloc> {
 	 * this.removeTree(blocId);
 	 * ```
 	 *
-	 * @param {string} blocId - Removing tree's sub-bloc id.
+	 * @param {RequireOnlyOne<IdOrHash, 'currentHash' | 'id'>} objects - Removing
+	 *   tree's sub-bloc id or hash.
 	 */
-	async removeTree(blocId: string) {
-		if (!blocId) return;
+	async removeTree({
+		id: targetId,
+		currentHash: targetCurrentHash,
+	}: RequireOnlyOne<IdOrHash, 'currentHash' | 'id'>) {
+		const currentBloc =
+			(await this.id(targetId)) || (await this.currentHash(targetCurrentHash));
 
-		const { previousHash } = await this.id(blocId),
-			{ id } = await this.findContinuousBloc(blocId);
+		if (!currentBloc) return;
 
-		await this.delete(blocId);
+		await this.delete(currentBloc.id);
 
-		if (previousHash) await this.removeTree(previousHash);
-		await this.removeTree(id);
+		if (currentBloc.previousHash)
+			await this.removeTree({ currentHash: currentBloc.previousHash });
+
+		const continuousId = (
+			await this.findContinuousBloc(currentBloc.currentHash)
+		)?.id;
+
+		if (continuousId) await this.removeTree({ id: continuousId });
 	}
 
 	/**
@@ -111,11 +122,11 @@ export class BlocService extends DatabaseRequests<Bloc> {
 	 * this.findContinuousBloc(hash);
 	 * ```
 	 *
-	 * @param {string} hash - Current bloc id.
-	 * @returns {Promise<Bloc>} Found bloc by request.
+	 * @param {string} currentHash - Current bloc id.
+	 * @returns {Promise<Bloc | undefined>} Found bloc by request.
 	 */
-	async findContinuousBloc(hash: string): Promise<Bloc> {
-		return this.findOne({ cache: false, previousHash: hash });
+	async findContinuousBloc(currentHash: string): Promise<Bloc | undefined> {
+		return this.findOne({ cache: false, previousHash: currentHash });
 	}
 
 	/**
@@ -124,14 +135,19 @@ export class BlocService extends DatabaseRequests<Bloc> {
 	 * @example
 	 *
 	 * ```ts
-	 * this.findBlocByHash(hash);
+	 * this.currentHash(hash);
 	 * ```
 	 *
-	 * @param {string} hash - Current bloc hash.
-	 * @returns {Promise<Bloc>} Found bloc by hash.
+	 * @param {string | undefined} currentHash - Current bloc hash.
+	 * @returns {Promise<Bloc | undefined>} Found bloc by hash.
 	 */
-	async findBlocByHash(hash: string): Promise<Bloc> {
-		return this.findOne({ currentHash: hash, cache: false });
+	async currentHash(
+		currentHash: string | undefined,
+	): Promise<Bloc | undefined> {
+		if (currentHash == undefined)
+			throw new ServerException('Invalid', 'Input', '');
+
+		return this.findOne({ currentHash, cache: false });
 	}
 
 	/**
@@ -159,10 +175,8 @@ export class BlocService extends DatabaseRequests<Bloc> {
 		const updatePrev = async () => {
 			if (!previousHash) return undefined;
 
-			const { metadata: continuousMetadata } =
-				await this.findContinuousBloc(previousHash);
-
-			metadata = continuousMetadata;
+			metadata =
+				(await this.findContinuousBloc(previousHash))?.metadata || metadata;
 
 			return previousHash;
 		};

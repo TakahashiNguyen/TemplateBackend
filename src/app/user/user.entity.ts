@@ -6,7 +6,8 @@ import { ValidateNested } from 'class-validator';
 import { Column, Entity } from 'typeorm';
 import { GetAttributes, Subtract } from 'utils/app/types';
 import { CacheControl } from 'utils/graphql/functions';
-import { BaseEntity, TypeOrmBaseEntity } from 'utils/typeorm/classes';
+import { BaseEntity } from 'utils/typeorm/classes';
+import { EntityParameters } from 'utils/typeorm/types';
 
 import { UserRole } from './user.model';
 
@@ -18,21 +19,19 @@ export class User extends BaseEntity {
 	/**
 	 * Creates an instance of User.
 	 *
-	 * @param {GetAttributes<Subtract<User, TypeOrmBaseEntity>>} object - Input
-	 *   user fields.
+	 * @param {GetAttributes<Subtract<User, BaseEntity>> &
+	 * 	EntityParameters<typeof BaseEntity>} object
+	 *   - Input user fields.
 	 */
-	constructor(object: GetAttributes<Subtract<User, TypeOrmBaseEntity>>) {
+	constructor(
+		object: GetAttributes<Subtract<User, BaseEntity>> &
+			EntityParameters<typeof BaseEntity>,
+	) {
 		super(object);
-		if (object == undefined) {
-			this.name = this.email = '';
-			this.role = UserRole.undefined;
-			this.authentication = new Authentication();
-		} else {
-			this.name = object.name;
-			this.email = object.email;
-			this.role = object.role;
-			this.authentication = object.authentication;
-		}
+		this.name = object?.name;
+		this.email = object?.email;
+		this.role = object?.role;
+		this.authentication = object?.authentication;
 	}
 
 	/** User authentication. */

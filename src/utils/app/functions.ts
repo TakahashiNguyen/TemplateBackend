@@ -98,8 +98,16 @@ export function getDefaultExportFromSubdirectory(
 			try {
 				// eslint-disable-next-line @typescript-eslint/no-require-imports
 				return require(join(i.parentPath, i.name)).default;
-			} catch {
-				return undefined;
+			} catch (error) {
+				switch (true) {
+					// @ts-expect-error error-free expression
+					case error.code == 'MODULE_NOT_FOUND':
+						break;
+
+					default:
+						console.warn((error as Error).message);
+						break;
+				}
 			}
 		})
 		.filter((i) => i != undefined);

@@ -43,3 +43,13 @@ export type ExtendedSaveOptions = {
  * @template K
  */
 export type FindWhereExtend<T, K> = FindOptionsWhere<T> & K;
+
+/**
+ * Get entity parameters.
+ *
+ * @template T
+ */
+export type EntityParameters<
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	T extends abstract new (...args: any) => any,
+> = ConstructorParameters<T>[0];

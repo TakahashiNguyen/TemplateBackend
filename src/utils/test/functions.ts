@@ -123,11 +123,11 @@ export async function jestInitialization(
  * @template R
  * @template K
  * @param {(...args: unknown[]) => Promise<R> | R} func - The function to test.
- * @param options
- * @param options.numberOfLoopExecution
- * @param options.expectations
- * @param options.onFinish
- * @param options.handleLoopExecution
+ * @param {ExecuteOptions<K, R, typeof func>} options
+ * @param {number} options.numberOfLoopExecution
+ * @param {Expectation<FastifyAdapter, K>[]} options.expectations
+ * @param {(result: R) => void | Promise<void>} options.onFinish
+ * @param {(func: F) => void | Promise<void>} options.handleLoopExecution
  */
 export async function execute<R, K extends keyof jest.Matchers<Promise<R>>>(
 	func: (...args: unknown[]) => Promise<R> | R,

@@ -41,9 +41,14 @@ export class HookStrategy extends PassportStrategy(Strategy, 'hook') {
 	 * @returns {Promise<Hook>} Hook entity is going to save in request context.
 	 */
 	async validate({ accessToken }: ITokens): Promise<Hook> {
-		if (accessToken == null)
+		let hook;
+
+		if (
+			accessToken == null ||
+			(hook = await this.hook.id(accessToken)) == undefined
+		)
 			throw new ServerException('Invalid', 'User', 'Request');
 
-		return this.hook.id(accessToken);
+		return hook;
 	}
 }

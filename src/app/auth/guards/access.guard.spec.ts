@@ -18,7 +18,7 @@ const unit = getCurrentTestFileName(__filename);
 
 let accessGuard: AccessGuard, reflector: Reflector, context: ExecutionContext;
 
-beforeEach(async () => {
+beforeAll(async () => {
 	const { module } = await jestInitialization();
 
 	accessGuard = module.get(AccessGuard);

@@ -193,9 +193,8 @@ declare global {
 		 * count.range(() => console.log('Hello')); // Logs 'Hello' 5 times
 		 * ```
 		 *
-		 * @param input - A function that returns a Promise or a value to be
-		 *   executed for each iteration.
-		 * @returns A Promise that resolves when all iterations are complete.
+		 * @param {() => Promise<T> | T} input - A function that returns a Promise
+		 *   or a value to be executed for each iteration.
 		 */
 		range<T>(input: () => Promise<T> | T): Promise<void>;
 	}

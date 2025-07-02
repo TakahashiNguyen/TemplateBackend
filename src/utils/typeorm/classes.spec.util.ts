@@ -3,7 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Column, Entity, Repository } from 'typeorm';
 import { GetAttributes, Subtract } from 'utils/app/types';
 
-import { BaseEntity, DatabaseRequests, TypeOrmBaseEntity } from './classes';
+import { BaseEntity, DatabaseRequests } from './classes';
+import { EntityParameters } from './types';
 
 /** Test entity. */
 @Entity()
@@ -11,18 +12,17 @@ export class TestEntity extends BaseEntity {
 	/**
 	 * Create an instance of TestEntity.
 	 *
-	 * @param {GetAttributes<Subtract<TestEntity, TypeOrmBaseEntity>>} object -
-	 *   Input test entity fields.
+	 * @param {GetAttributes<Subtract<TestEntity, BaseEntity>> &
+	 * 	EntityParameters<typeof BaseEntity>} object
+	 *   - Input test entity fields.
 	 */
-	constructor(object: GetAttributes<Subtract<TestEntity, TypeOrmBaseEntity>>) {
+	constructor(
+		object: GetAttributes<Subtract<TestEntity, BaseEntity>> &
+			EntityParameters<typeof BaseEntity>,
+	) {
 		super(object);
-		if (object == undefined) {
-			this.str = '';
-			this.num = 0;
-		} else {
-			this.str = object.str;
-			this.num = object.num;
-		}
+		this.str = object?.str;
+		this.num = object?.num;
 	}
 
 	/** Testing string attribute. */

@@ -46,8 +46,13 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
 
 		const current = await this.bloc.id(refreshToken);
 
-		if (current.owner == null) {
-			await this.bloc.removeTree(current.id);
+		if (current == undefined)
+			throw new ServerException('Invalid', 'Client', 'Request');
+
+		if (
+			(await this.bloc.findContinuousBloc(current.currentHash)) != undefined
+		) {
+			await this.bloc.removeTree({ id: current.id });
 			throw new ServerException('Invalid', 'User', 'Access');
 		}
 
