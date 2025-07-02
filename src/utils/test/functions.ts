@@ -1,3 +1,4 @@
+import { ModuleMetadata } from '@nestjs/common';
 import {
 	FastifyAdapter,
 	NestFastifyApplication,
@@ -52,12 +53,18 @@ export function getCurrentTestFileName(file: string): string {
  * jestInitialization();
  * ```
  *
+ * @param {ModuleMetadata} opt - Function options.
  * @returns {Promise<JestInitializationReturns>} Attributes and functions for
  *   testing.
  */
-export async function jestInitialization(): Promise<JestInitializationReturns> {
+export async function jestInitialization(
+	opt?: ModuleMetadata,
+): Promise<JestInitializationReturns> {
 	const module: TestingModule = await Test.createTestingModule({
-			imports: [TestModule],
+			imports: (opt?.imports || []).concat(TestModule),
+			providers: opt?.providers || [],
+			controllers: opt?.controllers || [],
+			exports: opt?.exports || [],
 		}).compile(),
 		appService = module.get(AppService),
 		fastifyFramework = new FastifyFramework();
