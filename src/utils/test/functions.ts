@@ -148,10 +148,9 @@ export async function execute<R, K extends keyof jest.Matchers<Promise<R>>>(
 	)
 		await numberOfLoopExecution.range(() => handleLoopExecution(func));
 
-	const executed = func(),
-		l1 = expect(
-			executed instanceof Promise ? executed : (async () => await executed)(),
-		);
+	const executed =
+			func instanceof Promise ? func() : (async () => await func())(),
+		l1 = expect(executed);
 
 	for (const expectation of expectations) {
 		const l2 =
