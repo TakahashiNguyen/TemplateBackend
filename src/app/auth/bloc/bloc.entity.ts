@@ -1,10 +1,10 @@
 import { User } from 'app/user/user.entity';
 import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne } from 'typeorm';
-import { GetAttributes, Subtract } from 'utils/app/types';
+import { GetAttributes, Omitting, Subtract } from 'utils/app/types';
 import { Metadata } from 'utils/auth/classes';
 import { unidirectionalHash } from 'utils/data/funtions';
 import { CacheControl } from 'utils/graphql/functions';
-import { BaseEntity } from 'utils/typeorm/classes';
+import { BaseEntity, TypeOrmBaseEntity } from 'utils/typeorm/classes';
 
 /** Bloc entity. */
 @CacheControl({ maxAge: (2).m2s })
@@ -13,16 +13,18 @@ export class Bloc extends BaseEntity {
 	/**
 	 * Create bloc with infomations.
 	 *
-	 * @param {GetAttributes<Subtract<Bloc, BaseEntity>>} object - The bloc's
-	 *   infomations.
+	 * @param {GetAttributes<Subtract<Bloc, TypeOrmBaseEntity>>} object - The
+	 *   bloc's infomations.
 	 */
 	constructor(
-		object: Pick<
-			GetAttributes<Subtract<Bloc, BaseEntity>>,
-			'owner' | 'previousHash'
+		object: GetAttributes<
+			Subtract<
+				Omitting<Bloc, 'currentHash' | 'lastIssue' | 'metadata'>,
+				TypeOrmBaseEntity
+			>
 		>,
 	) {
-		super();
+		super(object);
 		if (object == undefined) {
 			this.owner = new User(undefined as never);
 			this.previousHash = '';

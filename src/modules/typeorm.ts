@@ -63,6 +63,7 @@ export function typeOrmModule(type: DatabaseType): DynamicModule {
 				cache: {
 					duration: cacheDurationMs,
 					provider: () => new DatabaseCacheManager(cache),
+					ignoreErrors: true,
 				},
 			};
 		},

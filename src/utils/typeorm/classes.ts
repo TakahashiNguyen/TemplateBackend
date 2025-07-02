@@ -131,10 +131,10 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * ```
 	 *
 	 * @param {string | undefined} id - The entity's id.
-	 * @returns {Promise<T>} Found entity.
+	 * @returns {Promise<T | undefined>} Found entity.
 	 * @throws {ServerException} If the id is null or undefined.
 	 */
-	public readonly id = (id: string | undefined): Promise<T> => {
+	public readonly id = (id: string | undefined): Promise<T | undefined> => {
 		if (id == undefined) throw new ServerException('Invalid', 'ID', '');
 
 		return this.findOne({ id, cache: false } as FindWhereExtend<
@@ -195,11 +195,11 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 *
 	 * @param {FindWhereExtend<T, ExtendedFindOneOptions>} options - Function's
 	 *   option.
-	 * @returns {Promise<T>} An entity match `option` request.
+	 * @returns {Promise<T | undefined>} An entity match `option` request.
 	 */
 	public readonly findOne = async (
 		options: FindWhereExtend<T, ExtendedFindOneOptions>,
-	): Promise<T> => {
+	): Promise<T | undefined> => {
 		const {
 				deep = 1,
 				relations: requestRelation = [''],
@@ -219,10 +219,7 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 				: undefined,
 			found = await this.repo.findOne({ where, order, relations, cache, lock });
 
-		if (found == null)
-			throw new ServerException('Invalid', 'Server', 'Request');
-
-		return new this.ctor(found);
+		return found != null ? new this.ctor(found) : undefined;
 	};
 
 	// Create
@@ -266,26 +263,17 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * this.update({ id: entityId }, updatedEntity);
 	 * ```
 	 *
-	 * @param {FindOptionsWhere<T>} targetEntity - Target entity.
+	 * @param {string | undefined} id - Target entity id.
 	 * @param {DeepPartial<T>} updatedEntity - Updated entity.
 	 * @param {ExtendedSaveOptions} options - Update entity options.
 	 */
 	protected readonly $update = async (
-		targetEntity: FindOptionsWhere<T>,
+		id: string | undefined,
 		updatedEntity: DeepPartial<T>,
 		options?: ExtendedSaveOptions,
 	): Promise<void> => {
-		if (
-			updatedEntity != null &&
-			Object.keys(updatedEntity).length &&
-			targetEntity != null &&
-			Object.keys(targetEntity).length &&
-			(await this.find(targetEntity)).length
-		)
-			await this.create(
-				new this.ctor({ ...targetEntity, ...updatedEntity }),
-				options,
-			);
+		if (updatedEntity != null && Object.keys(updatedEntity).length && id)
+			await this.create(new this.ctor({ id, ...updatedEntity }), options);
 	};
 
 	public abstract update(...args: unknown[]): Promise<void>;
@@ -301,11 +289,11 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * this.delete(entityId);
 	 * ```
 	 *
-	 * @param {string} id - The entity identifier string.
+	 * @param {string | undefined} id - The entity identifier string.
 	 * @returns {Promise<void>} Resolves when the entity is deleted.
 	 * @throws {ServerException} If the id is null or undefined.
 	 */
-	public readonly delete = async (id: string): Promise<void> => {
+	public readonly delete = async (id: string | undefined): Promise<void> => {
 		await this.repo.delete({ id } as FindOptionsWhere<T>);
 	};
 }

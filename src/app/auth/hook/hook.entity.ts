@@ -4,7 +4,7 @@ import { GetAttributes, Subtract } from 'utils/app/types';
 import { Metadata } from 'utils/auth/classes';
 import { ServerException } from 'utils/error';
 import { CacheControl } from 'utils/graphql/functions';
-import { BaseEntity } from 'utils/typeorm/classes';
+import { BaseEntity, TypeOrmBaseEntity } from 'utils/typeorm/classes';
 
 import { IMetadata } from '../guards';
 
@@ -15,16 +15,11 @@ export class Hook extends BaseEntity {
 	/**
 	 * Create hook with infomations.
 	 *
-	 * @param {GetAttributes<Subtract<Hook, BaseEntity>>} object - The hook's
-	 *   infomations.
+	 * @param {GetAttributes<Subtract<Hook, TypeOrmBaseEntity>>} object - The
+	 *   hook's infomations.
 	 */
-	constructor(
-		object: Pick<
-			GetAttributes<Subtract<Hook, BaseEntity>>,
-			'owner' | 'signature' | 'note'
-		>,
-	) {
-		super();
+	constructor(object: GetAttributes<Subtract<Hook, TypeOrmBaseEntity>>) {
+		super(object);
 		if (object == undefined) {
 			this.owner = new User(undefined as never);
 			this.signature = '';
