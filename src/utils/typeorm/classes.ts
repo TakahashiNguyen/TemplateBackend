@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
 import { validateObject } from 'utils/app/functions';
-import { GetAttributes, Subtract } from 'utils/app/types';
+import { AttributesOnly, Subtract } from 'utils/app/types';
 import { ServerException } from 'utils/error';
 
 import {
@@ -44,12 +44,12 @@ export abstract class BaseEntity extends TypeOrmBaseEntity {
 	 * Create an instance of BaseEntity.
 	 *
 	 * @param {Partial<
-	 * 	GetAttributes<Subtract<BaseEntity, TypeOrmBaseEntity>>
+	 * 	AttributesOnly<Subtract<BaseEntity, TypeOrmBaseEntity>>
 	 * >} object
 	 *   - Input base entity fields.
 	 */
 	constructor(
-		object: Partial<GetAttributes<Subtract<BaseEntity, TypeOrmBaseEntity>>>,
+		object: Partial<AttributesOnly<Subtract<BaseEntity, TypeOrmBaseEntity>>>,
 	) {
 		super();
 		this.id = object?.id || (undefined as never);

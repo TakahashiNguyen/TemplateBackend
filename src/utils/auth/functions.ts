@@ -1,4 +1,4 @@
-import { hash as argon2Hash, verify } from 'argon2';
+import { hashSync as argon2Hash, verify } from '@node-rs/argon2';
 
 import { ModifiedArgon2Options } from './types';
 
@@ -21,10 +21,10 @@ import { ModifiedArgon2Options } from './types';
  *   different outcomes.
  * @returns {Promise<string>} Verifiable hashed string from `input`.
  */
-export async function bidirectionalHash(
+export function bidirectionalHash(
 	input: string,
 	option: ModifiedArgon2Options,
-): Promise<string> {
+): string {
 	return argon2Hash(input, option);
 }
 

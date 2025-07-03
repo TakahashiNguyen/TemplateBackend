@@ -23,7 +23,7 @@ import { SecurityService } from 'utils/auth/classes';
 
 import { cookieOptions, fileSizeMaximum } from './constants';
 import { RequestResponse } from './interfaces';
-import { GetAttributes } from './types';
+import { AttributesOnly } from './types';
 
 /** Modified cache interceptor. */
 export class ModifiedCacheInterceptor extends CacheInterceptor {
@@ -320,9 +320,9 @@ export class UserRecieve {
 	/**
 	 * Quick user recieve initiation.
 	 *
-	 * @param {GetAttributes<UserRecieve>} object - User recieve infomations.
+	 * @param {AttributesOnly<UserRecieve>} object - User recieve infomations.
 	 */
-	constructor(object: GetAttributes<UserRecieve>) {
+	constructor(object: AttributesOnly<UserRecieve>) {
 		this.isClearCookie = object.isClearCookie;
 		this.hook = object.hook;
 		this.bloc = object.bloc;

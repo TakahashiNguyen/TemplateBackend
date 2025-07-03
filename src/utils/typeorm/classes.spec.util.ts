@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Column, Entity, Repository } from 'typeorm';
-import { GetAttributes, Subtract } from 'utils/app/types';
+import { AttributesOnly, Subtract } from 'utils/app/types';
 
 import { BaseEntity, DatabaseRequests } from './classes';
 import { EntityParameters } from './types';
@@ -12,12 +12,12 @@ export class TestEntity extends BaseEntity {
 	/**
 	 * Create an instance of TestEntity.
 	 *
-	 * @param {GetAttributes<Subtract<TestEntity, BaseEntity>> &
+	 * @param {AttributesOnly<Subtract<TestEntity, BaseEntity>> &
 	 * 	EntityParameters<typeof BaseEntity>} object
 	 *   - Input test entity fields.
 	 */
 	constructor(
-		object: GetAttributes<Subtract<TestEntity, BaseEntity>> &
+		object: AttributesOnly<Subtract<TestEntity, BaseEntity>> &
 			EntityParameters<typeof BaseEntity>,
 	) {
 		super(object);

@@ -1,6 +1,6 @@
 import { User } from 'app/user/user.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
-import { GetAttributes, Subtract } from 'utils/app/types';
+import { AttributesOnly, Subtract } from 'utils/app/types';
 import { Metadata } from 'utils/auth/classes';
 import { ServerException } from 'utils/error';
 import { CacheControl } from 'utils/graphql/functions';
@@ -16,12 +16,12 @@ export class Hook extends BaseEntity {
 	/**
 	 * Create hook with infomations.
 	 *
-	 * @param {GetAttributes<Subtract<Hook, BaseEntity>> &
+	 * @param {AttributesOnly<Subtract<Hook, BaseEntity>> &
 	 * 	EntityParameters<typeof BaseEntity>} object
 	 *   - Input hook entity fields.
 	 */
 	constructor(
-		object: GetAttributes<
+		object: AttributesOnly<
 			Subtract<Pick<Hook, 'owner' | 'signature' | 'note'>, BaseEntity>
 		> &
 			EntityParameters<typeof BaseEntity>,

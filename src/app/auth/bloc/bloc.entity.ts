@@ -1,6 +1,6 @@
 import { User } from 'app/user/user.entity';
 import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne } from 'typeorm';
-import { GetAttributes, Omitting, Subtract } from 'utils/app/types';
+import { AttributesOnly, Omitting, Subtract } from 'utils/app/types';
 import { Metadata } from 'utils/auth/classes';
 import { unidirectionalHash } from 'utils/data/funtions';
 import { CacheControl } from 'utils/graphql/functions';
@@ -14,7 +14,7 @@ export class Bloc extends BaseEntity {
 	/**
 	 * Create bloc with infomations.
 	 *
-	 * @param {GetAttributes<
+	 * @param {AttributesOnly<
 	 * 	Subtract<
 	 * 		Omitting<Bloc, 'currentHash' | 'lastIssue' | 'metadata'>,
 	 * 		BaseEntity
@@ -24,7 +24,7 @@ export class Bloc extends BaseEntity {
 	 *   - Input bloc entity fields.
 	 */
 	constructor(
-		object: GetAttributes<
+		object: AttributesOnly<
 			Subtract<
 				Omitting<Bloc, 'currentHash' | 'lastIssue' | 'metadata'>,
 				BaseEntity

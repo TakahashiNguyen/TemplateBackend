@@ -1,6 +1,7 @@
 import { IBaseAuthentication } from 'app/auth/classes';
-import { IsStrongPassword } from 'class-validator';
+import { IsOptional, IsStrongPassword } from 'class-validator';
 import { BeforeInsert, BeforeUpdate, Column } from 'typeorm';
+import { AttributesOnly } from 'utils/app/types';
 import {
 	bidirectionalHash,
 	verifyBidirectionalHash,
@@ -13,6 +14,7 @@ export class Password implements IBaseAuthentication {
 	@Column({ nullable: false }) private hashedPassword?: string;
 
 	/** Plain password. */
+	@IsOptional()
 	@IsStrongPassword({
 		minLength: 16,
 		minLowercase: 1,
@@ -20,22 +22,23 @@ export class Password implements IBaseAuthentication {
 		minNumbers: 1,
 		minSymbols: 1,
 	})
-	private password?: string;
+	password?: string;
 
 	/**
 	 * Initiatialize password class.
 	 *
-	 * @param args
-	 * @param args.hashedPassword
-	 * @param args.password
+	 * @param {Password} [args] - Input password class fields.
 	 */
-	constructor(args: {
-		/** Hashed password. */ hashedPassword?: string;
-		/** Plain password. */ password?: string;
-	}) {
-		this.password = args.password;
-		this.hashedPassword = args.hashedPassword;
+	constructor(
+		args?: AttributesOnly<Password> & {
+			/** Hashed password. */ hashedPassword?: string;
+		},
+	) {
+		this.password = args?.password;
+		this.hashedPassword = args?.hashedPassword;
 	}
+
+	// Methods
 
 	/**
 	 * Hashing password function.
@@ -45,19 +48,19 @@ export class Password implements IBaseAuthentication {
 	 * ```ts
 	 * this.hashingPassword();
 	 * ```
+	 *
+	 * @throws {ServerException} If instance's password field empty.
 	 */
 	@BeforeInsert()
 	@BeforeUpdate()
-	private async hashingPassword() {
-		if (this.password == null)
-			throw new ServerException('Fatal', 'Server', 'Implementation');
-
-		this.hashedPassword = await bidirectionalHash(this.password, {
-			parallelism: 3 + (3).random,
-			memoryCost: 60000 + (6000).random,
-			timeCost: 3 + (3).random,
-			hashLength: 60 + (60).random,
-		});
+	private hashingPassword() {
+		if (this.password != null)
+			this.hashedPassword = bidirectionalHash(this.password, {
+				parallelism: 3 + (3).random,
+				memoryCost: 60000 + (6000).random,
+				timeCost: 3 + (3).random,
+				outputLen: 32 + (32).random,
+			});
 	}
 
 	/**
@@ -78,5 +81,23 @@ export class Password implements IBaseAuthentication {
 			throw new ServerException('Fatal', 'Server', 'Implementation');
 
 		return verifyBidirectionalHash(this.hashedPassword, password);
+	}
+
+	/**
+	 * Testing function.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * Password.test();
+	 * ```
+	 *
+	 * @param {Password} [obj] - Input for password class.
+	 * @returns {Password | undefined} A password instance or undefined.
+	 */
+	static test(obj?: Password): Password | undefined {
+		return new Password({
+			password: obj?.password || (16).string + 'aA1!',
+		});
 	}
 }

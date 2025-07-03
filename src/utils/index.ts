@@ -350,9 +350,7 @@ Object.defineProperty(Number.prototype, 'random', {
 Object.defineProperty(Number.prototype, 'alpha', {
 	get: function () {
 		if (!this) return '';
-		return Array(this)
-			.map(() => alphabet.randChar)
-			.join('');
+		return Array.from({ length: this }, () => alphabet.randChar).join('');
 	},
 	enumerable: true,
 	configurable: true,
@@ -360,18 +358,17 @@ Object.defineProperty(Number.prototype, 'alpha', {
 Object.defineProperty(Number.prototype, 'string', {
 	get: function () {
 		if (!this) return '';
-		return Array(this)
-			.map(() => (alphabet + numeric).randChar)
-			.join('');
+		return Array.from(
+			{ length: this },
+			() => (alphabet + numeric).randChar,
+		).join('');
 	},
 	enumerable: true,
 	configurable: true,
 });
 Object.defineProperty(Number.prototype, 'numeric', {
 	get: function () {
-		return Array(this)
-			.map(() => numeric.randChar)
-			.join('');
+		return Array.from({ length: this }, () => numeric.randChar).join('');
 	},
 	enumerable: true,
 	configurable: true,

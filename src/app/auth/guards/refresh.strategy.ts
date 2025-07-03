@@ -56,7 +56,7 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
 			throw new ServerException('Invalid', 'User', 'Access');
 		}
 
-		return this.bloc.assign(current.owner, {
+		return this.bloc.create(current.owner, {
 			previousHash: current.currentHash,
 		});
 	}

@@ -1,6 +1,5 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
-import { AppModule } from 'app';
 import { getDefaultExportFromSubdirectory } from 'utils/app/functions';
 
 import { AccessGuard } from './guards/access.guard';
@@ -18,8 +17,6 @@ const modules = getDefaultExportFromSubdirectory(__dirname);
 	imports: [
 		// Authencation
 		PassportModule.register({ session: true }),
-		// App module
-		forwardRef(() => AppModule),
 		// Modules
 		...modules,
 	],

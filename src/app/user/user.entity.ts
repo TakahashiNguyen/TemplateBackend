@@ -1,10 +1,10 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Password } from 'app/auth/api/password';
 import { Authentication } from 'app/auth/classes';
+import { File } from 'app/file/file.entity';
 import { Type } from 'class-transformer';
-import { ValidateNested } from 'class-validator';
-import { Column, Entity } from 'typeorm';
-import { GetAttributes, Subtract } from 'utils/app/types';
+import { IsOptional, ValidateNested } from 'class-validator';
+import { Column, Entity, OneToMany } from 'typeorm';
+import { AttributesOnly, Subtract } from 'utils/app/types';
 import { CacheControl } from 'utils/graphql/functions';
 import { BaseEntity } from 'utils/typeorm/classes';
 import { EntityParameters } from 'utils/typeorm/types';
@@ -19,19 +19,20 @@ export class User extends BaseEntity {
 	/**
 	 * Creates an instance of User.
 	 *
-	 * @param {GetAttributes<Subtract<User, BaseEntity>> &
+	 * @param {AttributesOnly<Subtract<User, BaseEntity>> &
 	 * 	EntityParameters<typeof BaseEntity>} object
 	 *   - Input user fields.
 	 */
 	constructor(
-		object: GetAttributes<Subtract<User, BaseEntity>> &
+		object: AttributesOnly<Subtract<User, BaseEntity>> &
 			EntityParameters<typeof BaseEntity>,
 	) {
 		super(object);
 		this.name = object?.name;
 		this.email = object?.email;
 		this.role = object?.role;
-		this.authentication = object?.authentication;
+		this.authentication = new Authentication(object?.authentication);
+		this.files = object?.files?.map((i) => new File(i));
 	}
 
 	/** User authentication. */
@@ -39,6 +40,12 @@ export class User extends BaseEntity {
 	@Type(() => Authentication)
 	@Column(() => Authentication)
 	authentication: Authentication;
+
+	// Relationships
+	/** User's files. */
+	@IsOptional()
+	@OneToMany(() => File, ($) => $.owner, { onDelete: 'CASCADE' })
+	files?: File[];
 
 	// Infomations
 
@@ -79,7 +86,7 @@ export class User extends BaseEntity {
 		unit: string,
 		{
 			email = (20).string + '@example.com',
-			authentication = { password: new Password({ password: '' }) },
+			authentication,
 			role = UserRole.guest,
 		}: Partial<ConstructorParameters<typeof User>[0]>,
 	): User {
@@ -87,7 +94,7 @@ export class User extends BaseEntity {
 			name: unit + '_' + (5).string,
 			email,
 			role,
-			authentication,
+			authentication: authentication || Authentication.test({}),
 		});
 	}
 }

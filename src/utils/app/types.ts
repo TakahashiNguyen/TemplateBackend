@@ -34,15 +34,28 @@ export type Subtract<A, B> = {
 };
 
 /**
+ * Get methods' key from `T`.
+ *
+ * @template T
+ */
+export type MethodKeys<T> = {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	[K in keyof T]: T[K] extends (...args: any[]) => any ? K : never;
+}[keyof T];
+
+/**
+ * Get methods from `T`.
+ *
+ * @template T
+ */
+export type MethodsOnly<T> = Pick<T, MethodKeys<T>>;
+
+/**
  * Get attributes from `T`.
  *
  * @template T
  */
-export type GetAttributes<T> = {
-	[K in keyof T as T[K] extends <P>(...args: never[]) => P | Promise<P>
-		? never
-		: K]: T[K];
-};
+export type AttributesOnly<T> = Omitting<T, MethodKeys<T>>;
 
 /**
  * Only required one of specified keys and remove remains.
