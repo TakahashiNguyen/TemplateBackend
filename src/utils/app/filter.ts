@@ -57,7 +57,7 @@ export class AppExceptionFilter
 						exception = new ServerException(
 							'Invalid',
 							type,
-							type == 'Client' ? 'Request' : '',
+							type == 'Client' ? 'Request' : 'Submit',
 							exception,
 						);
 					}

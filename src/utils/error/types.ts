@@ -34,7 +34,7 @@ export type ErrorObject =
 
 /** Error action type for server responses. */
 export type ErrorAction =
-	| ''
+	| 'Submit'
 	| 'Request'
 	| 'Read'
 	| 'Sent'

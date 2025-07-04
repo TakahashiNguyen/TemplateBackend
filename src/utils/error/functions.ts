@@ -21,5 +21,5 @@ export function serverException(
 	object: ErrorObject,
 	action: ErrorAction,
 ): string {
-	return type + '_' + object + (action ? '_' : '') + action;
+	return type + '_' + object + '_' + action;
 }

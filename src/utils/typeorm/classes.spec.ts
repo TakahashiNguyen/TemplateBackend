@@ -44,7 +44,10 @@ describe('id', () => {
 	it('fail due to invalid or empty input', async () => {
 		await execute(() => testEntityService.id(undefined), {
 			expectations: [
-				{ type: 'toThrow', parameters: [serverException('Invalid', 'ID', '')] },
+				{
+					type: 'toThrow',
+					parameters: [serverException('Invalid', 'ID', 'Submit')],
+				},
 			],
 		});
 	});

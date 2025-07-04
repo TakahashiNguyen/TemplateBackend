@@ -28,7 +28,7 @@ export type ExtendedFindOptions = ExtendedFindOneOptions & {
 };
 
 /** Saving options. */
-export type ExtendedSaveOptions = {
+export type CreateOptions = {
 	/** Raw saving. */
 	raw?: boolean;
 

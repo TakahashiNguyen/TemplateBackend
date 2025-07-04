@@ -118,7 +118,7 @@ describe('canActivate', () => {
 			expectations: [
 				{
 					type: 'toThrow',
-					parameters: [serverException('Invalid', 'User', '')],
+					parameters: [serverException('Invalid', 'User', 'Request')],
 				},
 			],
 		});

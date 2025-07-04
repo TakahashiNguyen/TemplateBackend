@@ -31,7 +31,7 @@ export async function validateObject<T extends object>(input: T): Promise<T> {
 
 		return input;
 	} catch (error) {
-		throw new ServerException('Invalid', 'Entity', '', error as Error);
+		throw new ServerException('Invalid', 'Entity', 'Submit', error as Error);
 	}
 }
 

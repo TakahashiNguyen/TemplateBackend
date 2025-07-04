@@ -102,5 +102,6 @@
 			"isWholeLine": true,
 			"text": "// Update"
 		}
-	]
+	],
+	"testing.automaticallyOpenTestResults": "neverOpen"
 }

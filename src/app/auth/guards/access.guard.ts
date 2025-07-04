@@ -56,7 +56,7 @@ export class AccessGuard extends AuthGuard('access') {
 			forbidRoles = this.reflector.get(Forbid, context.getHandler()) || [],
 			userRole = this.getRequest(context).key.user?.role;
 
-		if (!userRole) throw new ServerException('Invalid', 'User', '');
+		if (!userRole) throw new ServerException('Invalid', 'User', 'Request');
 		else if (allowRoles.some((i) => roleMatching(i, forbidRoles)))
 			throw new ServerException('Fatal', 'Method', 'Implementation');
 		else if (!allowRoles.length && !forbidRoles.length) return true;
