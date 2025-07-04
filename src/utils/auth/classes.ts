@@ -8,6 +8,7 @@ import {
 	randomBytes,
 } from 'node:crypto';
 import { Column } from 'typeorm';
+import { UAParser } from 'ua-parser-js';
 import { sortObjectKeys } from 'utils/app/functions';
 import { unidirectionalHash } from 'utils/data/funtions';
 
@@ -205,20 +206,40 @@ export abstract class SecurityService {
 /** Metadata class. */
 export class Metadata {
 	/** Hashed metadata. */
-	@Column({ nullable: false }) private metadataHash!: string;
+	@Column({ nullable: false }) private hash?: string;
+
+	/**
+	 * Initializes metadata class.
+	 *
+	 * @param args
+	 * @param args.hash
+	 * @param args.value
+	 */
+	constructor(args?: {
+		/** Input hash value. */
+		hash?: string;
+
+		/** Input metadata. */
+		value?: IMetadata;
+	}) {
+		this.hash = args?.hash;
+		if (args?.value) this.set = args?.value;
+	}
+
+	// Methods
 
 	/** Set `metadataHash` by hashing `input`. */
 	set set(input: IMetadata) {
-		this.metadataHash = this.hashMetadata(input);
+		this.hash = this.hashMetadata(input);
 	}
 
 	/**
 	 * Get hashed metadata value.
 	 *
-	 * @returns {string} Hashed metadata.
+	 * @returns {string | undefined} Hashed metadata.
 	 */
-	get get(): string {
-		return this.metadataHash;
+	get get(): string | undefined {
+		return this.hash;
 	}
 
 	/**
@@ -234,7 +255,7 @@ export class Metadata {
 	 * @returns {string} Hashed metadata.
 	 */
 	private hashMetadata(input: IMetadata): string {
-		return unidirectionalHash(sortObjectKeys(input).toString());
+		return unidirectionalHash(JSON.stringify(sortObjectKeys(input)));
 	}
 
 	/**
@@ -250,6 +271,23 @@ export class Metadata {
 	 * @returns {boolean} True if `input` matched with `metadataHash`.
 	 */
 	verify(input: IMetadata): boolean {
-		return this.hashMetadata(input) == this.metadataHash;
+		return this.hashMetadata(input) == this.hash;
+	}
+
+	/**
+	 * Testing function.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * Metadata.test();
+	 * ```
+	 *
+	 * @returns {Metadata} An instance of Metadata class.
+	 */
+	static test(): Metadata {
+		return new Metadata({
+			value: new UAParser((20).string).getResult(),
+		});
 	}
 }

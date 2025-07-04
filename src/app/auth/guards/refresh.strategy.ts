@@ -57,7 +57,7 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
 		}
 
 		return this.bloc.create(current.owner, {
-			previousHash: current.currentHash,
+			currentHash: current.currentHash,
 		});
 	}
 }

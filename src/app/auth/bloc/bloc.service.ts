@@ -3,17 +3,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'app/user/user.entity';
 import { Repository } from 'typeorm';
 import { currentTime } from 'utils/app/functions';
-import { GetAttributes, RequireOnlyOne } from 'utils/app/types';
+import { AttributesOnly, RequireOnlyOne } from 'utils/app/types';
 import { ServerException } from 'utils/error';
 import { DatabaseRequests } from 'utils/typeorm/classes';
 
 import { Bloc } from './bloc.entity';
 
 /** Bloc identifier. */
-type IdOrHash = Pick<GetAttributes<Bloc>, 'id' | 'currentHash'>;
+type IdOrHash = Pick<AttributesOnly<Bloc>, 'id' | 'currentHash'>;
 
 /** Bloc required infomations. */
-type BlocInput = Pick<GetAttributes<Bloc>, 'previousHash' | 'metadata'>;
+type BlocInput = Pick<AttributesOnly<Bloc>, 'currentHash' | 'metadata'>;
 
 /** Bloc service class. */
 @Injectable()
@@ -28,35 +28,56 @@ export class BlocService extends DatabaseRequests<Bloc> {
 	}
 
 	/**
-	 * Create Bloc.
+	 * Create new bloc.
 	 *
 	 * @example
 	 *
 	 * ```ts
-	 * this.create(bloc);
+	 * this.create(owner, { previousHash });
 	 * ```
 	 *
-	 * @param {Parameters<typeof this.$create>} args - Input parameters.
-	 * @returns {Promise<Bloc>} Instance of Bloc.
+	 * @param {User} owner - The owner of bloc id.
+	 * @param root0
+	 * @param root0.currentHash
+	 * @param root0.metadata
+	 * @returns {Promise<Bloc>} Bloc instance.
 	 */
-	public create(...args: Parameters<typeof this.$create>): Promise<Bloc> {
-		return this.$create(...args);
+	async create(
+		owner: User,
+		{
+			currentHash,
+			metadata,
+		}: RequireOnlyOne<BlocInput, 'metadata' | 'currentHash'>,
+	): Promise<Bloc> {
+		const previousHash = await (async () => {
+			if (!currentHash) return undefined;
+
+			metadata = (await this.currentHash(currentHash))?.metadata || metadata;
+
+			return currentHash;
+		})();
+
+		if (!metadata) throw new ServerException('Invalid', 'Client', 'Submit');
+
+		return this.$create({ owner, previousHash, metadata });
 	}
 
 	/**
 	 * Update Bloc.
 	 *
+	 * @deprecated Non functional method.
 	 * @example
 	 *
 	 * ```ts
 	 * this.update(bloc);
 	 * ```
 	 *
-	 * @param {Parameters<typeof this.$update>} args - Input parameters.
+	 * @param {never} args - Input parameters.
 	 * @returns {Promise<void>}
 	 */
-	public update(...args: Parameters<typeof this.$update>): Promise<void> {
-		return this.$update(...args);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	public update(...args: unknown[]): Promise<void> {
+		return Promise.resolve();
 	}
 
 	/**
@@ -75,8 +96,17 @@ export class BlocService extends DatabaseRequests<Bloc> {
 		id: targetId,
 		currentHash: targetCurrentHash,
 	}: RequireOnlyOne<IdOrHash, 'currentHash' | 'id'>) {
-		const currentBloc =
-			(await this.id(targetId)) || (await this.currentHash(targetCurrentHash));
+		let currentBloc;
+
+		try {
+			currentBloc = await this.id(targetId);
+		} catch {
+			try {
+				currentBloc = await this.currentHash(targetCurrentHash);
+			} catch {
+				throw new ServerException('Invalid', 'Input', 'Submit');
+			}
+		}
 
 		if (!currentBloc) return;
 
@@ -110,7 +140,7 @@ export class BlocService extends DatabaseRequests<Bloc> {
 		id,
 		currentHash,
 	}: RequireOnlyOne<IdOrHash, 'currentHash' | 'id'>): Promise<void> {
-		await this.update({ currentHash, id }, { lastIssue: currentTime() });
+		await this.$update({ currentHash, id }, { lastIssue: currentTime() });
 	}
 
 	/**
@@ -145,46 +175,8 @@ export class BlocService extends DatabaseRequests<Bloc> {
 		currentHash: string | undefined,
 	): Promise<Bloc | undefined> {
 		if (currentHash == undefined)
-			throw new ServerException('Invalid', 'Input', '');
+			throw new ServerException('Invalid', 'Input', 'Submit');
 
 		return this.findOne({ currentHash, cache: false });
-	}
-
-	/**
-	 * Assign new bloc.
-	 *
-	 * @example
-	 *
-	 * ```ts
-	 * this.assign(owner, { previousHash });
-	 * ```
-	 *
-	 * @param {User} owner - The owner of bloc id.
-	 * @param root0
-	 * @param root0.previousHash
-	 * @param root0.metadata
-	 * @returns {Promise<Bloc>} Bloc instance.
-	 */
-	async assign(
-		owner: User,
-		{
-			previousHash,
-			metadata,
-		}: RequireOnlyOne<BlocInput, 'metadata' | 'previousHash'>,
-	): Promise<Bloc> {
-		const updatePrev = async () => {
-			if (!previousHash) return undefined;
-
-			metadata =
-				(await this.findContinuousBloc(previousHash))?.metadata || metadata;
-
-			return previousHash;
-		};
-
-		const bloc = new Bloc({ owner, previousHash: await updatePrev() });
-
-		if (metadata) bloc.metadata = metadata;
-
-		return this.create(bloc);
 	}
 }

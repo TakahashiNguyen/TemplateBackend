@@ -20,22 +20,26 @@ export class Bloc extends BaseEntity {
 	 * 		BaseEntity
 	 * 	>
 	 * > &
-	 * 	EntityParameters<typeof BaseEntity>} object
+	 * 	EntityParameters<typeof BaseEntity> & {
+	 * 		currentHash?: string;
+	 * 	}} object
 	 *   - Input bloc entity fields.
 	 */
 	constructor(
 		object: AttributesOnly<
-			Subtract<
-				Omitting<Bloc, 'currentHash' | 'lastIssue' | 'metadata'>,
-				BaseEntity
-			>
+			Subtract<Omitting<Bloc, 'currentHash' | 'lastIssue'>, BaseEntity>
 		> &
-			EntityParameters<typeof BaseEntity>,
+			EntityParameters<typeof BaseEntity> & {
+				/** Bloc current hash. */ currentHash?: string;
+			},
 	) {
 		super(object);
 		this.previousHash = object?.previousHash;
 		this.owner = object?.owner;
-		this.metadata = new Metadata();
+		// @ts-expect-error error-free expression
+		this.currentHash = object?.currentHash;
+		// @ts-expect-error error-free expression
+		this.metadata = new Metadata(object?.metadata);
 	}
 
 	/** Metadata holder. */
@@ -94,6 +98,10 @@ export class Bloc extends BaseEntity {
 	 * @returns {Bloc} Test bloc.
 	 */
 	static test(unit: string, args: Parameters<typeof User.test>[1]): Bloc {
-		return new Bloc({ owner: User.test(unit, args), previousHash: unit });
+		return new Bloc({
+			owner: User.test(unit, args),
+			previousHash: unit,
+			metadata: Metadata.test(),
+		});
 	}
 }

@@ -27,7 +27,10 @@ export class Password implements IBaseAuthentication {
 	/**
 	 * Initiatialize password class.
 	 *
-	 * @param {Password} [args] - Input password class fields.
+	 * @param {AttributesOnly<Password> & {
+	 * 	hashedPassword?: string;
+	 * }} [args] -
+	 *   Input Password class fields.
 	 */
 	constructor(
 		args?: AttributesOnly<Password> & {
