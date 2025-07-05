@@ -9,7 +9,7 @@ import { User } from './user.entity';
 
 /** User service class. */
 @Injectable()
-export class UserService extends DatabaseRequests<User> {
+export class UserService extends DatabaseRequests<typeof User> {
 	/**
 	 * Initiate user service.
 	 *
@@ -90,10 +90,10 @@ export class UserService extends DatabaseRequests<User> {
 	 * @returns {Promise<User>} Instance of User.
 	 */
 	public async create(...args: Parameters<typeof this.$create>): Promise<User> {
-		const [input, options] = args,
+		const [input] = args,
 			email = await this.resolveEmailIfExisted(input.email);
 
-		return this.$create({ ...input, email }, options);
+		return this.$create({ ...input, email });
 	}
 
 	/**
@@ -109,7 +109,7 @@ export class UserService extends DatabaseRequests<User> {
 	 * @returns {Promise<void>}
 	 */
 	public async update(...args: Parameters<typeof this.$update>): Promise<void> {
-		const [target, update, options] = args;
+		const [target, update] = args;
 
 		if (update.email) {
 			const email = await this.resolveEmailIfExisted(update.email.toString());
@@ -117,13 +117,11 @@ export class UserService extends DatabaseRequests<User> {
 			return this.$update(
 				{ ...target, email: target.email?.toString().lower },
 				{ ...update, email },
-				options,
 			);
 		} else
 			return this.$update(
 				{ ...target, email: target.email?.toString().lower },
 				update,
-				options,
 			);
 	}
 }

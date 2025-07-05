@@ -1,5 +1,3 @@
-import { FindOptionsWhere } from 'typeorm';
-
 /** Extend find options. */
 export type ExtendedFindOneOptions = {
 	/** Find depth. */
@@ -26,23 +24,6 @@ export type ExtendedFindOptions = ExtendedFindOneOptions & {
 	/** Number of skipped entity. */
 	skip?: number;
 };
-
-/** Saving options. */
-export type CreateOptions = {
-	/** Raw saving. */
-	raw?: boolean;
-
-	/** Validate before saving. */
-	validate?: boolean;
-};
-
-/**
- * Extended find where.
- *
- * @template T
- * @template K
- */
-export type FindWhereExtend<T, K> = FindOptionsWhere<T> & K;
 
 /**
  * Get entity parameters.

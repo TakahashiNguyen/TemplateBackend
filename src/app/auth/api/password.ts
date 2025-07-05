@@ -22,23 +22,18 @@ export class Password implements IBaseAuthentication {
 		minNumbers: 1,
 		minSymbols: 1,
 	})
-	password?: string;
+	password: string;
 
 	/**
 	 * Initiatialize password class.
 	 *
-	 * @param {AttributesOnly<Password> & {
-	 * 	hashedPassword?: string;
-	 * }} [args] -
-	 *   Input Password class fields.
+	 * @param {AttributesOnly<Password>} object - Input Password class fields.
 	 */
-	constructor(
-		args?: AttributesOnly<Password> & {
-			/** Hashed password. */ hashedPassword?: string;
-		},
-	) {
-		this.password = args?.password;
-		this.hashedPassword = args?.hashedPassword;
+	constructor(object: AttributesOnly<Password>) {
+		this.password = object?.password;
+
+		// @ts-expect-error private field
+		this.hashedPassword = object?.hashedPassword;
 	}
 
 	// Methods
@@ -95,12 +90,16 @@ export class Password implements IBaseAuthentication {
 	 * Password.test();
 	 * ```
 	 *
-	 * @param {Password} [obj] - Input for password class.
-	 * @returns {Password | undefined} A password instance or undefined.
+	 * @param {ConstructorParameters<typeof Password>[0]} [obj] - Input for
+	 *   password class.
+	 * @returns {ConstructorParameters<typeof Password>[0]} An input for password
+	 *   class.
 	 */
-	static test(obj?: Password): Password | undefined {
-		return new Password({
+	static test(
+		obj?: ConstructorParameters<typeof Password>[0],
+	): ConstructorParameters<typeof Password>[0] {
+		return {
 			password: obj?.password || (16).string + 'aA1!',
-		});
+		};
 	}
 }

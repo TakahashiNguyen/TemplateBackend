@@ -4,7 +4,7 @@ import { File } from 'app/file/file.entity';
 import { Type } from 'class-transformer';
 import { IsOptional, ValidateNested } from 'class-validator';
 import { Column, Entity, OneToMany } from 'typeorm';
-import { AttributesOnly, Subtract } from 'utils/app/types';
+import { AttributesOnly, ClassType, Omitting, Subtract } from 'utils/app/types';
 import { CacheControl } from 'utils/graphql/functions';
 import { BaseEntity } from 'utils/typeorm/classes';
 import { EntityParameters } from 'utils/typeorm/types';
@@ -24,15 +24,22 @@ export class User extends BaseEntity {
 	 *   - Input user fields.
 	 */
 	constructor(
-		object: AttributesOnly<Subtract<User, BaseEntity>> &
-			EntityParameters<typeof BaseEntity>,
+		object: AttributesOnly<
+			Subtract<Omitting<User, 'authentication'>, BaseEntity>
+		> & {
+			/** Authentication class input. */ authentication: ClassType<
+				typeof Authentication
+			>;
+		} & EntityParameters<typeof BaseEntity>,
 	) {
 		super(object);
 		this.name = object?.name;
 		this.email = object?.email;
 		this.role = object?.role;
-		this.authentication = new Authentication(object?.authentication);
 		this.files = object?.files?.map((i) => new File(i));
+
+		// class
+		this.authentication = new Authentication(object?.authentication);
 	}
 
 	/** User authentication. */
@@ -89,12 +96,12 @@ export class User extends BaseEntity {
 			authentication,
 			role = UserRole.guest,
 		}: Partial<ConstructorParameters<typeof User>[0]>,
-	): User {
-		return new User({
+	): ConstructorParameters<typeof User>[0] {
+		return {
 			name: unit + '_' + (5).string,
 			email,
 			role,
 			authentication: authentication || Authentication.test({}),
-		});
+		};
 	}
 }

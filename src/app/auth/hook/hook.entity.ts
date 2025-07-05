@@ -1,6 +1,11 @@
 import { User } from 'app/user/user.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
-import { AttributesOnly, Subtract } from 'utils/app/types';
+import {
+	ApplyPartial,
+	AttributesOnly,
+	Omitting,
+	Subtract,
+} from 'utils/app/types';
 import { Metadata } from 'utils/auth/classes';
 import { ServerException } from 'utils/error';
 import { CacheControl } from 'utils/graphql/functions';
@@ -16,21 +21,31 @@ export class Hook extends BaseEntity {
 	/**
 	 * Create hook with infomations.
 	 *
-	 * @param {AttributesOnly<Subtract<Hook, BaseEntity>> &
-	 * 	EntityParameters<typeof BaseEntity>} object
+	 * @param {AttributesOnly<
+	 * 	Subtract<ApplyPartial<Omitting<Hook, 'metadata'>, 'note'>, BaseEntity>
+	 * > & {
+	 * 	metadata: ConstructorParameters<typeof Metadata>[0];
+	 * } & EntityParameters<typeof BaseEntity>} object
 	 *   - Input hook entity fields.
 	 */
 	constructor(
 		object: AttributesOnly<
-			Subtract<Pick<Hook, 'owner' | 'signature' | 'note'>, BaseEntity>
-		> &
-			EntityParameters<typeof BaseEntity>,
+			Subtract<ApplyPartial<Omitting<Hook, 'metadata'>, 'note'>, BaseEntity>
+		> & {
+			/** Metadata class input. */ metadata: ConstructorParameters<
+				typeof Metadata
+			>[0];
+		} & EntityParameters<typeof BaseEntity>,
 	) {
 		super(object);
 		this.owner = object?.owner;
 		this.signature = object?.signature;
+
+		// @ts-expect-error nullable field
 		this.note = object?.note;
-		this.metadata = new Metadata();
+
+		// class
+		this.metadata = new Metadata(object?.metadata);
 	}
 
 	// Relationships
@@ -46,7 +61,7 @@ export class Hook extends BaseEntity {
 	@Column(() => Metadata) metadata: Metadata;
 
 	/** Addition infomations. */
-	@Column({ type: 'jsonb', default: {} }) note?: object;
+	@Column({ type: 'jsonb', default: {} }) note: object;
 
 	/**
 	 * Verifying hook.
@@ -64,6 +79,6 @@ export class Hook extends BaseEntity {
 	 */
 	verify(metadata: IMetadata, signature: string) {
 		if (!this.metadata.verify(metadata) || this.signature !== signature)
-			throw new ServerException('Invalid', 'Hook', '');
+			throw new ServerException('Invalid', 'Hook', 'Request');
 	}
 }

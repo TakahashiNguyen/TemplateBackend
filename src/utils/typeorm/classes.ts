@@ -14,12 +14,7 @@ import { validateObject } from 'utils/app/functions';
 import { AttributesOnly, Subtract } from 'utils/app/types';
 import { ServerException } from 'utils/error';
 
-import {
-	CreateOptions,
-	ExtendedFindOneOptions,
-	ExtendedFindOptions,
-	FindWhereExtend,
-} from './types';
+import { ExtendedFindOneOptions, ExtendedFindOptions } from './types';
 
 export { TypeOrmBaseEntity };
 
@@ -28,17 +23,17 @@ export abstract class BaseEntity extends TypeOrmBaseEntity {
 	/** Unique identifier for the entity. */
 	@PrimaryGeneratedColumn('uuid')
 	@IsOptional()
-	id!: string;
+	id: string;
 
 	/** Creation date record. */
 	@CreateDateColumn()
 	@IsOptional()
-	createdAt?: Date;
+	createdAt: Date;
 
 	/** Last update date record. */
 	@UpdateDateColumn()
 	@IsOptional()
-	updatedAt?: Date;
+	updatedAt: Date;
 
 	/**
 	 * Create an instance of BaseEntity.
@@ -52,8 +47,11 @@ export abstract class BaseEntity extends TypeOrmBaseEntity {
 		object: Partial<AttributesOnly<Subtract<BaseEntity, TypeOrmBaseEntity>>>,
 	) {
 		super();
-		this.id = object?.id || (undefined as never);
+		// @ts-expect-error nullable field
+		this.id = object?.id;
+		// @ts-expect-error nullable field
 		this.createdAt = object?.createdAt;
+		// @ts-expect-error nullable field
 		this.updatedAt = object?.updatedAt;
 	}
 }
@@ -62,8 +60,14 @@ export abstract class BaseEntity extends TypeOrmBaseEntity {
  * Base class for database requests.
  *
  * @template T - Type of the entity.
+ * @template C - Entity constructor.
+ * @template P - Constructor's parameters.
  */
-export abstract class DatabaseRequests<T extends BaseEntity> {
+export abstract class DatabaseRequests<
+	C extends new (args: P) => T,
+	T extends BaseEntity = InstanceType<C>,
+	P extends object = ConstructorParameters<C>[0],
+> {
 	/** Entity relationships. */
 	private relations: string[];
 
@@ -71,16 +75,15 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	private repo: Repository<T>;
 
 	/** Entity's constructor. */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	private ctor: new (...args: any[]) => T;
+	private ctor: C;
 
 	/**
 	 * Initiate database methods for entity.
 	 *
-	 * @param {Repository<T>} repo - Entity's repository.
-	 * @param {Class} ctor - Entity's constructor.
+	 * @param {typeof this.repo} repo - Entity's repository.
+	 * @param {typeof this.ctor} ctor - Entity's constructor.
 	 */
-	constructor(repo: Repository<T>, ctor: typeof this.ctor) {
+	constructor(repo: typeof this.repo, ctor: typeof this.ctor) {
 		this.relations = repo.metadata.relations
 			.map((i) => this.exploreEntityMetadata(i))
 			.flat();
@@ -142,10 +145,8 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	public readonly id = (id: string | undefined): Promise<T | undefined> => {
 		if (id == undefined) throw new ServerException('Invalid', 'ID', 'Submit');
 
-		return this.findOne({ id, cache: false } as FindWhereExtend<
-			T,
-			ExtendedFindOneOptions
-		>);
+		// @ts-expect-error error-free expression
+		return this.findOne({ id, cache: false });
 	};
 
 	/**
@@ -162,7 +163,7 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * @returns {Promise<T[]>} Array of found objects.
 	 */
 	public readonly find = async (
-		options?: FindWhereExtend<T, ExtendedFindOptions>,
+		options?: DeepPartial<P> & ExtendedFindOptions,
 	): Promise<T[]> => {
 		const {
 				deep = 1,
@@ -179,14 +180,26 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 				.map((i) => i.split('.').slice(0, deep).join('.'))
 				.filter((i) => requestRelation.some((j) => i.includes(j)))
 				.filter((value, index, self) => self.indexOf(value) === index),
-			where = new ctor(entity) as FindOptionsWhere<T>,
+			where = new ctor(entity as P) as FindOptionsWhere<T>,
 			lock: FindOneOptions['lock'] = writeLock
 				? { mode: 'pessimistic_write' }
 				: undefined;
 
 		return (
-			await this.repo.find({ where, take, skip, order, relations, cache, lock })
-		).map((i) => new ctor(i));
+			(
+				await this.repo.find({
+					where,
+					take,
+					skip,
+					order,
+					relations,
+					cache,
+					lock,
+				})
+			)
+				// @ts-expect-error entity input
+				.map((i) => new ctor(i))
+		);
 	};
 
 	/**
@@ -203,7 +216,7 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * @returns {Promise<T | undefined>} An entity match `option` request.
 	 */
 	public readonly findOne = async (
-		options: FindWhereExtend<T, ExtendedFindOneOptions>,
+		options: DeepPartial<P> & ExtendedFindOneOptions,
 	): Promise<T | undefined> => {
 		const {
 				deep = 1,
@@ -218,13 +231,14 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 				.map((i) => i.split('.').slice(0, deep).join('.'))
 				.filter((i) => requestRelation.some((j) => i.includes(j)))
 				.filter((value, index, self) => self.indexOf(value) === index),
-			where = new ctor(entity) as FindOptionsWhere<T>,
+			where = new ctor(entity as P) as FindOptionsWhere<T>,
 			lock: FindOneOptions['lock'] = writeLock
 				? { mode: 'pessimistic_write' }
 				: undefined,
 			found = await this.repo.findOne({ where, order, relations, cache, lock });
 
-		return found != null ? new this.ctor(found) : undefined;
+		// @ts-expect-error entity input
+		return found != null ? new ctor(found) : undefined;
 	};
 
 	// Create
@@ -239,20 +253,13 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 * ```
 	 *
 	 * @param {DeepPartial<T>} entity - The saving entity.
-	 * @param {CreateOptions} options - Entity save options.
 	 * @returns {Promise<T>} An entity that created in database.
 	 */
-	protected readonly $create = async (
-		entity: DeepPartial<T>,
-		options?: CreateOptions,
-	): Promise<T> => {
-		const { raw = false, validate = true } = options || {},
-			forgedEntity = raw ? entity : new this.ctor(entity),
-			validatedEntity = (
-				validate && !raw ? await validateObject(forgedEntity) : forgedEntity
-			) as DeepPartial<T>;
-
-		return new this.ctor(await this.repo.save(validatedEntity));
+	protected readonly $create = async (entity: P): Promise<T> => {
+		return new this.ctor(
+			// @ts-expect-error entity input
+			await this.repo.save(await validateObject(new this.ctor(entity))),
+		);
 	};
 
 	public abstract create(...args: unknown[]): Promise<T>;
@@ -270,13 +277,12 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 	 *
 	 * @param {FindOptionsWhere<T>} targetEntity - Target entity.
 	 * @param {DeepPartial<T>} updatedEntity - Updated entity.
-	 * @param {CreateOptions} options - Update entity options.
 	 */
 	protected readonly $update = async (
-		targetEntity: FindOptionsWhere<T>,
-		updatedEntity: DeepPartial<T>,
-		options?: CreateOptions,
+		targetEntity: DeepPartial<P>,
+		updatedEntity: DeepPartial<P>,
 	): Promise<void> => {
+		// @ts-expect-error error-free expression
 		const entities = await this.find(targetEntity);
 
 		if (
@@ -287,7 +293,8 @@ export abstract class DatabaseRequests<T extends BaseEntity> {
 			entities.length
 		)
 			await Promise.all(
-				entities.map((i) => this.$create({ ...i, ...updatedEntity }, options)),
+				// @ts-expect-error entity input
+				entities.map((i) => this.$create({ ...i, ...updatedEntity })),
 			);
 	};
 

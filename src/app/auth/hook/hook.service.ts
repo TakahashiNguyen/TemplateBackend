@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'app/user/user.entity';
 import { Repository } from 'typeorm';
+import { AmbiguousReturn } from 'utils/app/types';
 import { DatabaseRequests } from 'utils/typeorm/classes';
 
 import { IMetadata } from '../guards';
@@ -9,7 +10,7 @@ import { Hook } from './hook.entity';
 
 /** Hook service. */
 @Injectable()
-export class HookService extends DatabaseRequests<Hook> {
+export class HookService extends DatabaseRequests<typeof Hook> {
 	/**
 	 * Initiate hook service.
 	 *
@@ -17,25 +18,6 @@ export class HookService extends DatabaseRequests<Hook> {
 	 */
 	constructor(@InjectRepository(Hook) repo: Repository<Hook>) {
 		super(repo, Hook);
-	}
-
-	/**
-	 * Validating hook.
-	 *
-	 * @example
-	 *
-	 * ```ts
-	 * this.validating(hook, metadata, signature);
-	 * ```
-	 *
-	 * @param {Hook} hook - Recieved hook from client.
-	 * @param {IMetadata} metadata - Client's metadata.
-	 * @param {string} signature - Client hook's signature.
-	 */
-	async validating(hook: Hook, metadata: IMetadata, signature: string) {
-		await this.delete(hook.id);
-
-		hook.verify(metadata, signature);
 	}
 
 	/**
@@ -55,16 +37,18 @@ export class HookService extends DatabaseRequests<Hook> {
 	 */
 	async create(
 		metadata: IMetadata,
-		func: (signature: string) => Promise<User> | User,
+		func: (signature: string) => AmbiguousReturn<User>,
 		note?: object,
 	): Promise<Hook> {
 		const signature = (128).string,
-			owner = await func(signature),
-			hook = new Hook({ owner, signature, note });
+			owner = await func(signature);
 
-		hook.metadata.set = metadata;
-
-		return this.$create(hook);
+		return this.$create({
+			owner,
+			signature,
+			note,
+			metadata,
+		});
 	}
 
 	/**
@@ -81,5 +65,24 @@ export class HookService extends DatabaseRequests<Hook> {
 	 */
 	public update(): Promise<void> {
 		return Promise.resolve();
+	}
+
+	/**
+	 * Validating hook.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * this.validating(hook, metadata, signature);
+	 * ```
+	 *
+	 * @param {Hook} hook - Recieved hook from client.
+	 * @param {IMetadata} metadata - Client's metadata.
+	 * @param {string} signature - Client hook's signature.
+	 */
+	async validating(hook: Hook, metadata: IMetadata, signature: string) {
+		await this.delete(hook.id);
+
+		hook.verify(metadata, signature);
 	}
 }

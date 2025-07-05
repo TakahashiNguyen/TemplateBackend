@@ -34,7 +34,7 @@ describe('canActivate', () => {
 	// @ts-expect-error error-free expression
 	const req: FastifyRequest = {
 		key: {
-			user: User.test(unit, {}),
+			user: new User(User.test(unit, {})),
 		},
 	};
 

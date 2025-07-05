@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'app/user/user.entity';
 import { Repository } from 'typeorm';
 import { currentTime } from 'utils/app/functions';
 import { AttributesOnly, RequireOnlyOne } from 'utils/app/types';
@@ -12,12 +11,9 @@ import { Bloc } from './bloc.entity';
 /** Bloc identifier. */
 type IdOrHash = Pick<AttributesOnly<Bloc>, 'id' | 'currentHash'>;
 
-/** Bloc required infomations. */
-type BlocInput = Pick<AttributesOnly<Bloc>, 'currentHash' | 'metadata'>;
-
 /** Bloc service class. */
 @Injectable()
-export class BlocService extends DatabaseRequests<Bloc> {
+export class BlocService extends DatabaseRequests<typeof Bloc> {
 	/**
 	 * Initiate bloc service.
 	 *
@@ -36,19 +32,23 @@ export class BlocService extends DatabaseRequests<Bloc> {
 	 * this.create(owner, { previousHash });
 	 * ```
 	 *
-	 * @param {User} owner - The owner of bloc id.
 	 * @param root0
 	 * @param root0.currentHash
 	 * @param root0.metadata
+	 * @param root0.owner
 	 * @returns {Promise<Bloc>} Bloc instance.
 	 */
-	async create(
-		owner: User,
-		{
-			currentHash,
-			metadata,
-		}: RequireOnlyOne<BlocInput, 'metadata' | 'currentHash'>,
-	): Promise<Bloc> {
+	async create({
+		currentHash,
+		metadata,
+		owner,
+	}: RequireOnlyOne<
+		Pick<
+			Parameters<typeof this.$create>[0],
+			'owner' | 'currentHash' | 'metadata'
+		>,
+		'currentHash' | 'metadata'
+	>): Promise<Bloc> {
 		const previousHash = await (async () => {
 			if (!currentHash) return undefined;
 
@@ -89,13 +89,13 @@ export class BlocService extends DatabaseRequests<Bloc> {
 	 * this.removeTree(blocId);
 	 * ```
 	 *
-	 * @param {RequireOnlyOne<IdOrHash, 'currentHash' | 'id'>} objects - Removing
+	 * @param {RequireOnlyOne<IdOrHash>} objects - Removing
 	 *   tree's sub-bloc id or hash.
 	 */
 	async removeTree({
 		id: targetId,
 		currentHash: targetCurrentHash,
-	}: RequireOnlyOne<IdOrHash, 'currentHash' | 'id'>) {
+	}: RequireOnlyOne<IdOrHash>) {
 		let currentBloc;
 
 		try {

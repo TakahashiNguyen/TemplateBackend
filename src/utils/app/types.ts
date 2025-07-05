@@ -64,7 +64,9 @@ export type AttributesOnly<T> = Omitting<T, MethodKeys<T>>;
  * @template Keys
  */
 export type RequireOnlyOne<T, Keys extends keyof T = keyof T> = {
-	[K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>;
+	[K in Keys]-?: Required<Pick<T, K>> &
+		Partial<Pick<T, Exclude<Keys, K>>> &
+		Omitting<T, Keys>;
 }[Keys];
 
 /**
@@ -74,3 +76,21 @@ export type RequireOnlyOne<T, Keys extends keyof T = keyof T> = {
  * @template K
  */
 export type Omitting<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+
+/**
+ * Apply partial to keys of `T`.
+ *
+ * @template T
+ * @template K
+ */
+export type ApplyPartial<T, K extends keyof T> = Omitting<T, K> &
+	Partial<Pick<T, K>>;
+
+/**
+ * Class type in class.
+ *
+ * @template T
+ */
+export type ClassType<T extends new (...args: never[]) => unknown> =
+	| InstanceType<T>
+	| ConstructorParameters<T>[0];

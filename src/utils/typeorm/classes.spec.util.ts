@@ -34,7 +34,7 @@ export class TestEntity extends BaseEntity {
 
 /** Test entity service class. */
 @Injectable()
-export class TestEntityService extends DatabaseRequests<TestEntity> {
+export class TestEntityService extends DatabaseRequests<typeof TestEntity> {
 	/**
 	 * Initiate test entity service.
 	 *

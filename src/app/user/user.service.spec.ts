@@ -19,7 +19,7 @@ beforeAll(async () => {
 });
 
 beforeEach(() => {
-	user = User.test(unit, {});
+	user = new User(User.test(unit, {}));
 });
 
 describe('email', () => {
@@ -61,6 +61,7 @@ describe('create', () => {
 	});
 
 	it('fail when non-email user assigning', async () => {
+		// @ts-expect-error testing purpose
 		await execute(() => userService.create({ ...user, email: undefined }), {
 			expectations: [
 				{

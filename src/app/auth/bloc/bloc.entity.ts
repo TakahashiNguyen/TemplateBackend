@@ -1,6 +1,12 @@
 import { User } from 'app/user/user.entity';
 import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne } from 'typeorm';
-import { AttributesOnly, Omitting, Subtract } from 'utils/app/types';
+import {
+	ApplyPartial,
+	AttributesOnly,
+	ClassType,
+	Omitting,
+	Subtract,
+} from 'utils/app/types';
 import { Metadata } from 'utils/auth/classes';
 import { unidirectionalHash } from 'utils/data/funtions';
 import { CacheControl } from 'utils/graphql/functions';
@@ -16,30 +22,44 @@ export class Bloc extends BaseEntity {
 	 *
 	 * @param {AttributesOnly<
 	 * 	Subtract<
-	 * 		Omitting<Bloc, 'currentHash' | 'lastIssue' | 'metadata'>,
+	 * 		ApplyPartial<
+	 * 			Omitting<Bloc, 'metadata' | 'owner'>,
+	 * 			'lastIssue' | 'currentHash'
+	 * 		>,
 	 * 		BaseEntity
 	 * 	>
-	 * > &
-	 * 	EntityParameters<typeof BaseEntity> & {
-	 * 		currentHash?: string;
-	 * 	}} object
+	 * > & {
+	 * 	metadata: ClassType<Metadata>;
+	 * 	owner: ClassType<User>;
+	 * } & EntityParameters<typeof BaseEntity>} object
 	 *   - Input bloc entity fields.
 	 */
 	constructor(
 		object: AttributesOnly<
-			Subtract<Omitting<Bloc, 'currentHash' | 'lastIssue'>, BaseEntity>
-		> &
-			EntityParameters<typeof BaseEntity> & {
-				/** Bloc current hash. */ currentHash?: string;
-			},
+			Subtract<
+				ApplyPartial<
+					Omitting<Bloc, 'metadata' | 'owner'>,
+					'lastIssue' | 'currentHash'
+				>,
+				BaseEntity
+			>
+		> & {
+			/** Metadata class input. */ metadata: ClassType<typeof Metadata>;
+			/** User class input. */ owner: ClassType<typeof User>;
+		} & EntityParameters<typeof BaseEntity>,
 	) {
 		super(object);
 		this.previousHash = object?.previousHash;
-		this.owner = object?.owner;
-		// @ts-expect-error error-free expression
+
+		// @ts-expect-error nullable field
 		this.currentHash = object?.currentHash;
-		// @ts-expect-error error-free expression
+		// @ts-expect-error nullable field
+		this.lastIssue = object?.lastIssue;
+
+		// classes
+		// @ts-expect-error entity input
 		this.metadata = new Metadata(object?.metadata);
+		this.owner = new User(object?.owner);
 	}
 
 	/** Metadata holder. */
@@ -54,10 +74,10 @@ export class Bloc extends BaseEntity {
 	@Column({ nullable: true, update: false }) previousHash?: string;
 
 	/** Current bloc hash. */
-	@Column({ nullable: false }) currentHash!: string;
+	@Column({ nullable: false }) currentHash: string;
 
 	/** Bloc last issue time. */
-	@Column({ nullable: true }) lastIssue!: number;
+	@Column({ nullable: true }) lastIssue: number;
 
 	// Methods
 
@@ -94,10 +114,11 @@ export class Bloc extends BaseEntity {
 	 * ```
 	 *
 	 * @param {string} unit - The unit its testing from.
-	 * @param {Parameters<typeof User.test>[1]} args - Parameters for test user.
+	 * @param {ConstructorParameters<typeof User>[0]} args - Parameters for test
+	 *   user.
 	 * @returns {Bloc} Test bloc.
 	 */
-	static test(unit: string, args: Parameters<typeof User.test>[1]): Bloc {
+	static test(unit: string, args: ConstructorParameters<typeof User>[0]): Bloc {
 		return new Bloc({
 			owner: User.test(unit, args),
 			previousHash: unit,

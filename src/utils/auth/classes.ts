@@ -206,39 +206,28 @@ export abstract class SecurityService {
 /** Metadata class. */
 export class Metadata {
 	/** Hashed metadata. */
-	@Column({ nullable: false }) private hash?: string;
+	@Column({ nullable: false }) private hash: string;
 
 	/**
 	 * Initializes metadata class.
 	 *
-	 * @param args
-	 * @param args.hash
-	 * @param args.value
+	 * @param {IMetadata} object - Input metadata interface.
 	 */
-	constructor(args?: {
-		/** Input hash value. */
-		hash?: string;
+	constructor(object: IMetadata) {
+		// @ts-expect-error private filed
+		this.hash = object?.hash;
 
-		/** Input metadata. */
-		value?: IMetadata;
-	}) {
-		this.hash = args?.hash;
-		if (args?.value) this.set = args?.value;
+		if (!this.hash && object) this.hash = this.hashMetadata(object);
 	}
 
 	// Methods
 
-	/** Set `metadataHash` by hashing `input`. */
-	set set(input: IMetadata) {
-		this.hash = this.hashMetadata(input);
-	}
-
 	/**
 	 * Get hashed metadata value.
 	 *
-	 * @returns {string | undefined} Hashed metadata.
+	 * @returns {string} Hashed metadata.
 	 */
-	get get(): string | undefined {
+	get get(): string {
 		return this.hash;
 	}
 
@@ -283,11 +272,9 @@ export class Metadata {
 	 * Metadata.test();
 	 * ```
 	 *
-	 * @returns {Metadata} An instance of Metadata class.
+	 * @returns {IMetadata} An metadata object.
 	 */
-	static test(): Metadata {
-		return new Metadata({
-			value: new UAParser((20).string).getResult(),
-		});
+	static test(): IMetadata {
+		return new UAParser((20).string).getResult();
 	}
 }

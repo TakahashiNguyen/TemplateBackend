@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { ValidateNested } from 'class-validator';
 import { Column } from 'typeorm';
-import { AmbiguousReturn, AttributesOnly } from 'utils/app/types';
+import { AmbiguousReturn, ClassType } from 'utils/app/types';
 
 import { Password } from './api/password';
 
@@ -21,16 +21,19 @@ export class Authentication {
 	@ValidateNested()
 	@Type(() => Password)
 	@Column(() => Password)
-	password?: Password;
+	password: Password;
 
 	/**
 	 * Initialize authentication class.
 	 *
-	 * @param {AttributesOnly<Authentication>} object - Input authencation class
-	 *   fields.
+	 * @param {{ password: ClassType<typeof Password> }} object - Input
+	 *   authencation class fields.
 	 */
-	constructor(object: AttributesOnly<Authentication>) {
-		// @ts-expect-error error-free expression
+	constructor(
+		object: {
+			/** Password class input. */ password: ClassType<typeof Password>;
+		} & {},
+	) {
 		this.password = new Password(object?.password);
 	}
 
@@ -51,8 +54,8 @@ export class Authentication {
 	 */
 	static test(inputs: {
 		/** Input for password field. */
-		password?: Parameters<(typeof Password)['test']>[0];
-	}): Authentication {
-		return new Authentication({ password: Password.test(inputs.password) });
+		password?: ConstructorParameters<typeof Password>[0];
+	}): ConstructorParameters<typeof Authentication>[0] {
+		return { password: Password.test(inputs.password) };
 	}
 }

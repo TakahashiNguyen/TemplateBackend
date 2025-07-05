@@ -8,6 +8,7 @@ import {
 	jestInitialization,
 } from 'utils/test/functions';
 
+import { IMetadata } from '../guards';
 import { Bloc } from './bloc.entity';
 import { BlocService } from './bloc.service';
 
@@ -15,8 +16,8 @@ const unit = getCurrentTestFileName(__filename);
 
 let blocService: BlocService,
 	userService: UserService,
-	user: User,
-	metadata: Metadata;
+	owner: User,
+	metadata: IMetadata;
 
 beforeAll(async () => {
 	const { appService, module } = await jestInitialization();
@@ -27,15 +28,15 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-	user = await userService.create(User.test(unit, {}));
+	owner = await userService.create(User.test(unit, {}));
 });
 
 describe('create', () => {
 	it('success', async () => {
-		await execute(() => blocService.create(user, { metadata }), {
+		await execute(() => blocService.create({ metadata, owner }), {
 			expectations: [{ type: 'toBeDefined', parameters: [] }],
 			onFinish: async () => {
-				await execute(() => blocService.findOne({ owner: { id: user.id } }), {
+				await execute(() => blocService.findOne({ owner: { id: owner.id } }), {
 					expectations: [{ type: 'toBeDefined', parameters: [] }],
 				});
 			},
@@ -43,11 +44,9 @@ describe('create', () => {
 	});
 
 	it('success when chaining', async () => {
-		const { currentHash } = await blocService.create(user, {
-			metadata,
-		});
+		const { currentHash } = await blocService.create({ owner, metadata });
 
-		await execute(() => blocService.create(user, { currentHash }), {
+		await execute(() => blocService.create({ currentHash, owner }), {
 			expectations: [{ type: 'toThrow', not: true, parameters: [] }],
 			onFinish: async ({ id }) => {
 				await execute(
@@ -62,7 +61,7 @@ describe('create', () => {
 
 	it('fail when providing null metadata', async () => {
 		// @ts-expect-error testing purpose
-		await execute(() => blocService.create(user, { metadata: undefined }), {
+		await execute(() => blocService.create({ owner, metadata: undefined }), {
 			expectations: [
 				{
 					type: 'toThrow',
@@ -78,11 +77,12 @@ describe('removeTree', () => {
 		blocs: Bloc[] = Array.from({ length });
 
 	beforeEach(async () => {
-		blocs[0] = await blocService.create(user, { metadata });
+		blocs[0] = await blocService.create({ metadata, owner });
 
 		for (let i = 1; i < length; i++)
-			blocs[i] = await blocService.create(user, {
+			blocs[i] = await blocService.create({
 				currentHash: blocs[i - 1].currentHash,
+				owner,
 			});
 	});
 
