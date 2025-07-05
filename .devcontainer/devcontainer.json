@@ -15,6 +15,8 @@
 		}
 	},
 	"features": {
+		"ghcr.io/takahashinguyen/devcontainer-features/minio-client-homebrew:latest": {},
+		"ghcr.io/takahashinguyen/devcontainer-features/minio-homebrew:latest": {},
 		"ghcr.io/devcontainers-extra/features/redis-homebrew:1": {},
 		"ghcr.io/devcontainers/features/git:1": {
 			"ppa": "false",
@@ -27,9 +29,20 @@
 			"version": "latest"
 		}
 	},
-	"forwardPorts": [3000, 6379],
+	"forwardPorts": [
+		3000,
+		6379,
+		9000,
+		9001
+	],
 	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-	"postAttachCommand": "/home/linuxbrew/.linuxbrew/bin/redis-server --daemonize yes",
+	"postAttachCommand": {
+		"redis": "/home/linuxbrew/.linuxbrew/bin/redis-server --daemonize yes",
+		"minio": "minio server /tmp/minio --console-address \":9001\"",
+		"mc": "sleep 5 && mc alias set local 'http://127.0.0.1:9000' 'minioadmin' 'minioadmin' && mc mb local/bucket"
+	},
 	"postCreateCommand": "pnpm install",
-	"runArgs": ["--add-host=host.docker.internal:host-gateway"]
+	"runArgs": [
+		"--add-host=host.docker.internal:host-gateway"
+	]
 }
