@@ -25,11 +25,11 @@ export const configModule = ConfigModule.forRoot({
 		// Admin settings
 		ADMIN_EMAIL: Joi.string().default('test@test.test'),
 		// AWS S3 settings
-		AWS_REGION: Joi.string().default(''),
-		AWS_ACCESS_KEY_ID: Joi.string(),
-		AWS_SECRET_ACCESS_KEY: Joi.string(),
-		AWS_ENDPOINT: Joi.string(),
-		AWS_BUCKET: Joi.string(),
+		AWS_REGION: Joi.string().default('us-east-1'),
+		AWS_ACCESS_KEY_ID: Joi.string().required(),
+		AWS_SECRET_ACCESS_KEY: Joi.string().required(),
+		AWS_ENDPOINT: Joi.string().required(),
+		AWS_BUCKET: Joi.string().required(),
 		// Email settings
 		SMTP_USER: Joi.string().default(''),
 		SMTP_PASS: Joi.string().default(''),

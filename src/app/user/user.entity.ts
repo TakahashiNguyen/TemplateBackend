@@ -19,15 +19,18 @@ export class User extends BaseEntity {
 	/**
 	 * Creates an instance of User.
 	 *
-	 * @param {AttributesOnly<Subtract<User, BaseEntity>> &
-	 * 	EntityParameters<typeof BaseEntity>} object
+	 * @param {AttributesOnly<
+	 * 	Subtract<Omitting<User, 'authentication'>, BaseEntity>
+	 * > & {
+	 * 	authentication: ClassType<typeof Authentication>;
+	 * } & EntityParameters<typeof BaseEntity>} object
 	 *   - Input user fields.
 	 */
 	constructor(
 		object: AttributesOnly<
 			Subtract<Omitting<User, 'authentication'>, BaseEntity>
 		> & {
-			/** Authentication class input. */ authentication: ClassType<
+			/** Authentication class. */ authentication: ClassType<
 				typeof Authentication
 			>;
 		} & EntityParameters<typeof BaseEntity>,

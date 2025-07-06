@@ -37,11 +37,12 @@
 	],
 	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 	"postAttachCommand": {
-		"redis": "/home/linuxbrew/.linuxbrew/bin/redis-server --daemonize yes",
-		"minio": "minio server /tmp/minio --console-address \":9001\"",
+		"redis": "/home/linuxbrew/.linuxbrew/bin/redis-server --daemonize yes"
+	},
+	"postCreateCommand": {
+		"pnpm": "pnpm install",
 		"mc": "sleep 5 && mc alias set local 'http://127.0.0.1:9000' 'minioadmin' 'minioadmin' && mc mb local/bucket"
 	},
-	"postCreateCommand": "pnpm install",
 	"runArgs": [
 		"--add-host=host.docker.internal:host-gateway"
 	]

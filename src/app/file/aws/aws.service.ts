@@ -10,16 +10,8 @@ import { ConfigService } from '@nestjs/config';
 import { lookup } from 'mime-types';
 import { Readable } from 'stream';
 import { ServerException } from 'utils/error';
+import { AWSRecieve } from './interfaces';
 
-/** AWS recieve object. */
-export interface AWSRecieve {
-	/** File stream. */
-	stream: Readable;
-	/** File length. */
-	length: number;
-	/** File type. */
-	type: string;
-}
 
 /** AWS service. */
 @Injectable()
@@ -108,7 +100,7 @@ export class AWSService {
 				error instanceof NoSuchKey ||
 				(error as S3ServiceException).name == 'SignatureDoesNotMatch'
 			)
-				throw new ServerException('Invalid', 'FileName', '');
+				throw new ServerException('Invalid', 'FileName', 'Submit');
 
 			throw new ServerException('Fatal', 'AWS', 'Download', error as Error);
 		}

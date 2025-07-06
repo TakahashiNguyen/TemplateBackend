@@ -1,18 +1,8 @@
-import { MailerService } from '@nestjs-modules/mailer';
 import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { AppModule } from 'app';
-import { AWSRecieve, AWSService } from 'app/aws/aws.service';
-import { lookup } from 'mime-types';
-import {
-	createReadStream,
-	createWriteStream,
-	statSync,
-	writeFileSync,
-} from 'node:fs';
-import { Readable } from 'stream';
 import { ServerInitializationClass } from 'utils/app/classes';
 
 import { BaseModule } from './base';
@@ -21,28 +11,6 @@ import { BaseModule } from './base';
 @Global()
 @Module({
 	imports: [AppModule, BaseModule],
-	providers: [
-		{ provide: MailerService, useValue: { sendMail: jest.fn() } },
-		{
-			provide: AWSService,
-			useValue: {
-				upload: jest.fn(async (name: string, input: Readable | Buffer) => {
-					if (!name.includes('.server.'))
-						if (input instanceof Readable) {
-							const writableStream = createWriteStream('/dist' + name);
-							input.pipe(writableStream);
-						} else writeFileSync('/dist' + name, input);
-				}),
-				download: jest.fn(async (name: string): Promise<AWSRecieve> => {
-					const stream = createReadStream('/dist' + name),
-						length = statSync('/dist' + name).size;
-
-					return { stream, length, type: lookup(name) as string };
-				}),
-			},
-		},
-	],
-	exports: [MailerService, AWSService],
 })
 export class TestModule extends ServerInitializationClass {
 	/**
