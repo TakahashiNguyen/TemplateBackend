@@ -23,7 +23,7 @@ import { SecurityService } from 'utils/auth/classes';
 
 import { cookieOptions, fileSizeMaximum } from './constants';
 import { RequestResponse } from './interfaces';
-import { AttributesOnly } from './types';
+import { AttributesOnly, RequireOnlyOne } from './types';
 
 /** Modified cache interceptor. */
 export class ModifiedCacheInterceptor extends CacheInterceptor {
@@ -300,14 +300,10 @@ export class ServerMiddleware extends SecurityService {
 			return;
 		}
 
-		const { bloc, hook, message, isClearCookie = false } = payload,
+		const { bloc, hook, message } = payload,
 			accessKey = (32).string;
 
 		req.session.set('accessKey', this.encrypt(accessKey, req.ip));
-
-		if (isClearCookie) {
-			['access', 'refresh'].forEach((i) => res.clearCookie(i));
-		}
 
 		req.key = { hook, bloc };
 
@@ -320,17 +316,18 @@ export class UserRecieve {
 	/**
 	 * Quick user recieve initiation.
 	 *
-	 * @param {AttributesOnly<UserRecieve>} object - User recieve infomations.
+	 * @param {RequireOnlyOne<AttributesOnly<UserRecieve>, 'bloc' | 'hook'>} object
+	 *   - User recieve infomations.
 	 */
-	constructor(object: AttributesOnly<UserRecieve>) {
-		this.isClearCookie = object.isClearCookie;
+	constructor(
+		object: RequireOnlyOne<AttributesOnly<UserRecieve>, 'bloc' | 'hook'>,
+	) {
+		// @ts-expect-error nullable field
 		this.hook = object.hook;
+		// @ts-expect-error nullable field
 		this.bloc = object.bloc;
 		this.message = object.message;
 	}
-
-	/** Clear cookie if requested. */
-	@ApiHideProperty() isClearCookie: boolean = false;
 
 	/** Hook entity. */
 	@ApiHideProperty() hook: Hook;

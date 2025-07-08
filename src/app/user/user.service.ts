@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ServerException } from 'utils/error';
+import { ServerException } from 'utils/error/classes';
 import { serverException } from 'utils/error/functions';
 import { DatabaseRequests } from 'utils/typeorm/classes';
 

@@ -6,12 +6,12 @@ import {
 	bidirectionalHash,
 	verifyBidirectionalHash,
 } from 'utils/auth/functions';
-import { ServerException } from 'utils/error';
+import { ServerException } from 'utils/error/classes';
 
 /** Password class. */
 export class Password implements IBaseAuthentication {
 	/** Hashed password. */
-	@Column({ nullable: false }) private hashedPassword?: string;
+	@Column({ nullable: false }) private hashed?: string;
 
 	/** Plain password. */
 	@IsOptional()
@@ -22,7 +22,7 @@ export class Password implements IBaseAuthentication {
 		minNumbers: 1,
 		minSymbols: 1,
 	})
-	password: string;
+	value: string;
 
 	/**
 	 * Initiatialize password class.
@@ -30,10 +30,10 @@ export class Password implements IBaseAuthentication {
 	 * @param {AttributesOnly<Password>} object - Input Password class fields.
 	 */
 	constructor(object: AttributesOnly<Password>) {
-		this.password = object?.password;
+		this.value = object?.value;
 
 		// @ts-expect-error private field
-		this.hashedPassword = object?.hashedPassword;
+		this.hashed = object?.hashed;
 	}
 
 	// Methods
@@ -52,8 +52,8 @@ export class Password implements IBaseAuthentication {
 	@BeforeInsert()
 	@BeforeUpdate()
 	private hashingPassword() {
-		if (this.password != null)
-			this.hashedPassword = bidirectionalHash(this.password, {
+		if (this.value != null)
+			this.hashed = bidirectionalHash(this.value, {
 				parallelism: 3 + (3).random,
 				memoryCost: 60000 + (6000).random,
 				timeCost: 3 + (3).random,
@@ -74,11 +74,11 @@ export class Password implements IBaseAuthentication {
 	 * @returns {Promise<boolean>} True if password is matched with hashed
 	 *   password and vice versa.
 	 */
-	async authenticate(password: string): Promise<boolean> {
-		if (this.hashedPassword == null)
+	async authenticate(password: Password): Promise<boolean> {
+		if (this.hashed == null)
 			throw new ServerException('Fatal', 'Server', 'Implementation');
 
-		return verifyBidirectionalHash(this.hashedPassword, password);
+		return verifyBidirectionalHash(this.hashed, password.value);
 	}
 
 	/**
@@ -99,7 +99,7 @@ export class Password implements IBaseAuthentication {
 		obj?: ConstructorParameters<typeof Password>[0],
 	): ConstructorParameters<typeof Password>[0] {
 		return {
-			password: obj?.password || (16).string + 'aA1!',
+			value: obj?.value || (16).string + 'aA1!',
 		};
 	}
 }

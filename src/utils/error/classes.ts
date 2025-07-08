@@ -1,8 +1,8 @@
 import { HttpException } from '@nestjs/common';
 import { colorLogging } from 'utils/log';
 
-import { ErrorAction, ErrorObject, ErrorType } from '.';
 import { serverException } from './functions';
+import { ErrorAction, ErrorObject, ErrorType } from './types';
 
 /**
  * This class extends the HttpException class and is used to handle both

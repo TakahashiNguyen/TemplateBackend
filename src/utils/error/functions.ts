@@ -1,4 +1,4 @@
-import { ErrorAction, ErrorObject, ErrorType } from '.';
+import { ErrorAction, ErrorObject, ErrorType } from './types';
 
 /**
  * Get server exception message base on input context.

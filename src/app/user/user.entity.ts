@@ -4,7 +4,13 @@ import { File } from 'app/file/file.entity';
 import { Type } from 'class-transformer';
 import { IsOptional, ValidateNested } from 'class-validator';
 import { Column, Entity, OneToMany } from 'typeorm';
-import { AttributesOnly, ClassType, Omitting, Subtract } from 'utils/app/types';
+import {
+	ApplyPartial,
+	AttributesOnly,
+	ClassType,
+	Omitting,
+	Subtract,
+} from 'utils/app/types';
 import { CacheControl } from 'utils/graphql/functions';
 import { BaseEntity } from 'utils/typeorm/classes';
 import { EntityParameters } from 'utils/typeorm/types';
@@ -20,7 +26,10 @@ export class User extends BaseEntity {
 	 * Creates an instance of User.
 	 *
 	 * @param {AttributesOnly<
-	 * 	Subtract<Omitting<User, 'authentication'>, BaseEntity>
+	 * 	Subtract<
+	 * 		ApplyPartial<Omitting<User, 'authentication'>, 'avatarPath'>,
+	 * 		BaseEntity
+	 * 	>
 	 * > & {
 	 * 	authentication: ClassType<typeof Authentication>;
 	 * } & EntityParameters<typeof BaseEntity>} object
@@ -28,7 +37,10 @@ export class User extends BaseEntity {
 	 */
 	constructor(
 		object: AttributesOnly<
-			Subtract<Omitting<User, 'authentication'>, BaseEntity>
+			Subtract<
+				ApplyPartial<Omitting<User, 'authentication'>, 'avatarPath'>,
+				BaseEntity
+			>
 		> & {
 			/** Authentication class. */ authentication: ClassType<
 				typeof Authentication
@@ -40,6 +52,9 @@ export class User extends BaseEntity {
 		this.email = object?.email;
 		this.role = object?.role;
 		this.files = object?.files?.map((i) => new File(i));
+
+		// @ts-expect-error nullable field
+		this.avatarPath = object.avatarPath;
 
 		// class
 		this.authentication = new Authentication(object?.authentication);
@@ -73,6 +88,9 @@ export class User extends BaseEntity {
 		default: UserRole.undefined,
 	})
 	role: UserRole;
+
+	/** User's avatar path. */
+	@Column({ nullable: true }) avatarPath: string;
 
 	// Methods
 
