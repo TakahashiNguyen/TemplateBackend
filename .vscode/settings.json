@@ -29,6 +29,7 @@
 		"showInlineError": true,
 		"type": "on-demand"
 	},
+	"testing.automaticallyOpenTestResults": "neverOpen",
 	"todohighlight.keywords": [
 		{
 			"backgroundColor": "#E4D6A7",
@@ -102,6 +103,5 @@
 			"isWholeLine": true,
 			"text": "// Update"
 		}
-	],
-	"testing.automaticallyOpenTestResults": "neverOpen"
+	]
 }

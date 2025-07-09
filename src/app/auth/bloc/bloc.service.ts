@@ -89,8 +89,8 @@ export class BlocService extends DatabaseRequests<typeof Bloc> {
 	 * this.removeTree(blocId);
 	 * ```
 	 *
-	 * @param {RequireOnlyOne<IdOrHash>} objects - Removing
-	 *   tree's sub-bloc id or hash.
+	 * @param {RequireOnlyOne<IdOrHash>} objects - Removing tree's sub-bloc id or
+	 *   hash.
 	 */
 	async removeTree({
 		id: targetId,

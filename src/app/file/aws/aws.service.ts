@@ -10,8 +10,8 @@ import { ConfigService } from '@nestjs/config';
 import { lookup } from 'mime-types';
 import { Readable } from 'stream';
 import { ServerException } from 'utils/error';
-import { AWSRecieve } from './interfaces';
 
+import { AWSRecieve } from './interfaces';
 
 /** AWS service. */
 @Injectable()

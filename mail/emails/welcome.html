@@ -1,0 +1,26 @@
+---
+title: 'Welcome!'
+preheader: 'Thank you for signing up, time to get started'
+---
+
+<x-main>
+	<p class="text-title">Welcome, {{`\{\{userName\}\}`}}</p>
+	<p class="text-normal">
+		Thanks for signing up to our service. To get started, do something by
+		clicking the big button below
+	</p>
+	<x-button
+		href="{{`\{\{urlVisit\}\}`}}"
+		class="inline-block uppercase text-base font-semibold text-center no-underline bg-blue-500 hover:bg-blue-600"
+		align="center"
+    extraStyle="p-9"
+	>
+		Visit website
+	</x-button>
+	<x-divider />
+	<p class="text-subtitle">
+		You are receiving this message because you signed up to account at
+		{{"\{\{urlHost\}\}"}}. Manage your notification preferences
+		<a class="text-gray-500" href="{{`\{\{urlManageNotifications\}\}`}}">here</a>.
+	</p>
+</x-main>

@@ -7,9 +7,10 @@
 	"license": "MIT",
 	"scripts": {
 		"commit": "cz",
-		"build": "nest build",
+		"build": "cd mail && npm run build && cd .. && nest build",
 		"doc": "compodoc src -p tsconfig.doc.json --disableSourceCode --hideGenerator -d ./docs",
-		"format": "prettier --write \"./**/*.ts\" \"./**/*.json\"",
+		"format": "prettier --write \"./**/*.ts\" \"./**/*.json\" \"./**/*.ts\" \"./**/*.html\"",
+		"mail:dev": "cd mail && npm run dev",
 		"start": "nest start",
 		"start:dev": "nest start --watch",
 		"start:debug": "nest start --debug --watch",

@@ -1,0 +1,26 @@
+@tailwind components;
+@tailwind utilities;
+
+.sysTheme1 {
+	@apply bg-slate-200 dark:bg-slate-950 text-gray-800 dark:text-gray-50;
+}
+
+.sysTheme2 {
+	@apply bg-gray-50 dark:bg-gray-800 text-slate-950 dark:text-slate-200;
+}
+
+p.text-normal {
+	@apply text-lg font-normal font-inter p-0 pt-6;
+}
+
+p.text-title {
+	@apply text-3xl font-bold font-serif p-0 pt-9;
+}
+
+p.text-subtitle {
+	@apply text-sm font-light font-sans p-0 pt-3;
+}
+
+* {
+	@apply m-0 p-0;
+}
