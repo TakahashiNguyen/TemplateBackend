@@ -9,9 +9,9 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { lookup } from 'mime-types';
 import { Readable } from 'stream';
-import { ServerException } from 'utils/error';
+import { ServerException } from 'utils/error/classes';
 
-import { AWSRecieve } from './interfaces';
+import { AWSReceive } from './interfaces';
 
 /** AWS service. */
 @Injectable()
@@ -69,7 +69,7 @@ export class AWSService {
 	}
 
 	/**
-	 * Recieve file from s3 server.
+	 * Receive file from s3 server.
 	 *
 	 * @example
 	 *
@@ -77,10 +77,10 @@ export class AWSService {
 	 * this.download('foo');
 	 * ```
 	 *
-	 * @param {string} filename - The name of recieving file.
-	 * @returns {Promise<AWSRecieve>} Recieved file from aws-s3.
+	 * @param {string} filename - The name of receiving file.
+	 * @returns {Promise<AWSReceive>} Received file from aws-s3.
 	 */
-	async download(filename: string): Promise<AWSRecieve> {
+	async download(filename: string): Promise<AWSReceive> {
 		try {
 			const result = await this.client.send(
 					new GetObjectCommand({
@@ -92,7 +92,7 @@ export class AWSService {
 				length = result.ContentLength,
 				type = result.ContentType;
 
-			if (!stream || !length || !type) throw new Error('Lack of infomations');
+			if (!stream || !length || !type) throw new Error('Lack of information');
 
 			return { stream, length, type };
 		} catch (error) {

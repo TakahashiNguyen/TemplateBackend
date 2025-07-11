@@ -10,7 +10,7 @@ import {
 import { Column } from 'typeorm';
 import { UAParser } from 'ua-parser-js';
 import { sortObjectKeys } from 'utils/app/functions';
-import { unidirectionalHash } from 'utils/data/funtions';
+import { unidirectionalHash } from 'utils/data/functions';
 
 import { ITokens } from './interfaces';
 import { TokenType } from './types';

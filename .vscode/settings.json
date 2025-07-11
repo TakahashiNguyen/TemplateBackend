@@ -1,4 +1,11 @@
 {
+	"cSpell.words": [
+		"apollographql",
+		"gstatic",
+		"minioadmin",
+		"trivago",
+		"unsign"
+	],
 	"explorer.fileNesting.enabled": true,
 	"explorer.fileNesting.patterns": {
 		"*.entity.ts": "$(capture).model.ts, $(capture).graphql.ts, $(capture).dto.ts",
@@ -17,9 +24,9 @@
 		"**/dist": true,
 		"**/node_modules": true,
 		"**/pnpm-lock.yaml": true,
+		"**/schema.gql": true,
 		".pnpm-store": true,
-		"docs": true,
-		"**/schema.gql": true
+		"docs": true
 	},
 	"jest.outputConfig": {
 		"clearOnRun": "terminal"
@@ -77,7 +84,7 @@
 			"backgroundColor": "#CDE7B0",
 			"color": "#BE6E46",
 			"isWholeLine": true,
-			"text": "// Infomations"
+			"text": "// Information"
 		},
 		{
 			"backgroundColor": "#61E8E1",

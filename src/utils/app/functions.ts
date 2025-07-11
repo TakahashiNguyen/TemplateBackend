@@ -2,7 +2,7 @@ import { DynamicModule } from '@nestjs/common';
 import { validateOrReject } from 'class-validator';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { ServerException } from 'utils/error';
+import { ServerException } from 'utils/error/classes';
 
 /**
  * The function validate object has `validate-class` decorators.
@@ -20,7 +20,7 @@ import { ServerException } from 'utils/error';
  * @template T - Type that extended `object`.
  * @param {T} input - The value extends `object` and has `class-validator`
  *   decorators.
- * @returns {Promise<T>} `input` if `input` meets all `class-validatior`
+ * @returns {Promise<T>} `input` if `input` meets all `class-validator`
  *   decorators requirements.
  * @throws {ServerException} Throw an error when `input` doesn't meet all
  *   `class-validator` decorators.

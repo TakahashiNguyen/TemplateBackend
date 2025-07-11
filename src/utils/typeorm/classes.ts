@@ -12,7 +12,7 @@ import {
 import { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
 import { validateObject } from 'utils/app/functions';
 import { AttributesOnly, Subtract } from 'utils/app/types';
-import { ServerException } from 'utils/error';
+import { ServerException } from 'utils/error/classes';
 
 import { ExtendedFindOneOptions, ExtendedFindOptions } from './types';
 

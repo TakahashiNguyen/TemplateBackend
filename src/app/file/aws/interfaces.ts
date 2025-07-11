@@ -1,7 +1,7 @@
 import { Readable } from 'stream';
 
-/** AWS recieve object. */
-export interface AWSRecieve {
+/** AWS receive object. */
+export interface AWSReceive {
 	/** File stream. */
 	stream: Readable;
 	/** File length. */

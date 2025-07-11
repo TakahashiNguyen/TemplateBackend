@@ -4,13 +4,16 @@ import { PassportStrategy } from '@nestjs/passport';
 import { User } from 'app/user/user.entity';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ITokens } from 'utils/auth/interfaces';
-import { ServerException } from 'utils/error';
+import { ServerException } from 'utils/error/classes';
 
 import { BlocService } from '../bloc/bloc.service';
 
 /** Check the access token from client. */
 @Injectable()
 export class AccessStrategy extends PassportStrategy(Strategy, 'access') {
+	/** Request header authentication. */
+	static readonly header: string = 'access';
+
 	/**
 	 * Initiate access strategy.
 	 *
@@ -22,7 +25,7 @@ export class AccessStrategy extends PassportStrategy(Strategy, 'access') {
 		private bloc: BlocService,
 	) {
 		super({
-			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+			jwtFromRequest: ExtractJwt.fromHeader(AccessStrategy.header),
 			secretOrKey: config.getOrThrow('ACCESS_SECRET'),
 			ignoreExpiration: false,
 		});

@@ -1,5 +1,6 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { ServerException } from 'utils/error/classes';
 
 /** Mail service. */
 @Injectable()
@@ -35,11 +36,15 @@ export class MailService {
 		template: string,
 		context: object,
 	): Promise<void> {
-		await this.mailerService.sendMail({
-			to: email,
-			subject,
-			template: `./${template}.html`,
-			context,
-		});
+		try {
+			await this.mailerService.sendMail({
+				to: email,
+				subject,
+				template: `./${template}.html`,
+				context,
+			});
+		} catch (err) {
+			throw new ServerException('Fatal', 'Email', 'Request', err as Error);
+		}
 	}
 }

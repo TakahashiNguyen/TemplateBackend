@@ -6,7 +6,8 @@ import {
 	HttpException,
 } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
-import { ErrorObject, ServerException } from 'utils/error';
+import { ServerException } from 'utils/error/classes';
+import { ErrorObject } from 'utils/error/types';
 
 /**
  * It handles exceptions thrown in the application, particularly focusing on

@@ -51,7 +51,7 @@ describe('create', () => {
 		);
 	});
 
-	it('fail when recieved invalid buffer', async () => {
+	it('fail when received invalid buffer', async () => {
 		await execute(
 			// @ts-expect-error testing purpose
 			async () => fileService.create({ buffer: null, originalname }, user),
@@ -67,7 +67,7 @@ describe('create', () => {
 	});
 });
 
-describe('recieve', () => {
+describe('receive', () => {
 	let path: string, originalname: string, buffer: Buffer;
 
 	beforeEach(async () => {
@@ -80,7 +80,7 @@ describe('recieve', () => {
 	it('success', async () => {
 		await execute(
 			async () =>
-				await stream2buffer((await fileService.recieve(path, user.id)).stream),
+				await stream2buffer((await fileService.receive(path, user.id)).stream),
 			{
 				expectations: [{ type: 'toEqual', parameters: [buffer] }],
 			},
@@ -92,7 +92,7 @@ describe('recieve', () => {
 			async () =>
 				await stream2buffer(
 					(
-						await fileService.recieve(
+						await fileService.receive(
 							path,
 							(await userService.create(User.test(unit, {}))).id,
 						)

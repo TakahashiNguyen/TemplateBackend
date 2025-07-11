@@ -59,7 +59,7 @@
 		<stack name="head" />
 	</head>
 	<body
-		class="m-0 p-0 w-[37rem] [word-break:break-word] [-webkit-font-smoothing:antialiased]"
+		class="m-0 w-[37rem] p-0 [-webkit-font-smoothing:antialiased] [word-break:break-word]"
 	>
 		<if condition="page.preheader">
 			<div class="hidden">
@@ -74,13 +74,13 @@
 			aria-roledescription="email"
 			aria-label="{{{ page.title || '' }}}"
 			lang="{{ page.language || 'en' }}"
-			class="font-inter text-justify sysTheme1"
+			class="font-inter sysTheme1 text-justify"
 		>
 			<component src="components/header.html" />
 			<x-spacer />
 			<table align="center" class="mx-auto">
 				<tr>
-					<td class="w-[30rem] p-6 sysTheme2">
+					<td class="sysTheme2 w-[30rem] p-6">
 						<yield />
 					</td>
 				</tr>

@@ -8,12 +8,12 @@ import { createHmac } from 'node:crypto';
 import { extname } from 'path';
 import { Repository } from 'typeorm';
 import { RequireOnlyOne } from 'utils/app/types';
-import { ServerException } from 'utils/error';
+import { ServerException } from 'utils/error/classes';
 import { stream2buffer } from 'utils/file/functions';
 import { DatabaseRequests } from 'utils/typeorm/classes';
 
 import { AWSService } from './aws/aws.service';
-import { AWSRecieve } from './aws/interfaces';
+import { AWSReceive } from './aws/interfaces';
 import { File } from './file.entity';
 
 /** File services. */
@@ -35,19 +35,19 @@ export class FileService extends DatabaseRequests<typeof File> {
 	}
 
 	/**
-	 * Recieve file from server.
+	 * Receive file from server.
 	 *
 	 * @example
 	 *
 	 * ```ts
-	 * this.recieve(filename, userId);
+	 * this.receive(filename, userId);
 	 * ```
 	 *
-	 * @param {string} path - Path of recieving file.
-	 * @param {string} userId - The id of user want to recieve file.
-	 * @returns {Promise<AWSRecieve>} Recieved file from aws-s3.
+	 * @param {string} path - Path of receiving file.
+	 * @param {string} userId - The id of user want to receive file.
+	 * @returns {Promise<AWSReceive>} Received file from aws-s3.
 	 */
-	async recieve(path: string, userId: string): Promise<AWSRecieve> {
+	async receive(path: string, userId: string): Promise<AWSReceive> {
 		if (await this.findOne({ path, owner: { id: userId } }))
 			return this.aws.download(path);
 

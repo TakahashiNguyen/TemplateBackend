@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ITokens } from 'utils/auth/interfaces';
-import { ServerException } from 'utils/error';
+import { ServerException } from 'utils/error/classes';
 
 import { Hook } from '../hook/hook.entity';
 import { HookService } from '../hook/hook.service';

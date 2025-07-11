@@ -7,7 +7,7 @@ import {
 	Subtract,
 } from 'utils/app/types';
 import { Metadata } from 'utils/auth/classes';
-import { ServerException } from 'utils/error';
+import { ServerException } from 'utils/error/classes';
 import { CacheControl } from 'utils/graphql/functions';
 import { BaseEntity } from 'utils/typeorm/classes';
 import { EntityParameters } from 'utils/typeorm/types';
@@ -19,7 +19,7 @@ import { IMetadata } from '../guards';
 @Entity({ name: 'authentication_hooks' })
 export class Hook extends BaseEntity {
 	/**
-	 * Create hook with infomations.
+	 * Create hook with information.
 	 *
 	 * @param {AttributesOnly<
 	 * 	Subtract<ApplyPartial<Omitting<Hook, 'metadata'>, 'note'>, BaseEntity>
@@ -53,14 +53,14 @@ export class Hook extends BaseEntity {
 	@ManyToOne(() => User, { nullable: true })
 	owner: User;
 
-	// Infomations
+	// Information
 	/** Hook's signature. */
 	@Column({ nullable: false }) signature: string;
 
 	/** Client's metadata. */
 	@Column(() => Metadata) metadata: Metadata;
 
-	/** Addition infomations. */
+	/** Addition information. */
 	@Column({ type: 'jsonb', default: {} }) note: object;
 
 	/**

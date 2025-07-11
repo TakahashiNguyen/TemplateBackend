@@ -6,7 +6,7 @@ import { DataSourceOptions, DatabaseType, QueryRunner } from 'typeorm';
 import { QueryResultCache } from 'typeorm/cache/QueryResultCache';
 import { QueryResultCacheOptions } from 'typeorm/cache/QueryResultCacheOptions';
 import { cacheDurationMs } from 'utils/app/constants';
-import { unidirectionalHash } from 'utils/data/funtions';
+import { unidirectionalHash } from 'utils/data/functions';
 
 /**
  * Server database configuration.

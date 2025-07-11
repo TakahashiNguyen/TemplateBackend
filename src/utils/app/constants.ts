@@ -1,7 +1,5 @@
 import { CookieSerializeOptions } from '@fastify/csrf-protection';
-import { Bloc } from 'app/auth/bloc/bloc.entity';
 import { IMetadata } from 'app/auth/guards';
-import { Hook } from 'app/auth/hook/hook.entity';
 import { FastifyServerOptions } from 'fastify';
 import { DatabaseType } from 'typeorm';
 import 'utils';
@@ -39,10 +37,6 @@ declare module 'fastify' {
 	interface FastifyRequest {
 		/** Server key. */
 		key: IServerKey;
-		/** Hook information. */
-		hook: Hook;
-		/** Bloc infomation. */
-		bloc: Bloc;
 		/** Serving multipart request. */
 		isMultipart: boolean;
 		/** Client metadata. */

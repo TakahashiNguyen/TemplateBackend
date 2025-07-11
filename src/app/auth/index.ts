@@ -12,10 +12,10 @@ import { RefreshStrategy } from './guards/refresh.strategy';
 
 const modules = getDefaultExportFromSubdirectory(__dirname);
 
-/** Authencation module. */
+/** Authentication module. */
 @Module({
 	imports: [
-		// Authencation
+		// Authentication
 		PassportModule.register({ session: true }),
 		// Modules
 		...modules,

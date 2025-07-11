@@ -27,7 +27,7 @@ export class Authentication {
 	 * Initialize authentication class.
 	 *
 	 * @param {{ password: ClassType<typeof Password> }} object - Input
-	 *   authencation class fields.
+	 *   authentication class fields.
 	 */
 	constructor(
 		object: {
@@ -45,12 +45,12 @@ export class Authentication {
 	 * @example
 	 *
 	 * ```ts
-	 * Authencation.test({});
+	 * Authentication.test({});
 	 * ```
 	 *
 	 * @param inputs
 	 * @param inputs.password
-	 * @returns {Authentication} An authencation instance.
+	 * @returns {Authentication} An authentication instance.
 	 */
 	static test(inputs: {
 		/** Input for password field. */

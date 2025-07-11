@@ -9,7 +9,7 @@ import Fastify, { FastifyInstance } from 'fastify';
 import { Server, createServer } from 'node:http';
 import { join } from 'node:path';
 import { constants } from 'node:zlib';
-import { ServerException } from 'utils/error';
+import { ServerException } from 'utils/error/classes';
 
 import { cookieOptions, fastifyServerOptions } from './constants';
 import { CookieCredential } from './types';

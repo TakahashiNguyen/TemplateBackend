@@ -1,4 +1,4 @@
-import { ModuleMetadata } from '@nestjs/common';
+import { ModuleMetadata, ValidationPipe } from '@nestjs/common';
 import {
 	FastifyAdapter,
 	NestFastifyApplication,
@@ -11,10 +11,12 @@ import {
 	LightMyRequestResponse,
 } from 'fastify';
 import { TestModule } from 'modules/test';
+import { OutgoingHttpHeaders } from 'node:http';
+import { Readable } from 'node:stream';
 import { isAsyncFunction } from 'node:util/types';
 import { FastifyFramework } from 'utils/app/fastify';
 import { AppExceptionFilter } from 'utils/app/filter';
-import { ServerException } from 'utils/error';
+import { ServerException } from 'utils/error/classes';
 
 import { JestInitializationReturns } from './interfaces';
 import { ExecuteOptions } from './types';
@@ -80,6 +82,7 @@ export async function jestInitialization(
 	);
 
 	await app
+		.useGlobalPipes(new ValidationPipe())
 		.useGlobalFilters(new AppExceptionFilter(app.getHttpAdapter()))
 		.init();
 	await app.getHttpAdapter().getInstance().ready();

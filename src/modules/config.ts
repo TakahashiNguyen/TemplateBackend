@@ -25,15 +25,18 @@ export const configModule = ConfigModule.forRoot({
 		// Admin settings
 		ADMIN_EMAIL: Joi.string().default('test@test.test'),
 		// AWS S3 settings
+		AWS_ENDPOINT: Joi.string().default('http://127.0.0.1:9000 '),
 		AWS_REGION: Joi.string().default('us-east-1'),
-		AWS_ACCESS_KEY_ID: Joi.string().required(),
-		AWS_SECRET_ACCESS_KEY: Joi.string().required(),
-		AWS_ENDPOINT: Joi.string().required(),
-		AWS_BUCKET: Joi.string().required(),
+		AWS_BUCKET: Joi.string().default('default'),
+		AWS_ACCESS_KEY_ID: Joi.string().default('minioadmin'),
+		AWS_SECRET_ACCESS_KEY: Joi.string().default('minioadmin'),
 		// Email settings
+		SMTP_HOST: Joi.string().default('localhost'),
+		SMTP_PORT: Joi.string().default(1025),
+		SMTP_SECURE: Joi.string().default('false'),
+		SMTP_UNAUTHORIZED: Joi.string().default(true),
 		SMTP_USER: Joi.string().default(''),
 		SMTP_PASS: Joi.string().default(''),
-		SMTP_HOST: Joi.string().default('smtp.gmail.com'),
 		// Redis settings
 		REDIS_URL: Joi.string().default('redis://default:@localhost:6379'),
 	}),

@@ -123,7 +123,7 @@ export function FileInterceptor(
  * transformException(error);
  * ```
  *
- * @param {(Error & { field?: string }) | undefined} error - Recieve error.
+ * @param {(Error & { field?: string }) | undefined} error - Receive error.
  * @returns {Error} An error.
  */
 export function transformException(

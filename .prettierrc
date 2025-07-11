@@ -10,7 +10,8 @@
 	"plugins": [
 		"prettier-plugin-sort-json",
 		"@trivago/prettier-plugin-sort-imports",
-		"prettier-plugin-jsdoc"
+		"prettier-plugin-jsdoc",
+		"prettier-plugin-tailwindcss"
 	],
 	"printWidth": 80,
 	"singleQuote": true,

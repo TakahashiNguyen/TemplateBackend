@@ -30,9 +30,9 @@ export class HookService extends DatabaseRequests<typeof Hook> {
 	 * ```
 	 *
 	 * @param {IMetadata} metadata - Client's metadata.
-	 * @param {Function} func - The method to recieve signature and return base
+	 * @param {Function} func - The method to receive signature and return base
 	 *   user.
-	 * @param {object} note - Additional infomation to store.
+	 * @param {object} note - Additional information to store.
 	 * @returns {Promise<Hook>} Instance of created Hook.
 	 */
 	async create(
@@ -76,7 +76,7 @@ export class HookService extends DatabaseRequests<typeof Hook> {
 	 * this.validating(hook, metadata, signature);
 	 * ```
 	 *
-	 * @param {Hook} hook - Recieved hook from client.
+	 * @param {Hook} hook - Received hook from client.
 	 * @param {IMetadata} metadata - Client's metadata.
 	 * @param {string} signature - Client hook's signature.
 	 */

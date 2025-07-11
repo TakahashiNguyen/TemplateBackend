@@ -8,7 +8,7 @@ import {
 	Subtract,
 } from 'utils/app/types';
 import { Metadata } from 'utils/auth/classes';
-import { unidirectionalHash } from 'utils/data/funtions';
+import { unidirectionalHash } from 'utils/data/functions';
 import { CacheControl } from 'utils/graphql/functions';
 import { BaseEntity } from 'utils/typeorm/classes';
 import { EntityParameters } from 'utils/typeorm/types';
@@ -18,7 +18,7 @@ import { EntityParameters } from 'utils/typeorm/types';
 @Entity({ name: 'authentication_blocs' })
 export class Bloc extends BaseEntity {
 	/**
-	 * Create bloc with infomations.
+	 * Create bloc with information.
 	 *
 	 * @param {AttributesOnly<
 	 * 	Subtract<
@@ -69,7 +69,7 @@ export class Bloc extends BaseEntity {
 	/** Bloc owner id. */
 	@ManyToOne(() => User, { nullable: true }) owner: User;
 
-	// Infomations
+	// Information
 	/** Previous bloc hash. */
 	@Column({ nullable: true, update: false }) previousHash?: string;
 

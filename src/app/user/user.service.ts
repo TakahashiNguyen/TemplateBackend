@@ -56,7 +56,7 @@ export class UserService extends DatabaseRequests<typeof User> {
 	): Promise<string> {
 		const email = input?.lower;
 
-		if (!email) throw new ServerException('Invalid', 'User', 'Assign');
+		if (!email) throw new ServerException('Invalid', 'Email', 'Submit');
 
 		try {
 			await this.email(email);

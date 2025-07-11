@@ -54,7 +54,7 @@ export class User extends BaseEntity {
 		this.files = object?.files?.map((i) => new File(i));
 
 		// @ts-expect-error nullable field
-		this.avatarPath = object.avatarPath;
+		this.avatarPath = object?.avatarPath;
 
 		// class
 		this.authentication = new Authentication(object?.authentication);
@@ -72,7 +72,7 @@ export class User extends BaseEntity {
 	@OneToMany(() => File, ($) => $.owner, { onDelete: 'CASCADE' })
 	files?: File[];
 
-	// Infomations
+	// Information
 
 	/** User's email. */
 	@Column() email: string;

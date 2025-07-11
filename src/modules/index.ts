@@ -7,7 +7,7 @@ import {
 	ModifiedThrottlerGuard,
 	ServerInitializationClass,
 } from 'utils/app/classes';
-import { ServerException } from 'utils/error';
+import { ServerException } from 'utils/error/classes';
 
 import { BaseModule } from './base';
 

@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { currentTime } from 'utils/app/functions';
 import { AttributesOnly, RequireOnlyOne } from 'utils/app/types';
-import { ServerException } from 'utils/error';
+import { ServerException } from 'utils/error/classes';
 import { DatabaseRequests } from 'utils/typeorm/classes';
 
 import { Bloc } from './bloc.entity';

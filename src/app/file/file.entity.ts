@@ -12,7 +12,7 @@ import { EntityParameters } from 'utils/typeorm/types';
 @Entity()
 export class File extends BaseEntity {
 	/**
-	 * Create file with infomations.
+	 * Create file with information.
 	 *
 	 * @param {AttributesOnly<
 	 * 	Subtract<Omitting<File, 'owner'>, BaseEntity>
@@ -40,7 +40,7 @@ export class File extends BaseEntity {
 	@ManyToOne(() => User, ($) => $.files, { nullable: true })
 	owner: User;
 
-	// Infomations
+	// Information
 	/** File's path. */
 	@Field() @Column() path: string;
 

@@ -25,7 +25,7 @@ export class Password implements IBaseAuthentication {
 	value: string;
 
 	/**
-	 * Initiatialize password class.
+	 * Initialize password class.
 	 *
 	 * @param {AttributesOnly<Password>} object - Input Password class fields.
 	 */

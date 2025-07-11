@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { FastifyRequest } from 'fastify';
 import { roleMatching } from 'utils/auth/functions';
-import { ServerException } from 'utils/error';
+import { ServerException } from 'utils/error/classes';
 
 import { Allow, AllowPublic, Forbid, convertForGraphQl } from '.';
 

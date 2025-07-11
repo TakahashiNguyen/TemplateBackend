@@ -11,9 +11,9 @@ preheader: 'Thank you for signing up, time to get started'
 	</p>
 	<x-button
 		href="{{`\{\{urlVisit\}\}`}}"
-		class="inline-block uppercase text-base font-semibold text-center no-underline bg-blue-500 hover:bg-blue-600"
+		class="inline-block bg-blue-500 text-center text-base font-semibold uppercase no-underline hover:bg-blue-600"
 		align="center"
-    extraStyle="p-9"
+		extraStyle="p-9"
 	>
 		Visit website
 	</x-button>
@@ -21,6 +21,7 @@ preheader: 'Thank you for signing up, time to get started'
 	<p class="text-subtitle">
 		You are receiving this message because you signed up to account at
 		{{"\{\{urlHost\}\}"}}. Manage your notification preferences
-		<a class="text-gray-500" href="{{`\{\{urlManageNotifications\}\}`}}">here</a>.
+		<a class="text-gray-500" href="{{`\{\{urlManageNotifications\}\}`}}">here</a
+		>.
 	</p>
 </x-main>

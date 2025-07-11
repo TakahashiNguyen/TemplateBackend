@@ -16,7 +16,7 @@ export type ErrorObject =
 	| 'User'
 	| 'File'
 	| 'AWS'
-	| 'UserType'
+	| 'Authentication'
 	| 'Method'
 	| 'FileName'
 	| 'Notification'
@@ -26,9 +26,7 @@ export type ErrorObject =
 	| 'Token'
 	| 'Entity'
 	| 'Signature'
-	| 'Enterprise'
 	| 'Event'
-	| 'Password'
 	| 'Input'
 	| 'Server';
 
@@ -41,7 +39,6 @@ export type ErrorAction =
 	| 'Implementation'
 	| 'Upload'
 	| 'Download'
-	| 'SignUp'
 	| 'Assign'
 	| 'LogOut'
 	| 'Access'

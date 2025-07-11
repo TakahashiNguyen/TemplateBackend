@@ -1,6 +1,6 @@
 import { Authentication } from './classes';
 
-/** Authencation interface. */
+/** Authentication interface. */
 export interface IAuthentication extends Authentication {
 	/** Authenticate type. */
 	type: keyof Authentication;

@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ITokens } from 'utils/auth/interfaces';
-import { ServerException } from 'utils/error';
+import { ServerException } from 'utils/error/classes';
 
 import { Bloc } from '../bloc/bloc.entity';
 import { BlocService } from '../bloc/bloc.service';
@@ -11,6 +11,9 @@ import { BlocService } from '../bloc/bloc.service';
 /** Check the refresh token from client. */
 @Injectable()
 export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
+	/** Request header authentication. */
+	static readonly header: string = 'refresh';
+
 	/**
 	 * Initiate refresh strategy.
 	 *
@@ -22,7 +25,7 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
 		protected bloc: BlocService,
 	) {
 		super({
-			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+			jwtFromRequest: ExtractJwt.fromHeader(RefreshStrategy.header),
 			ignoreExpiration: false,
 			secretOrKey: config.getOrThrow('REFRESH_SECRET'),
 		});

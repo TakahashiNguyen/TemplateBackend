@@ -10,6 +10,8 @@ import { ApiHideProperty } from '@nestjs/swagger';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { Bloc } from 'app/auth/bloc/bloc.entity';
 import { convertForGraphQl } from 'app/auth/guards';
+import { AccessStrategy } from 'app/auth/guards/access.strategy';
+import { RefreshStrategy } from 'app/auth/guards/refresh.strategy';
 import { Hook } from 'app/auth/hook/hook.entity';
 import {
 	DoneFuncWithErrOrRes,
@@ -107,7 +109,7 @@ export class ServerInitializationClass implements OnModuleInit {
 			)
 			.addHook('preValidation', (req, rep) => middleware.setMetadata(req, rep))
 			.addHook('preValidation', (req, rep) => middleware.graphQl(req, rep))
-			.addHook('preSerialization', (req, rep, payload: UserRecieve, done) =>
+			.addHook('preSerialization', (req, rep, payload: UserReceive, done) =>
 				middleware.preSerialization(req, rep, payload, done),
 			)
 			.addHook('onSend', (req, rep, payload, done) =>
@@ -137,8 +139,11 @@ export class ServerInitializationClass implements OnModuleInit {
 /** App middleware. */
 @Injectable()
 export class ServerMiddleware extends SecurityService {
-	/** Refresh guard regular expression. */
-	private readonly rfsgrd = /^\/(api\/v1\/)?(logout|refresh){1}$/;
+	/** Access cookie name. */
+	readonly accessCookieName: string = 'access';
+
+	/** Refresh cookie name. */
+	readonly refreshCookieName: string = 'refresh';
 
 	/**
 	 * Authenticate processing.
@@ -154,22 +159,23 @@ export class ServerMiddleware extends SecurityService {
 	 * @param {DoneFuncWithErrOrRes} done - Fastify's done function.
 	 */
 	auth(req: FastifyRequest, res: FastifyReply, done: DoneFuncWithErrOrRes) {
-		const isRefresh = this.rfsgrd.test(req.url),
-			accessKey = req.session.get('accessKey');
+		const accessKey = req.session.get('accessKey');
 
 		let access: string = '',
 			refresh: string = '';
+
 		for (const cookieName in req.cookies) {
 			const { valid, value } = req.unsignCookie(req.cookies[cookieName] || '');
 
 			if (!valid) continue;
-			else if ('refresh' == cookieName) refresh = this.decrypt(value);
-			else if ('access' == cookieName && accessKey)
+			else if (this.refreshCookieName == cookieName)
+				refresh = this.decrypt(value);
+			else if (this.accessCookieName == cookieName && accessKey)
 				access = this.decrypt(value, this.decrypt(accessKey, req.ip));
 		}
 
-		if (access || refresh)
-			req.headers.authorization = `Bearer ${isRefresh ? refresh : access}`;
+		req.headers[AccessStrategy.header] = `Bearer ${access}`;
+		req.headers[RefreshStrategy.header] = `Bearer ${refresh}`;
 
 		delete req.headers.sessionId;
 		try {
@@ -230,7 +236,7 @@ export class ServerMiddleware extends SecurityService {
 	 *
 	 * @param {FastifyRequest} req - Server's request.
 	 * @param {FastifyReply} res - Server's response.
-	 * @param {UserRecieve} payload - Server's payload.
+	 * @param {unknown} payload - Server's payload.
 	 * @param {DoneFuncWithErrOrRes} done - Fastify's done function.
 	 */
 	setCookie(
@@ -250,21 +256,21 @@ export class ServerMiddleware extends SecurityService {
 			},
 			accessKey = req.session.get('accessKey');
 
-		if (accessKey && req.bloc.currentHash) {
+		if (accessKey && req.key.bloc?.currentHash) {
 			res.setCookie(
-				'access',
+				this.accessCookieName,
 				this.encrypt(
-					this.access(req.bloc.currentHash),
+					this.access(req.key.bloc.currentHash),
 					this.decrypt(accessKey, req.ip),
 				),
 				cookieOpts,
 			);
 		}
 
-		if (req.bloc.id)
+		if (req.key.bloc?.id)
 			res.setCookie(
-				'refresh',
-				this.encrypt(this.refresh(req.bloc.id)),
+				this.refreshCookieName,
+				this.encrypt(this.refresh(req.key.bloc.id)),
 				cookieOpts,
 			);
 
@@ -272,7 +278,7 @@ export class ServerMiddleware extends SecurityService {
 	}
 
 	/**
-	 * Server preserialization function.
+	 * Server pre-serialization function.
 	 *
 	 * @example
 	 *
@@ -282,20 +288,20 @@ export class ServerMiddleware extends SecurityService {
 	 *
 	 * @param {FastifyRequest} req - Server's request.
 	 * @param {FastifyReply} res - Server's response.
-	 * @param {UserRecieve} payload - Server's payload.
+	 * @param {UserReceive} payload - Server's payload.
 	 * @param {DoneFuncWithErrOrRes} done - Fastify's done function.
 	 */
 	preSerialization(
 		req: FastifyRequest,
 		res: FastifyReply,
-		payload: UserRecieve,
+		payload: UserReceive,
 		done: DoneFuncWithErrOrRes,
 	) {
 		const sessionId = req.session.get('sessionId');
 
 		if (!sessionId) req.session.set('sessionId', (64).string);
 
-		if (!(payload instanceof UserRecieve)) {
+		if (!(payload instanceof UserReceive)) {
 			done();
 			return;
 		}
@@ -311,16 +317,16 @@ export class ServerMiddleware extends SecurityService {
 	}
 }
 
-/** User recieve infomations. */
-export class UserRecieve {
+/** User receive information. */
+export class UserReceive {
 	/**
-	 * Quick user recieve initiation.
+	 * Quick user receive initiation.
 	 *
-	 * @param {RequireOnlyOne<AttributesOnly<UserRecieve>, 'bloc' | 'hook'>} object
-	 *   - User recieve infomations.
+	 * @param {RequireOnlyOne<AttributesOnly<UserReceive>, 'bloc' | 'hook'>} object
+	 *   - User receive information.
 	 */
 	constructor(
-		object: RequireOnlyOne<AttributesOnly<UserRecieve>, 'bloc' | 'hook'>,
+		object: RequireOnlyOne<AttributesOnly<UserReceive>, 'bloc' | 'hook'>,
 	) {
 		// @ts-expect-error nullable field
 		this.hook = object.hook;
