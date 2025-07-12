@@ -13,7 +13,8 @@
 				"vscodevim.vim",
 				"bradlc.vscode-tailwindcss",
 				"ecmel.vscode-html-css",
-				"streetsidesoftware.code-spell-checker"
+				"streetsidesoftware.code-spell-checker",
+				"Vue.volar"
 			]
 		}
 	},
@@ -35,13 +36,7 @@
 		"ghcr.io/takahashinguyen/devcontainer-features/minio-client-homebrew:latest": {},
 		"ghcr.io/takahashinguyen/devcontainer-features/minio-homebrew:latest": {}
 	},
-	"forwardPorts": [
-		3000,
-		6379,
-		9000,
-		9001,
-		8025
-	],
+	"forwardPorts": [3000, 6379, 9000, 9001, 8025, 5173],
 	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 	"postAttachCommand": {
 		"redis": "/home/linuxbrew/.linuxbrew/bin/redis-server --daemonize yes"
@@ -51,7 +46,5 @@
 		"pnpm": "pnpm install",
 		"ssl": "sudo openssl req -x509 -newkey rsa:4096 -nodes -keyout /key.pem -out /cert.pem -sha256 -days 3650 -subj \"/C=VN/ST=Hanoi/L=Hanoi/O=foo/CN=bar.com\""
 	},
-	"runArgs": [
-		"--add-host=host.docker.internal:host-gateway"
-	]
+	"runArgs": ["--add-host=host.docker.internal:host-gateway"]
 }

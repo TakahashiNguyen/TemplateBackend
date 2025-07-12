@@ -71,7 +71,7 @@ export class HealthController {
 }
 
 /** App controller class. */
-@Controller({ version: '1', path: '' })
+@Controller({ path: '' })
 export class AppController {
 	/**
 	 * Initiate controller.

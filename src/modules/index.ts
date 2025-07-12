@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { APP_GUARD, HttpAdapterHost } from '@nestjs/core';
+import { JwtService } from '@nestjs/jwt';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AppModule } from 'app';
@@ -10,8 +12,6 @@ import {
 import { ServerException } from 'utils/error/classes';
 
 import { BaseModule } from './base';
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
 
 /** Module collection. */
 @Module({
