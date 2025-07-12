@@ -37,16 +37,4 @@ export const Allow = Reflector.createDecorator<UserRole[]>(),
 	GetRequest = createParamDecorator(
 		<K extends keyof FastifyRequest>(args: K, context: ExecutionContext) =>
 			convertForGraphQl(context)[args],
-	),
-	GetServerKey = createParamDecorator(
-		<K extends keyof FastifyRequest['key']>(
-			args: K,
-			context: ExecutionContext,
-		) => {
-			const res = convertForGraphQl(context).key;
-
-			if (!res) return null;
-
-			return res[args];
-		},
 	);

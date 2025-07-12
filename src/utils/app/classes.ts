@@ -116,9 +116,7 @@ export class ServerInitializationClass implements OnModuleInit {
 				middleware.setCookie(req, rep, payload, done),
 			)
 			.addHook('onRequest', (request, reply, done) => {
-				if (request.url.split('/').at(-1) == 'csrf-token')
-					reply.send({ token: reply.generateCsrf() });
-				else if (
+				if (
 					request.url == '/graphql' &&
 					request.method.toLocaleLowerCase() != 'post'
 				)
@@ -305,7 +303,7 @@ export class ServerMiddleware extends SecurityService {
 			return;
 		}
 
-		const { bloc, hook, message } = payload,
+		const { bloc, hook, ...rest } = payload,
 			accessKey = (32).string;
 
 		req.session.set('accessKey', this.encrypt(accessKey, req.ip));
@@ -313,7 +311,7 @@ export class ServerMiddleware extends SecurityService {
 		req.hook = hook || req.hook;
 		req.bloc = bloc || req.bloc;
 
-		done(null, { message });
+		done(null, rest);
 	}
 }
 
@@ -322,16 +320,24 @@ export class UserReceive {
 	/**
 	 * Quick user receive initiation.
 	 *
-	 * @param {ApplyPartial<AttributesOnly<UserReceive>, 'bloc' | 'hook'>} object
+	 * @param {ApplyPartial<
+	 * 	AttributesOnly<UserReceive>,
+	 * 	'bloc' | 'hook' | 'token'
+	 * >} object
 	 *   - User receive information.
 	 */
 	constructor(
-		object: ApplyPartial<AttributesOnly<UserReceive>, 'bloc' | 'hook'>,
+		object: ApplyPartial<
+			AttributesOnly<UserReceive>,
+			'bloc' | 'hook' | 'token'
+		>,
 	) {
 		// @ts-expect-error nullable field
 		this.hook = object.hook;
 		// @ts-expect-error nullable field
 		this.bloc = object.bloc;
+		// @ts-expect-error nullable field
+		this.token = object.token;
 		this.message = object.message;
 	}
 
@@ -343,6 +349,9 @@ export class UserReceive {
 
 	/** Server's message. */
 	@ApiHideProperty() message: string;
+
+	/** Token. */
+	@ApiHideProperty() token: string;
 }
 
 /** Modified throttler guard class. */

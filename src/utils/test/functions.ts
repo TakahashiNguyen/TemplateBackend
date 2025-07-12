@@ -184,7 +184,9 @@ export async function execute<R, K extends keyof jest.Matchers<Promise<R>>>(
  * @param {OutgoingHttpHeaders} headers - Input headers.
  * @returns {object} A cookie object from input `headers`.
  */
-export function getCookies(headers: OutgoingHttpHeaders): object {
+export function getCookies(headers: OutgoingHttpHeaders): {
+	[k: string]: string;
+} {
 	return Object.fromEntries(
 		(() => {
 			const cookies = headers['set-cookie'];
@@ -218,7 +220,10 @@ export function getCookies(headers: OutgoingHttpHeaders): object {
 export function submitWithFile<T extends object>(
 	body: T,
 	fileName: string,
-): InjectOptions {
+): InjectOptions & {
+	/** Content of file. */
+	fileContent: string;
+} {
 	const form = new FormData(),
 		appendObjectFormData = <T>(data: T, parentKey = '') => {
 			for (const key in data) {
@@ -231,9 +236,10 @@ export function submitWithFile<T extends object>(
 					form.append(fullKey, String(value));
 				}
 			}
-		};
+		},
+		fileContent = (40).string;
 
-	form.append(fileName, Readable.from(Buffer.from((40).string)), {
+	form.append(fileName, Readable.from(Buffer.from(fileContent)), {
 		filename: 'test.png',
 	});
 
@@ -246,5 +252,6 @@ export function submitWithFile<T extends object>(
 	return {
 		body: form,
 		headers: form.getHeaders(),
+		fileContent,
 	};
 }

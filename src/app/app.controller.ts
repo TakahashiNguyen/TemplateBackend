@@ -3,6 +3,7 @@ import {
 	Get,
 	Inject,
 	Post,
+	Res,
 	UseGuards,
 	forwardRef,
 } from '@nestjs/common';
@@ -15,6 +16,7 @@ import {
 	MemoryHealthIndicator,
 	TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
+import { FastifyReply } from 'fastify';
 import { join } from 'node:path';
 import { UserReceive } from 'utils/app/classes';
 import { ServerException } from 'utils/error/classes';
@@ -111,6 +113,28 @@ export class AppController {
 			message: isSuccess
 				? serverException('Success', 'Client', 'Request')
 				: serverException('Invalid', 'Client', 'Submit'),
+		});
+	}
+
+	/**
+	 * Get csrf token function.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * this.csrfToken(res);
+	 * ```
+	 *
+	 * @param {FastifyReply} res - Server response interface.
+	 * @returns {UserReceive} An user receive class.
+	 */
+	@Get('csrf-token')
+	async csrfToken(
+		@Res({ passthrough: true }) res: FastifyReply,
+	): Promise<UserReceive> {
+		return new UserReceive({
+			token: res.generateCsrf(),
+			message: serverException('Success', 'Token', 'Request'),
 		});
 	}
 }

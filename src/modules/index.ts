@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, HttpAdapterHost } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AppModule } from 'app';
@@ -10,6 +10,8 @@ import {
 import { ServerException } from 'utils/error/classes';
 
 import { BaseModule } from './base';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 
 /** Module collection. */
 @Module({
@@ -24,4 +26,19 @@ import { BaseModule } from './base';
 	],
 	providers: [{ provide: APP_GUARD, useClass: ModifiedThrottlerGuard }],
 })
-export default class MainModule extends ServerInitializationClass {}
+export default class MainModule extends ServerInitializationClass {
+	/**
+	 * Main module initialization.
+	 *
+	 * @param {HttpAdapterHost} httpAdapterHost - Server http adapter.
+	 * @param {ConfigService} config - Config service.
+	 * @param {JwtService} jwt - JSON web token service.
+	 */
+	constructor(
+		protected httpAdapterHost: HttpAdapterHost,
+		protected config: ConfigService,
+		protected jwt: JwtService,
+	) {
+		super(httpAdapterHost, config, jwt);
+	}
+}

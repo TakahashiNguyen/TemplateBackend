@@ -119,3 +119,15 @@ describe('refresh', () => {
 		);
 	});
 });
+
+describe('csrf-token', () => {
+	const url = '/csrf-token';
+
+	it('success', async () => {
+		await execute(async () => JSON.parse((await req().get(url).end()).body), {
+			expectations: [
+				{ type: 'toHaveProperty', parameters: ['token', expect.any(String)] },
+			],
+		});
+	});
+});
