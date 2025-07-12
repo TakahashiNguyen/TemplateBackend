@@ -12,16 +12,16 @@ import {
 	jestInitialization,
 } from 'utils/test/functions';
 
-import { AccessGuard } from './access.guard';
+import { UserGuard } from './user.guard';
 
 const unit = getCurrentTestFileName(__filename);
 
-let accessGuard: AccessGuard, reflector: Reflector, context: ExecutionContext;
+let userGuard: UserGuard, reflector: Reflector, context: ExecutionContext;
 
 beforeAll(async () => {
 	const { module } = await jestInitialization();
 
-	accessGuard = module.get(AccessGuard);
+	userGuard = module.get(UserGuard);
 	reflector = module.get(Reflector);
 	context = {
 		getHandler: jest.fn().mockReturnValue({}),
@@ -31,25 +31,25 @@ beforeAll(async () => {
 
 describe('canActivate', () => {
 	/** Default return. */
-	// @ts-expect-error error-free expression
 	const req: FastifyRequest = {
-		key: {
-			user: new User(User.test(unit, {})),
+		// @ts-expect-error error-free expression
+		bloc: {
+			owner: new User(User.test(unit, {})),
 		},
 	};
 
 	beforeEach(() => {
 		jest
-			.spyOn(AuthGuard('access').prototype, 'canActivate')
+			.spyOn(AuthGuard('user').prototype, 'canActivate')
 			.mockImplementation(() => true);
 
-		jest.spyOn(accessGuard, 'getRequest').mockReturnValueOnce(req);
+		jest.spyOn(userGuard, 'getRequest').mockReturnValueOnce(req);
 	});
 
 	it('success when AllowPublic is set', async () => {
 		jest.spyOn(reflector, 'get').mockReturnValueOnce(true);
 
-		expect(await accessGuard.canActivate(context)).toBe(true);
+		expect(await userGuard.canActivate(context)).toBe(true);
 	});
 
 	it("success when user's role match the allowance roles", async () => {
@@ -59,7 +59,7 @@ describe('canActivate', () => {
 			.mockReturnValueOnce([UserRole.guest])
 			.mockReturnValueOnce(null);
 
-		expect(await accessGuard.canActivate(context)).toBe(true);
+		expect(await userGuard.canActivate(context)).toBe(true);
 	});
 
 	it("fail when user's role match the forbiddance roles", async () => {
@@ -69,7 +69,7 @@ describe('canActivate', () => {
 			.mockReturnValueOnce(null)
 			.mockReturnValueOnce([UserRole.guest]);
 
-		expect(await accessGuard.canActivate(context)).toBe(false);
+		expect(await userGuard.canActivate(context)).toBe(false);
 	});
 
 	it("fail when user's roles not match the required roles", async () => {
@@ -77,7 +77,7 @@ describe('canActivate', () => {
 			.spyOn(reflector, 'get')
 			.mockReturnValueOnce(false)
 			.mockReturnValueOnce([UserRole.admin]);
-		expect(await accessGuard.canActivate(context)).toBe(false);
+		expect(await userGuard.canActivate(context)).toBe(false);
 	});
 
 	it('success when allowance and forbiddance roles not defined', async () => {
@@ -87,7 +87,7 @@ describe('canActivate', () => {
 			.mockReturnValueOnce(null)
 			.mockReturnValueOnce(null);
 
-		expect(await accessGuard.canActivate(context)).toBe(true);
+		expect(await userGuard.canActivate(context)).toBe(true);
 	});
 
 	it('fail when allowance and forbiddance roles have same child', async () => {
@@ -97,28 +97,11 @@ describe('canActivate', () => {
 			.mockReturnValueOnce([UserRole.admin])
 			.mockReturnValueOnce([UserRole.admin]);
 
-		await execute(() => accessGuard.canActivate(context), {
+		await execute(() => userGuard.canActivate(context), {
 			expectations: [
 				{
 					type: 'toThrow',
 					parameters: [serverException('Fatal', 'Method', 'Implementation')],
-				},
-			],
-		});
-	});
-
-	it('fail when client requested a none user context', async () => {
-		jest
-			.spyOn(accessGuard, 'getRequest')
-			.mockReset()
-			// @ts-expect-error test serving
-			.mockReturnValueOnce({ key: {} });
-
-		await execute(() => accessGuard.canActivate(context), {
-			expectations: [
-				{
-					type: 'toThrow',
-					parameters: [serverException('Invalid', 'User', 'Request')],
 				},
 			],
 		});

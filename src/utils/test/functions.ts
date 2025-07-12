@@ -10,6 +10,7 @@ import {
 	LightMyRequestChain,
 	LightMyRequestResponse,
 } from 'fastify';
+import FormData from 'form-data';
 import { TestModule } from 'modules/test';
 import { OutgoingHttpHeaders } from 'node:http';
 import { Readable } from 'node:stream';
@@ -169,4 +170,81 @@ export async function execute<R, K extends keyof jest.Matchers<Promise<R>>>(
 	}
 
 	if (onFinish != undefined) await onFinish(await executed);
+}
+
+/**
+ * Get cookies from headers.
+ *
+ * @example
+ *
+ * ```ts
+ * getCookies(headers);
+ * ```
+ *
+ * @param {OutgoingHttpHeaders} headers - Input headers.
+ * @returns {object} A cookie object from input `headers`.
+ */
+export function getCookies(headers: OutgoingHttpHeaders): object {
+	return Object.fromEntries(
+		(() => {
+			const cookies = headers['set-cookie'];
+			if (!cookies) return [];
+
+			return (Array.isArray(cookies) ? cookies : [cookies])
+				.filter(Boolean)
+				.map((cookieStr) => {
+					const [cookiePair] = decodeURIComponent(cookieStr).split('; ');
+					const [key, ...value] = cookiePair.split('=');
+					return [key.trim(), value?.join('=').trim()];
+				});
+		})(),
+	);
+}
+
+/**
+ * Submit with file input.
+ *
+ * @example
+ *
+ * ```ts
+ * submitWithFile(body, 'foo');
+ * ```
+ *
+ * @template T
+ * @param {T} body - Fields to send.
+ * @param {string} fileName - File name.
+ * @returns {InjectOptions} A form data to send.
+ */
+export function submitWithFile<T extends object>(
+	body: T,
+	fileName: string,
+): InjectOptions {
+	const form = new FormData(),
+		appendObjectFormData = <T>(data: T, parentKey = '') => {
+			for (const key in data) {
+				const value = data[key];
+				const fullKey = parentKey ? `${parentKey}[${key}]` : key;
+
+				if (typeof value === 'object' && value !== null) {
+					appendObjectFormData(value, fullKey);
+				} else if (value) {
+					form.append(fullKey, String(value));
+				}
+			}
+		};
+
+	form.append(fileName, Readable.from(Buffer.from((40).string)), {
+		filename: 'test.png',
+	});
+
+	Object.entries(body).map(([key, value]) => {
+		if (typeof value === 'object' && value !== null)
+			appendObjectFormData(value, key);
+		else form.append(key, value);
+	});
+
+	return {
+		body: form,
+		headers: form.getHeaders(),
+	};
 }

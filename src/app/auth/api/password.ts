@@ -71,10 +71,11 @@ export class Password implements IBaseAuthentication {
 	 * ```
 	 *
 	 * @param {string} password - Input password.
-	 * @returns {Promise<boolean>} True if password is matched with hashed
-	 *   password and vice versa.
+	 * @returns {boolean} True if password is matched with hashed password and
+	 *   vice versa.
+	 * @throws {ServerException} Will throw an error if `hashed` is null or empty.
 	 */
-	async authenticate(password: Password): Promise<boolean> {
+	authenticate(password: Password): boolean {
 		if (this.hashed == null)
 			throw new ServerException('Fatal', 'Server', 'Implementation');
 

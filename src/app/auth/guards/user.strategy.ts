@@ -1,19 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { PassportStrategy } from '@nestjs/passport';
-import { User } from 'app/user/user.entity';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { AccessTokenGuard } from 'utils/auth/functions';
 import { ITokens } from 'utils/auth/interfaces';
 import { ServerException } from 'utils/error/classes';
 
+import { Bloc } from '../bloc/bloc.entity';
 import { BlocService } from '../bloc/bloc.service';
 
-/** Check the access token from client. */
+/** Check user from client. */
 @Injectable()
-export class AccessStrategy extends PassportStrategy(Strategy, 'access') {
-	/** Request header authentication. */
-	static readonly header: string = 'access';
-
+export class UserStrategy extends AccessTokenGuard('user') {
 	/**
 	 * Initiate access strategy.
 	 *
@@ -24,11 +20,7 @@ export class AccessStrategy extends PassportStrategy(Strategy, 'access') {
 		config: ConfigService,
 		private bloc: BlocService,
 	) {
-		super({
-			jwtFromRequest: ExtractJwt.fromHeader(AccessStrategy.header),
-			secretOrKey: config.getOrThrow('ACCESS_SECRET'),
-			ignoreExpiration: false,
-		});
+		super(config);
 	}
 
 	/**
@@ -41,19 +33,26 @@ export class AccessStrategy extends PassportStrategy(Strategy, 'access') {
 	 * ```
 	 *
 	 * @param {ITokens} payload - The payload from token.
-	 * @returns {Promise<User>} Server key is going to save in request context.
+	 * @returns {Promise<Bloc>} Retrieved bloc from request.
 	 */
-	async validate({ accessToken }: ITokens): Promise<User> {
+	async validate({ accessToken }: ITokens): Promise<Bloc> {
 		if (accessToken == null)
 			throw new ServerException('Invalid', 'Client', 'Request');
 
-		const bloc = await this.bloc.currentHash(accessToken);
+		let bloc: Bloc | undefined;
+
+		bloc = await this.bloc.currentHash(accessToken);
 
 		if (bloc == undefined)
 			throw new ServerException('Invalid', 'Client', 'Request');
 
 		await this.bloc.issue({ currentHash: accessToken });
 
-		return bloc.owner;
+		bloc = await this.bloc.id(bloc.id);
+
+		if (bloc == undefined)
+			throw new ServerException('Fatal', 'Server', 'Implementation');
+
+		return bloc;
 	}
 }

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { RefreshTokenGuard } from 'utils/auth/functions';
 import { ITokens } from 'utils/auth/interfaces';
 import { ServerException } from 'utils/error/classes';
 
@@ -10,10 +9,7 @@ import { BlocService } from '../bloc/bloc.service';
 
 /** Check the refresh token from client. */
 @Injectable()
-export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
-	/** Request header authentication. */
-	static readonly header: string = 'refresh';
-
+export class RefreshStrategy extends RefreshTokenGuard('refresh') {
 	/**
 	 * Initiate refresh strategy.
 	 *
@@ -21,14 +17,10 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
 	 * @param {BlocService} bloc - Bloc service.
 	 */
 	constructor(
-		protected config: ConfigService,
-		protected bloc: BlocService,
+		config: ConfigService,
+		private bloc: BlocService,
 	) {
-		super({
-			jwtFromRequest: ExtractJwt.fromHeader(RefreshStrategy.header),
-			ignoreExpiration: false,
-			secretOrKey: config.getOrThrow('REFRESH_SECRET'),
-		});
+		super(config);
 	}
 
 	/**
@@ -41,7 +33,7 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
 	 * ```
 	 *
 	 * @param {ITokens} payload - The payload from token.
-	 * @returns {Promise<Bloc>} Retrived bloc from token.
+	 * @returns {Promise<Bloc>} Retrieved bloc from token.
 	 */
 	async validate({ refreshToken }: ITokens): Promise<Bloc> {
 		if (refreshToken == null)

@@ -1,9 +1,7 @@
 import { CookieSerializeOptions } from '@fastify/csrf-protection';
-import { IMetadata } from 'app/auth/guards';
 import { FastifyServerOptions } from 'fastify';
 import { DatabaseType } from 'typeorm';
 import 'utils';
-import { IServerKey } from 'utils/auth/interfaces';
 
 /** Fastify server options for configuration. */
 export const fastifyServerOptions: FastifyServerOptions = {
@@ -30,26 +28,3 @@ export const databaseType: DatabaseType = 'postgres';
 
 /** Server's maximum file uploading size in megabytes. */
 export const fileSizeMaximum = 50;
-
-/** Modified fastify interfaces. */
-declare module 'fastify' {
-	/** Server request. */
-	interface FastifyRequest {
-		/** Server key. */
-		key: IServerKey;
-		/** Serving multipart request. */
-		isMultipart: boolean;
-		/** Client metadata. */
-		metadata: IMetadata;
-	}
-}
-
-declare module '@fastify/secure-session' {
-	/** Modified session data. */
-	interface SessionData {
-		/** Session access key. */
-		accessKey: string;
-		/** Session identifier. */
-		sessionId: string;
-	}
-}

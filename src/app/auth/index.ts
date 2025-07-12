@@ -2,13 +2,13 @@ import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { getDefaultExportFromSubdirectory } from 'utils/app/functions';
 
-import { AccessGuard } from './guards/access.guard';
-import { AccessStrategy } from './guards/access.strategy';
 import { HookGuard } from './guards/hook.guard';
 import { HookStrategy } from './guards/hook.strategy';
 import { LocalhostGuard } from './guards/localhost.guard';
 import { RefreshGuard } from './guards/refresh.guard';
 import { RefreshStrategy } from './guards/refresh.strategy';
+import { UserGuard } from './guards/user.guard';
+import { UserStrategy } from './guards/user.strategy';
 
 const modules = getDefaultExportFromSubdirectory(__dirname);
 
@@ -22,11 +22,11 @@ const modules = getDefaultExportFromSubdirectory(__dirname);
 	],
 	providers: [
 		// Strategies
-		AccessStrategy,
+		UserStrategy,
 		RefreshStrategy,
 		HookStrategy,
 		// Guards
-		AccessGuard,
+		UserGuard,
 		RefreshGuard,
 		HookGuard,
 		LocalhostGuard,

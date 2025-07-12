@@ -10,8 +10,8 @@ import { ApiHideProperty } from '@nestjs/swagger';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { Bloc } from 'app/auth/bloc/bloc.entity';
 import { convertForGraphQl } from 'app/auth/guards';
-import { AccessStrategy } from 'app/auth/guards/access.strategy';
 import { RefreshStrategy } from 'app/auth/guards/refresh.strategy';
+import { UserStrategy } from 'app/auth/guards/user.strategy';
 import { Hook } from 'app/auth/hook/hook.entity';
 import {
 	DoneFuncWithErrOrRes,
@@ -25,7 +25,7 @@ import { SecurityService } from 'utils/auth/classes';
 
 import { cookieOptions, fileSizeMaximum } from './constants';
 import { RequestResponse } from './interfaces';
-import { AttributesOnly, RequireOnlyOne } from './types';
+import { ApplyPartial, AttributesOnly } from './types';
 
 /** Modified cache interceptor. */
 export class ModifiedCacheInterceptor extends CacheInterceptor {
@@ -174,8 +174,8 @@ export class ServerMiddleware extends SecurityService {
 				access = this.decrypt(value, this.decrypt(accessKey, req.ip));
 		}
 
-		req.headers[AccessStrategy.header] = `Bearer ${access}`;
-		req.headers[RefreshStrategy.header] = `Bearer ${refresh}`;
+		req.headers[UserStrategy.header] = access;
+		req.headers[RefreshStrategy.header] = refresh;
 
 		delete req.headers.sessionId;
 		try {
@@ -245,7 +245,7 @@ export class ServerMiddleware extends SecurityService {
 		payload: unknown,
 		done: DoneFuncWithErrOrRes,
 	) {
-		if (!req.key) {
+		if (!req.bloc) {
 			done();
 			return;
 		}
@@ -256,23 +256,22 @@ export class ServerMiddleware extends SecurityService {
 			},
 			accessKey = req.session.get('accessKey');
 
-		if (accessKey && req.key.bloc?.currentHash) {
+		if (accessKey) {
 			res.setCookie(
 				this.accessCookieName,
 				this.encrypt(
-					this.access(req.key.bloc.currentHash),
+					this.access(req.bloc.currentHash),
 					this.decrypt(accessKey, req.ip),
 				),
 				cookieOpts,
 			);
 		}
 
-		if (req.key.bloc?.id)
-			res.setCookie(
-				this.refreshCookieName,
-				this.encrypt(this.refresh(req.key.bloc.id)),
-				cookieOpts,
-			);
+		res.setCookie(
+			this.refreshCookieName,
+			this.encrypt(this.refresh(req.bloc.id)),
+			cookieOpts,
+		);
 
 		done(null, payload);
 	}
@@ -311,7 +310,8 @@ export class ServerMiddleware extends SecurityService {
 
 		req.session.set('accessKey', this.encrypt(accessKey, req.ip));
 
-		req.key = { hook, bloc };
+		req.hook = hook || req.hook;
+		req.bloc = bloc || req.bloc;
 
 		done(null, { message });
 	}
@@ -322,11 +322,11 @@ export class UserReceive {
 	/**
 	 * Quick user receive initiation.
 	 *
-	 * @param {RequireOnlyOne<AttributesOnly<UserReceive>, 'bloc' | 'hook'>} object
+	 * @param {ApplyPartial<AttributesOnly<UserReceive>, 'bloc' | 'hook'>} object
 	 *   - User receive information.
 	 */
 	constructor(
-		object: RequireOnlyOne<AttributesOnly<UserReceive>, 'bloc' | 'hook'>,
+		object: ApplyPartial<AttributesOnly<UserReceive>, 'bloc' | 'hook'>,
 	) {
 		// @ts-expect-error nullable field
 		this.hook = object.hook;

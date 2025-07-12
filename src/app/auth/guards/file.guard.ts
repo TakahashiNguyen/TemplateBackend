@@ -1,14 +1,10 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+
+import { UserGuard } from './user.guard';
 
 /** File guard class. */
 @Injectable()
-export class FileGuard extends AuthGuard('access') {
-	/** Initiate file guard. */
-	constructor() {
-		super({ property: 'key' });
-	}
-
+export class FileGuard extends UserGuard {
 	/**
 	 * Always allow access to file endpoints.
 	 *

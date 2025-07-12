@@ -1,4 +1,7 @@
-import { hashSync as argon2Hash, verify } from '@node-rs/argon2';
+import { ConfigService } from '@nestjs/config';
+import { PassportStrategy } from '@nestjs/passport';
+import { hashSync as argon2Hash, verifySync } from '@node-rs/argon2';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { ModifiedArgon2Options } from './types';
 
@@ -42,18 +45,14 @@ export function bidirectionalHash(
  *
  * @param {string} origin - The string verifies the `input` string.
  * @param {string} input - The string to verify if it matches `original`.
- * @returns {Promise<boolean>} Positive value if `input` validated with `origin`
- *   and vice versa.
+ * @returns {boolean} Positive value if `input` validated with `origin` and vice
+ *   versa.
  */
-export async function verifyBidirectionalHash(
+export function verifyBidirectionalHash(
 	origin: string,
 	input: string,
-): Promise<boolean> {
-	try {
-		return await verify(input, origin);
-	} catch {
-		return false;
-	}
+): boolean {
+	return verifySync(origin, input);
 }
 
 /**
@@ -72,4 +71,72 @@ export async function verifyBidirectionalHash(
  */
 export function roleMatching<T>(input: T, required: T[]): boolean {
 	return required.some((i) => i === input);
+}
+
+/**
+ * Access guard class .
+ *
+ * @example
+ *
+ * ```ts
+ * AccessGuard('access');
+ * ```
+ *
+ * @param {string} name - Guard name.
+ */
+export function AccessTokenGuard(name: string) {
+	/** Access guard class. */
+	abstract class AccessTokenGuard extends PassportStrategy(Strategy, name) {
+		/** Request header authentication. */
+		static readonly header: string = 'access';
+
+		/**
+		 * Initiate access strategy.
+		 *
+		 * @param {ConfigService} config - Server config service.
+		 */
+		constructor(config: ConfigService) {
+			super({
+				jwtFromRequest: ExtractJwt.fromHeader(AccessTokenGuard.header),
+				secretOrKey: config.getOrThrow('ACCESS_SECRET'),
+				ignoreExpiration: false,
+			});
+		}
+	}
+
+	return AccessTokenGuard;
+}
+
+/**
+ * Refresh guard class .
+ *
+ * @example
+ *
+ * ```ts
+ * RefreshGuard('access');
+ * ```
+ *
+ * @param {string} name - Guard name.
+ */
+export function RefreshTokenGuard(name: string) {
+	/** Refresh guard class. */
+	abstract class RefreshTokenGuard extends PassportStrategy(Strategy, name) {
+		/** Request header authentication. */
+		static readonly header: string = 'refresh';
+
+		/**
+		 * Initiate refresh strategy.
+		 *
+		 * @param {ConfigService} config - Server config service.
+		 */
+		constructor(config: ConfigService) {
+			super({
+				jwtFromRequest: ExtractJwt.fromHeader(RefreshTokenGuard.header),
+				secretOrKey: config.getOrThrow('REFRESH_SECRET'),
+				ignoreExpiration: false,
+			});
+		}
+	}
+
+	return RefreshTokenGuard;
 }

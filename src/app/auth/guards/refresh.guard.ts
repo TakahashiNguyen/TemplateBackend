@@ -6,6 +6,6 @@ import { AuthGuard } from '@nestjs/passport';
 export class RefreshGuard extends AuthGuard('refresh') {
 	/** Initiate refresh token guard. */
 	constructor() {
-		super({ property: 'key.bloc' });
+		super({ property: 'bloc' });
 	}
 }

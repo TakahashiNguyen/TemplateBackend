@@ -7,16 +7,16 @@ import { ServerException } from 'utils/error/classes';
 
 import { Allow, AllowPublic, Forbid, convertForGraphQl } from '.';
 
-/** Access token guard class. */
+/** User guard class. */
 @Injectable()
-export class AccessGuard extends AuthGuard('access') {
+export class UserGuard extends AuthGuard('user') {
 	/**
-	 * Initiate access token guard.
+	 * Initiate user guard.
 	 *
 	 * @param {Reflector} reflector - Get method reflector.
 	 */
 	constructor(private reflector: Reflector) {
-		super({ property: 'key.user' });
+		super({ property: 'bloc' });
 	}
 
 	/**
@@ -54,10 +54,9 @@ export class AccessGuard extends AuthGuard('access') {
 
 		const allowRoles = this.reflector.get(Allow, context.getHandler()) || [],
 			forbidRoles = this.reflector.get(Forbid, context.getHandler()) || [],
-			userRole = this.getRequest(context).key.user?.role;
+			userRole = this.getRequest(context).bloc.owner.role;
 
-		if (!userRole) throw new ServerException('Invalid', 'User', 'Request');
-		else if (allowRoles.some((i) => roleMatching(i, forbidRoles)))
+		if (allowRoles.some((i) => roleMatching(i, forbidRoles)))
 			throw new ServerException('Fatal', 'Method', 'Implementation');
 		else if (!allowRoles.length && !forbidRoles.length) return true;
 

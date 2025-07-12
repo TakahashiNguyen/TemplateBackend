@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { AccessTokenGuard } from 'utils/auth/functions';
 import { ITokens } from 'utils/auth/interfaces';
 import { ServerException } from 'utils/error/classes';
 
@@ -10,7 +9,7 @@ import { HookService } from '../hook/hook.service';
 
 /** Check the hook is valid. */
 @Injectable()
-export class HookStrategy extends PassportStrategy(Strategy, 'hook') {
+export class HookStrategy extends AccessTokenGuard('hook') {
 	/**
 	 * Initiate hook strategy.
 	 *
@@ -21,11 +20,7 @@ export class HookStrategy extends PassportStrategy(Strategy, 'hook') {
 		config: ConfigService,
 		private hook: HookService,
 	) {
-		super({
-			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-			secretOrKey: config.getOrThrow('ACCESS_SECRET'),
-			ignoreExpiration: false,
-		});
+		super(config);
 	}
 
 	/**

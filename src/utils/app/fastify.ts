@@ -5,6 +5,9 @@ import fastifySecureSession from '@fastify/secure-session';
 import fastifyStatic from '@fastify/static';
 import { HttpException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Bloc } from 'app/auth/bloc/bloc.entity';
+import { IMetadata } from 'app/auth/guards';
+import { Hook } from 'app/auth/hook/hook.entity';
 import Fastify, { FastifyInstance } from 'fastify';
 import { Server, createServer } from 'node:http';
 import { join } from 'node:path';
@@ -227,5 +230,30 @@ export class FastifyFramework {
 	 */
 	public async testSetup(): Promise<void> {
 		await this.initializePlugins({ name: (6).string, password: (6).string });
+	}
+}
+
+/** Modified fastify interfaces. */
+declare module 'fastify' {
+	/** Server request. */
+	interface FastifyRequest {
+		/** Server key. */
+		bloc: Bloc;
+		/** Serving multipart request. */
+		isMultipart: boolean;
+		/** Client metadata. */
+		metadata: IMetadata;
+		/** Hook key type. */
+		hook: Hook;
+	}
+}
+
+declare module '@fastify/secure-session' {
+	/** Modified session data. */
+	interface SessionData {
+		/** Session access key. */
+		accessKey: string;
+		/** Session identifier. */
+		sessionId: string;
 	}
 }

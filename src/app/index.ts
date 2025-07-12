@@ -2,7 +2,7 @@ import { Module, forwardRef } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
 import { getDefaultExportFromSubdirectory } from 'utils/app/functions';
 
-import { HealthController } from './app.controller';
+import { AppController, HealthController } from './app.controller';
 import { AppService } from './app.service';
 
 const modules = getDefaultExportFromSubdirectory(__dirname);
@@ -17,7 +17,7 @@ const modules = getDefaultExportFromSubdirectory(__dirname);
 		...modules.map((i) => forwardRef(() => i)),
 	],
 	providers: [AppService],
-	controllers: [HealthController],
+	controllers: [HealthController, AppController],
 	exports: [...modules, AppService],
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class

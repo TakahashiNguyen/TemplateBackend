@@ -6,6 +6,6 @@ import { AuthGuard } from '@nestjs/passport';
 export class HookGuard extends AuthGuard('hook') {
 	/** Initiate hook guard. */
 	constructor() {
-		super({ property: 'key.hook' });
+		super({ property: 'hook' });
 	}
 }

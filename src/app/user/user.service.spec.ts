@@ -66,7 +66,7 @@ describe('create', () => {
 			expectations: [
 				{
 					type: 'toThrow',
-					parameters: [serverException('Invalid', 'User', 'Assign')],
+					parameters: [serverException('Invalid', 'Email', 'Submit')],
 				},
 			],
 		});
