@@ -1,13 +1,14 @@
-import { Authentication } from 'app/auth/classes';
-import { IAuthentication } from 'app/auth/interfaces';
+import { type IAuthentication } from 'app/auth/interfaces';
 import { IsDefined } from 'class-validator';
-import { Omitting, Subtract } from 'utils/app/types';
+import { DeepAttributesOnly, Omitting, Subtract } from 'utils/app/types';
 import { BaseEntity } from 'utils/typeorm/classes';
 
 import { User } from './user.entity';
 
 /** User login dto. */
-export class UserLogin implements Pick<User, 'authentication' | 'email'> {
+export class UserLoginDto
+	implements DeepAttributesOnly<Pick<User, 'authentication' | 'email'>>
+{
 	/** User's email. */
 	@IsDefined()
 	email!: string;
@@ -20,11 +21,13 @@ export class UserLogin implements Pick<User, 'authentication' | 'email'> {
 /** User sign up dto. */
 export class UserSignupDto
 	implements
-		Omitting<Subtract<User, BaseEntity>, 'role' | 'files' | 'avatarPath'>
+		DeepAttributesOnly<
+			Omitting<Subtract<User, BaseEntity>, 'role' | 'files' | 'avatarPath'>
+		>
 {
 	/** User authentication. */
 	@IsDefined()
-	authentication!: Authentication;
+	authentication!: IAuthentication;
 
 	/** User's email. */
 	@IsDefined()

@@ -1,2 +1,4 @@
-/** Error objects. */
-export type IObject = 'account' | 'password' | 'signature' | 'api' | 'role';
+import { type Omitting, UserReceiveDto } from 'templatebackend';
+
+/** Received response. */
+export type IResponse = Omitting<UserReceiveDto, 'bloc' | 'hook'>;

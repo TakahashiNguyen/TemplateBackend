@@ -75,11 +75,11 @@ export class Password implements IBaseAuthentication {
 	 *   vice versa.
 	 * @throws {ServerException} Will throw an error if `hashed` is null or empty.
 	 */
-	authenticate(password: Password): boolean {
+	authenticate(password: string): boolean {
 		if (this.hashed == null)
 			throw new ServerException('Fatal', 'Server', 'Implementation');
 
-		return verifyBidirectionalHash(this.hashed, password.value);
+		return verifyBidirectionalHash(this.hashed, password);
 	}
 
 	/**

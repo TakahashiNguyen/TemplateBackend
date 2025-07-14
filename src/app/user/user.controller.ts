@@ -14,19 +14,19 @@ import { ApiSecurity } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { AppService } from 'app/app.service';
 import { Bloc } from 'app/auth/bloc/bloc.entity';
-import { GetRequest, IMetadata } from 'app/auth/guards';
+import { GetRequest, type IMetadata } from 'app/auth/guards';
 import { LocalhostGuard } from 'app/auth/guards/localhost.guard';
 import { RefreshGuard } from 'app/auth/guards/refresh.guard';
 import { memoryStorage } from 'fastify-multer';
 import type { File as MulterFile } from 'fastify-multer/lib/interfaces';
-import { UserReceive } from 'utils/app/classes';
+import { UserReceiveDto } from 'utils/app/dto';
 import { ServerException } from 'utils/error/classes';
 import { serverException } from 'utils/error/functions';
 import { FileInterceptor } from 'utils/file/functions';
 
 import {
 	RequestModifyingAuthenticationDto,
-	UserLogin,
+	UserLoginDto,
 	UserSignupDto,
 } from './user.dto';
 import { User } from './user.entity';
@@ -62,7 +62,7 @@ export class UserController {
 	 * @param {IMetadata} metadata - Client's metadata.
 	 * @param {MulterFile} avatar - User's avatar.
 	 * @param {string} hostname - Client request's hostname.
-	 * @returns {Promise<UserReceive>} An user receive class.
+	 * @returns {Promise<UserReceiveDto>} An user receive class.
 	 */
 	@ApiSecurity('CsrfToken')
 	@Post('signup')
@@ -80,7 +80,7 @@ export class UserController {
 		@GetRequest('metadata') metadata: IMetadata,
 		@UploadedFile(AvatarFileUpload) avatar: MulterFile,
 		@GetRequest('hostname') hostname: string,
-	): Promise<UserReceive> {
+	): Promise<UserReceiveDto> {
 		const user = await this.svc.user.create({
 			email,
 			name,
@@ -101,7 +101,7 @@ export class UserController {
 			urlHost: hostname,
 		});
 
-		return new UserReceive({
+		return new UserReceiveDto({
 			bloc: await this.svc.bloc.create({ metadata, owner: user }),
 			message: serverException('Success', 'User', 'Assign'),
 		});
@@ -117,15 +117,15 @@ export class UserController {
 	 * ```
 	 *
 	 * @param {IMetadata} metadata - Client's metadata.
-	 * @returns {Promise<UserReceive>} An user receive class.
+	 * @returns {Promise<UserReceiveDto>} An user receive class.
 	 */
 	@ApiSecurity('CsrfToken')
 	@Post('login')
 	@UseInterceptors(FileInterceptor())
 	async login(
-		@Body() { email, authentication }: UserLogin,
+		@Body() { email, authentication }: UserLoginDto,
 		@GetRequest('metadata') metadata: IMetadata,
-	): Promise<UserReceive> {
+	): Promise<UserReceiveDto> {
 		const { type: authenticateType, ...authentications } = authentication;
 
 		let user: User | undefined,
@@ -136,8 +136,8 @@ export class UserController {
 
 		switch (authenticateType) {
 			case 'password':
-				isVerified = await user.authentication.password.authenticate(
-					authentications.password,
+				isVerified = user.authentication.password.authenticate(
+					authentications.password.value,
 				);
 				break;
 
@@ -148,7 +148,7 @@ export class UserController {
 		if (!isVerified)
 			throw new ServerException('Invalid', 'Authentication', 'Submit');
 
-		return new UserReceive({
+		return new UserReceiveDto({
 			bloc: await this.svc.bloc.create({ owner: user, metadata }),
 			message: serverException('Success', 'User', 'Access'),
 		});
@@ -164,17 +164,17 @@ export class UserController {
 	 * ```
 	 *
 	 * @param {Bloc} bloc - Received bloc from postprocessing.
-	 * @returns {Promise<UserReceive>} An user receive class.
+	 * @returns {Promise<UserReceiveDto>} An user receive class.
 	 */
 	@ApiSecurity('CsrfToken')
 	@Post('logout')
 	@UseGuards(RefreshGuard)
-	async logout(@GetRequest('bloc') bloc: Bloc): Promise<UserReceive> {
+	async logout(@GetRequest('bloc') bloc: Bloc): Promise<UserReceiveDto> {
 		if (!bloc) throw new ServerException('Invalid', 'Client', 'Request');
 
 		await this.svc.bloc.removeTree({ id: bloc.id });
 
-		return new UserReceive({
+		return new UserReceiveDto({
 			message: serverException('Success', 'User', 'LogOut'),
 		});
 	}
@@ -192,7 +192,7 @@ export class UserController {
 	 * @param root0.email
 	 * @param root0.urlModifyingAuthentication
 	 * @param {IMetadata} metadata - Client's metadata.
-	 * @returns {Promise<UserReceive>} An user receive class.
+	 * @returns {Promise<UserReceiveDto>} An user receive class.
 	 */
 	@Throttle({ requestModifyingAuthentication: { limit: 1, ttl: 300000 } })
 	@ApiSecurity('CsrfToken')
@@ -201,8 +201,8 @@ export class UserController {
 		@Body()
 		{ email, urlModifyingAuthentication }: RequestModifyingAuthenticationDto,
 		@GetRequest('metadata') metadata: IMetadata,
-	): Promise<UserReceive> {
-		return new UserReceive({
+	): Promise<UserReceiveDto> {
+		return new UserReceiveDto({
 			hook: await this.svc.hook.create(metadata, async (signature) => {
 				const user = await this.svc.user.findOne({ email });
 

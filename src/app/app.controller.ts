@@ -18,13 +18,13 @@ import {
 } from '@nestjs/terminus';
 import { FastifyReply } from 'fastify';
 import { join } from 'node:path';
-import { UserReceive } from 'utils/app/classes';
+import { UserReceiveDto } from 'utils/app/dto';
 import { ServerException } from 'utils/error/classes';
 import { serverException } from 'utils/error/functions';
 
 import { AppService } from './app.service';
 import { Bloc } from './auth/bloc/bloc.entity';
-import { GetRequest, IMetadata } from './auth/guards';
+import { GetRequest, type IMetadata } from './auth/guards';
 import { RefreshGuard } from './auth/guards/refresh.guard';
 
 /** Server health controller. */
@@ -93,7 +93,7 @@ export class AppController {
 	 *
 	 * @param {IMetadata} metadata - Client's metadata.
 	 * @param {Bloc} bloc - Received bloc from postprocessing.
-	 * @returns {Promise<UserReceive>} An user receive class.
+	 * @returns {Promise<UserReceiveDto>} An user receive class.
 	 */
 	@ApiSecurity('CsrfToken')
 	@Post('refresh')
@@ -101,7 +101,7 @@ export class AppController {
 	async refresh(
 		@GetRequest('metadata') metadata: IMetadata,
 		@GetRequest('bloc') bloc: Bloc,
-	): Promise<UserReceive> {
+	): Promise<UserReceiveDto> {
 		if (!bloc) throw new ServerException('Invalid', 'Client', 'Request');
 
 		let isSuccess = false;
@@ -109,7 +109,7 @@ export class AppController {
 		if (!(isSuccess = bloc.metadata.verify(metadata)))
 			await this.svc.bloc.removeTree({ id: bloc.id });
 
-		return new UserReceive({
+		return new UserReceiveDto({
 			message: isSuccess
 				? serverException('Success', 'Client', 'Request')
 				: serverException('Invalid', 'Client', 'Submit'),
@@ -126,13 +126,13 @@ export class AppController {
 	 * ```
 	 *
 	 * @param {FastifyReply} res - Server response interface.
-	 * @returns {UserReceive} An user receive class.
+	 * @returns {UserReceiveDto} An user receive class.
 	 */
 	@Get('csrf-token')
 	async csrfToken(
 		@Res({ passthrough: true }) res: FastifyReply,
-	): Promise<UserReceive> {
-		return new UserReceive({
+	): Promise<UserReceiveDto> {
+		return new UserReceiveDto({
 			token: res.generateCsrf(),
 			message: serverException('Success', 'Token', 'Request'),
 		});

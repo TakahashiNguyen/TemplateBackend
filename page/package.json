@@ -15,7 +15,9 @@
 		"@tailwindcss/vite": "^4.1.10",
 		"axios": "^1.10.0",
 		"flowbite": "^3.1.2",
+		"material-symbols": "^0.32.0",
 		"tailwindcss": "^4.1.10",
+		"templatebackend": "link:..",
 		"vue": "^3.5.13",
 		"vue-router": "^4.5.1"
 	},

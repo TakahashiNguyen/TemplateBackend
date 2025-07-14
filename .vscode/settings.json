@@ -6,7 +6,8 @@
 		"minioadmin",
 		"templatebackend",
 		"trivago",
-		"unsign"
+		"unsign",
+		"xxhashjs"
 	],
 	"explorer.fileNesting.enabled": true,
 	"explorer.fileNesting.patterns": {

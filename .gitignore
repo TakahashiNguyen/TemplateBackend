@@ -4,6 +4,7 @@
 /build
 /docs/
 /.pnpm-store/
+types/index.ts
 
 # Logs
 logs

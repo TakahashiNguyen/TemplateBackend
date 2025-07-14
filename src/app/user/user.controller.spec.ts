@@ -12,7 +12,7 @@ import {
 } from 'utils/test/functions';
 import { JestInitializationReturns } from 'utils/test/interfaces';
 
-import { UserLogin, UserSignupDto } from './user.dto';
+import { UserLoginDto, UserSignupDto } from './user.dto';
 import { User } from './user.entity';
 
 const unit = getCurrentTestFileName(__filename);
@@ -101,7 +101,7 @@ describe('signup', () => {
 describe('login', () => {
 	const url = '/user/login';
 
-	let input: UserLogin;
+	let input: UserLoginDto;
 
 	beforeEach(async () => {
 		const signupInput: UserSignupDto = {
@@ -158,7 +158,7 @@ describe('login', () => {
 	});
 
 	it('fail due to invalid email', async () => {
-		const input: UserLogin = {
+		const input: UserLoginDto = {
 			...user,
 			authentication: { type: 'password', ...user.authentication },
 			email: (20).string,

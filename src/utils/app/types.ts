@@ -94,3 +94,20 @@ export type ApplyPartial<T, K extends keyof T> = Omitting<T, K> &
 export type ClassType<T extends new (...args: never[]) => unknown> =
 	| InstanceType<T>
 	| ConstructorParameters<T>[0];
+
+/**
+ * Apply attributes only recursively.
+ *
+ * @template T
+ * @template F
+ */
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+export type DeepAttributesOnly<T> = T extends Function
+	? T
+	: T extends Array<infer U>
+		? Array<DeepAttributesOnly<U>>
+		: T extends object
+			? AttributesOnly<{
+					[K in keyof AttributesOnly<T>]: DeepAttributesOnly<T[K]>;
+				}>
+			: T;

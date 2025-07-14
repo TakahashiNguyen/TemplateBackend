@@ -1,11 +1,11 @@
-import type { IObject } from './types';
+import { type ErrorObject, type ErrorType } from 'templatebackend';
 
 /** Alert interface. */
 export interface IAlert {
 	/** Alert message. */
 	message: string;
 	/** Alert type. */
-	type: 'success' | 'error' | 'processing' | 'none';
+	type: ErrorType | 'Processing' | 'None';
 	/** Alert object. */
-	object?: IObject;
+	object: ErrorObject | 'None';
 }

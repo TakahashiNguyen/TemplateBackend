@@ -6,13 +6,10 @@ import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
-import { ApiHideProperty } from '@nestjs/swagger';
 import { ThrottlerGuard } from '@nestjs/throttler';
-import { Bloc } from 'app/auth/bloc/bloc.entity';
 import { convertForGraphQl } from 'app/auth/guards';
 import { RefreshStrategy } from 'app/auth/guards/refresh.strategy';
 import { UserStrategy } from 'app/auth/guards/user.strategy';
-import { Hook } from 'app/auth/hook/hook.entity';
 import {
 	DoneFuncWithErrOrRes,
 	FastifyInstance,
@@ -25,7 +22,7 @@ import { SecurityService } from 'utils/auth/classes';
 
 import { cookieOptions, fileSizeMaximum } from './constants';
 import { RequestResponse } from './interfaces';
-import { ApplyPartial, AttributesOnly } from './types';
+import { UserReceiveDto } from './dto';
 
 /** Modified cache interceptor. */
 export class ModifiedCacheInterceptor extends CacheInterceptor {
@@ -109,7 +106,7 @@ export class ServerInitializationClass implements OnModuleInit {
 			)
 			.addHook('preValidation', (req, rep) => middleware.setMetadata(req, rep))
 			.addHook('preValidation', (req, rep) => middleware.graphQl(req, rep))
-			.addHook('preSerialization', (req, rep, payload: UserReceive, done) =>
+			.addHook('preSerialization', (req, rep, payload: UserReceiveDto, done) =>
 				middleware.preSerialization(req, rep, payload, done),
 			)
 			.addHook('onSend', (req, rep, payload, done) =>
@@ -285,20 +282,20 @@ export class ServerMiddleware extends SecurityService {
 	 *
 	 * @param {FastifyRequest} req - Server's request.
 	 * @param {FastifyReply} res - Server's response.
-	 * @param {UserReceive} payload - Server's payload.
+	 * @param {UserReceiveDto} payload - Server's payload.
 	 * @param {DoneFuncWithErrOrRes} done - Fastify's done function.
 	 */
 	preSerialization(
 		req: FastifyRequest,
 		res: FastifyReply,
-		payload: UserReceive,
+		payload: UserReceiveDto,
 		done: DoneFuncWithErrOrRes,
 	) {
 		const sessionId = req.session.get('sessionId');
 
 		if (!sessionId) req.session.set('sessionId', (64).string);
 
-		if (!(payload instanceof UserReceive)) {
+		if (!(payload instanceof UserReceiveDto)) {
 			done();
 			return;
 		}
@@ -313,45 +310,6 @@ export class ServerMiddleware extends SecurityService {
 
 		done(null, rest);
 	}
-}
-
-/** User receive information. */
-export class UserReceive {
-	/**
-	 * Quick user receive initiation.
-	 *
-	 * @param {ApplyPartial<
-	 * 	AttributesOnly<UserReceive>,
-	 * 	'bloc' | 'hook' | 'token'
-	 * >} object
-	 *   - User receive information.
-	 */
-	constructor(
-		object: ApplyPartial<
-			AttributesOnly<UserReceive>,
-			'bloc' | 'hook' | 'token'
-		>,
-	) {
-		// @ts-expect-error nullable field
-		this.hook = object.hook;
-		// @ts-expect-error nullable field
-		this.bloc = object.bloc;
-		// @ts-expect-error nullable field
-		this.token = object.token;
-		this.message = object.message;
-	}
-
-	/** Hook entity. */
-	@ApiHideProperty() hook: Hook;
-
-	/** Bloc entity. */
-	@ApiHideProperty() bloc: Bloc;
-
-	/** Server's message. */
-	@ApiHideProperty() message: string;
-
-	/** Token. */
-	@ApiHideProperty() token: string;
 }
 
 /** Modified throttler guard class. */
