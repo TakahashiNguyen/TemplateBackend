@@ -21,8 +21,8 @@ import { UAParser } from 'ua-parser-js';
 import { SecurityService } from 'utils/auth/classes';
 
 import { cookieOptions, fileSizeMaximum } from './constants';
-import { RequestResponse } from './interfaces';
 import { UserReceiveDto } from './dto';
+import { RequestResponse } from './interfaces';
 
 /** Modified cache interceptor. */
 export class ModifiedCacheInterceptor extends CacheInterceptor {

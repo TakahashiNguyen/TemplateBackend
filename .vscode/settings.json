@@ -29,6 +29,7 @@
 		"**/pnpm-lock.yaml": true,
 		"**/schema.gql": true,
 		".pnpm-store": true,
+		".tsup": true,
 		"docs": true
 	},
 	"jest.outputConfig": {
