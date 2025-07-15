@@ -1,13 +1,18 @@
 <template>
-	<div class="center h-dvh w-dvw">
+	<div class="center h-dvh">
 		<div
-			class="w-full rounded-lg border border-transparent bg-white p-4 md:max-w-lg md:border-gray-200 md:p-8 md:shadow-sm dark:bg-gray-800 md:dark:border-gray-700"
+			class="primary-black-white-background tablet:w-lg desktop:w-4xl desktop:h-fit tablet:h-fit h-dvh w-dvw rounded-lg p-8"
 		>
-			<form class="space-y-6" @submit.prevent="buttonHandler">
-				<h5 class="text-xl font-medium text-gray-900 dark:text-white">
-					{{ name }} to our platform
+			<form
+				class="justify-center-safe desktop:flex-row desktop:justify-between flex h-full flex-col space-y-6"
+				@submit.prevent="buttonHandler"
+			>
+				<h5 class="text-3xl font-medium" v-if="title">
+					{{ title }}
 				</h5>
-				<slot />
+				<div class="desktop:w-md w-full space-y-6">
+					<slot />
+				</div>
 			</form>
 		</div>
 	</div>
@@ -15,7 +20,7 @@
 
 <script setup lang="ts">
 defineProps<{
-	name: string;
+	title?: string;
 	buttonHandler: () => void;
 }>();
 </script>

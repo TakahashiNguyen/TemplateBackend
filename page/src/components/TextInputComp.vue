@@ -1,30 +1,31 @@
 <template>
 	<div
-		class="form-control mb-2"
+		class="primary-text mb-2 flex flex-col"
 		:class="{
 			'input-error': object === alert?.object && alert.type != 'Success',
 			'input-success': object === alert?.object && alert.type == 'Success',
 		}"
 	>
 		<label
-			:for="name.lower"
-			class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+			class="z-1 primary-black-white-background -mb-2 ml-2 block w-fit text-sm font-medium"
 		>
 			{{ name }}
 		</label>
-		<div class="relative mb-6">
+		<div class="relative z-0 mb-6">
 			<div
+				v-if="icon"
 				class="pointer-events-none absolute inset-y-0 start-0 flex items-center px-[9px]"
 			>
-				<IconComp :name="(icon || name || '').lower"></IconComp>
+				<IconComp :name="icon.lower"></IconComp>
 			</div>
 			<input
 				v-model="model"
-				class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+				:class="{ 'ps-10!': icon }"
+				class="border-dark-primary black-and-white-text w-full rounded-lg border bg-transparent p-2.5"
 				:type="type"
 				:disabled="disable"
 				:required="required"
-				:placeholder="placeholder || name"
+				:placeholder="placeholder"
 			/>
 		</div>
 		<p class="mt-2 text-sm" v-if="alert.message">

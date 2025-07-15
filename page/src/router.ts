@@ -1,8 +1,8 @@
 import ChangePasswordView from '@/views/ChangePassword.vue';
 import FrontPageView from '@/views/FrontPageView.vue';
 import GraphQLView from '@/views/GraphQLView.vue';
-import LoginView from '@/views/LoginView.vue';
-import NotFoundView from '@/views/NotFoundView.vue';
+import LoginView from '@/views/Login.vue';
+import NotFoundView from '@/views/NotFound.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 export const router = createRouter({
