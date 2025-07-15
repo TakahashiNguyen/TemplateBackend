@@ -1,9 +1,9 @@
 <template>
 	<div
-		class="primary-text mb-2 flex flex-col"
+		class="primary-text flex flex-col"
 		:class="{
-			'input-error': object === alert?.object && alert.type != 'Success',
-			'input-success': object === alert?.object && alert.type == 'Success',
+			'text-error!': isObject && isError,
+			'text-success!': isObject && isSuccess,
 		}"
 	>
 		<label
@@ -11,7 +11,7 @@
 		>
 			{{ name }}
 		</label>
-		<div class="relative z-0 mb-6">
+		<div class="relative z-0">
 			<div
 				v-if="icon"
 				class="pointer-events-none absolute inset-y-0 start-0 flex items-center px-[9px]"
@@ -20,34 +20,40 @@
 			</div>
 			<input
 				v-model="model"
-				:class="{ 'ps-10!': icon }"
+				:class="{
+					'ps-10!': icon,
+					'border-error!': isObject && isError,
+					'border-success!': isObject && isSuccess,
+				}"
 				class="border-dark-primary black-and-white-text w-full rounded-lg border bg-transparent p-2.5"
 				:type="type"
 				:disabled="disable"
-				:required="required"
 				:placeholder="placeholder"
 			/>
 		</div>
-		<p class="mt-2 text-sm" v-if="alert.message">
+		<p class="mt-1 text-sm" v-if="alert.message && isObject">
 			{{ alert.message }}
 		</p>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { getIsError, getIsObject, getIsSuccess } from '@/app/functions';
 import IconComp from '@/components/IconComp.vue';
 import type { IAlert } from '@/error/interfaces';
 import { type ErrorObject } from 'templatebackend';
 
-const model = defineModel();
-defineProps<{
-	name: string;
-	type: 'password' | 'text';
-	object: ErrorObject;
-	alert: IAlert;
-	icon?: string;
-	placeholder?: string;
-	disable?: boolean;
-	required?: boolean;
-}>();
+const model = defineModel(),
+	props = defineProps<{
+		name: string;
+		type: 'password' | 'text';
+		objects: ErrorObject[];
+		alert: IAlert;
+		icon?: string;
+		placeholder?: string;
+		disable?: boolean;
+	}>(),
+	isObject = getIsObject(props),
+	isError = getIsError(props),
+	isSuccess = getIsSuccess(props);
 </script>

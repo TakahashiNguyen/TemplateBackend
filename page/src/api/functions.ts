@@ -16,9 +16,9 @@ import { API_URL } from './constants';
  */
 export async function requester(url: string, input: object) {
 	const { token } = (
-			await axios.get(`${API_URL}/csrf-token`, { withCredentials: true })
+			await axios.get(API_URL + '/csrf-token', { withCredentials: true })
 		).data,
-		{ data } = await axios.post(url, input, {
+		{ data } = await axios.post(API_URL + url, input, {
 			headers: { 'csrf-token': token },
 			withCredentials: true,
 		});

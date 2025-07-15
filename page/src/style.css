@@ -28,6 +28,8 @@
 	--color-dark-tertiary: #55d6be;
 	--color-light-tertiary: #fbfef9;
 	--color-gray: #363635;
+	--color-success: #56e39f;
+	--color-error: #FF6978;
 }
 
 @layer {

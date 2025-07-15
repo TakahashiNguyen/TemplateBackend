@@ -8,14 +8,14 @@
 			v-model="input.email"
 			type="text"
 			:alert="alert"
-			object="User"
+			:objects="['Email', 'User']"
 		/>
 		<FormTextInputComp
 			name="Password"
 			v-model="input.authentication.password.value"
-			:alert="alert"
 			type="password"
-			object="Authentication"
+			:alert="alert"
+			:objects="['Authentication']"
 		/>
 		<div class="flex justify-between">
 			<CheckBox title="Remember me" />
@@ -24,7 +24,7 @@
 		<ButtonComp type="submit" text="Continue" />
 		<div class="text-sm font-medium">
 			Not registered?
-			<a href="#" class="link"> Create account </a>
+			<a href="#" class="link ml-1"> Create account </a>
 		</div>
 	</FormContainerComp>
 </template>
@@ -47,7 +47,7 @@ const alert = getAlert(),
 			password: { value: '' },
 		},
 	}),
-	handleLogin = () => apiErrorHandler(requester('login', input), alert),
+	handleLogin = () => apiErrorHandler(requester('/user/login', input), alert),
 	forgetPasswordClick = async () =>
 		apiErrorHandler(requester('change-password', input), alert);
 </script>
