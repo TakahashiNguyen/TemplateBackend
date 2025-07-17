@@ -1,17 +1,16 @@
-import ChangePasswordView from '@/views/ChangePassword.vue';
-import FrontPageView from '@/views/FrontPageView.vue';
-import GraphQLView from '@/views/GraphQLView.vue';
-import LoginView from '@/views/Login.vue';
-import NotFoundView from '@/views/NotFound.vue';
 import { createRouter, createWebHistory } from 'vue-router';
+
+import GraphQLView from './views/GraphQLView.vue';
+import Login from './views/Login.vue';
+import NotFound from './views/NotFound.vue';
+import Signup from './views/Signup.vue';
 
 export const router = createRouter({
 	history: createWebHistory(),
 	routes: [
-		{ path: '/login', component: LoginView },
-		{ path: '/change-password/:signature', component: ChangePasswordView },
-		{ path: '/', component: FrontPageView },
+		{ path: '/login', component: Login },
+		{ path: '/signup', component: Signup },
 		{ path: '/graphql', component: GraphQLView },
-		{ path: '/:pathMatch(.*)*', component: NotFoundView },
+		{ path: '/:pathMatch(.*)*', component: NotFound },
 	],
 });

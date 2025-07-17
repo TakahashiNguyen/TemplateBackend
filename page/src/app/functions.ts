@@ -1,6 +1,6 @@
 import type { IAlert } from '@/error/interfaces';
 import type { ErrorObject } from 'templatebackend';
-import { computed } from 'vue';
+import { type Ref, type VNodeRef, computed } from 'vue';
 
 /**
  * Check if alert object match with target objects.
@@ -40,7 +40,7 @@ export function getIsError(input: {
 	/** Alert variable. */
 	alert: IAlert;
 }) {
-	return computed(() => !getIsSuccess(input));
+	return computed(() => !getIsSuccess(input).value);
 }
 
 /**
@@ -62,4 +62,42 @@ export function getIsSuccess(input: {
 	return computed(() =>
 		(['Success'] as IAlert['type'][]).some((i) => i == input.alert.type),
 	);
+}
+
+/**
+ * Create value passthrough from slot.
+ *
+ * @example
+ *
+ * ```ts
+ * const foo = getSlotRefSet(input);
+ * ```
+ *
+ * @template T
+ * @param {Ref<T>} input - Ref input.
+ */
+export function getSlotRefSet<T>(input: Ref<T>): VNodeRef {
+	// @ts-expect-error error-free expression
+	return (i: T) => {
+		input.value = i;
+	};
+}
+
+/**
+ * Function wait page fully loaded.
+ *
+ * @example
+ *
+ * ```ts
+ * await waitForPageLoad();
+ * ```
+ */
+export function waitForPageLoad(): Promise<void> {
+	return new Promise((resolve) => {
+		if (document.readyState === 'complete') {
+			resolve();
+		} else {
+			window.addEventListener('load', () => resolve(), { once: true });
+		}
+	});
 }
