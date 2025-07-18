@@ -1,14 +1,12 @@
 <template>
 	<div
-		class="primary-text flex flex-col p-1 primary-black-white-background"
+		class="text--primary bg--0 flex flex-col p-1"
 		:class="{
 			'text-error!': isObject && isError,
 			'text-success!': isObject && isSuccess,
 		}"
 	>
-		<label
-			class="z-1 primary-black-white-background -mb-2 ml-2 block w-fit text-sm font-medium"
-		>
+		<label class="z-1 bg--0 -mb-2 ml-2 block w-fit text-sm font-medium">
 			{{ name }}
 		</label>
 		<div class="relative z-0">
@@ -25,7 +23,7 @@
 					'border-error!': isObject && isError,
 					'border-success!': isObject && isSuccess,
 				}"
-				class="border-dark-primary black-and-white-text w-full rounded-lg border bg-transparent p-2.5"
+				class="border--primary text--0 w-full rounded-lg border bg-transparent p-2.5"
 				:type="type"
 				:disabled="disable"
 				:placeholder="placeholder"

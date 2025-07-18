@@ -25,8 +25,8 @@
 	--color-light-primary: #f26a8d;
 	--color-dark-secondary: #dd2d4a;
 	--color-light-secondary: #f49cbb;
-	--color-dark-tertiary: #55d6be;
-	--color-light-tertiary: #fbfef9;
+	--color-dark-tertiary: #02394A;
+	--color-light-tertiary: #55d6be;
 	--color-gray: #363635;
 	--color-success: #56e39f;
 	--color-error: #ff6978;
@@ -42,6 +42,18 @@
 
 @utility border--* {
 	@apply border-[--value(--color-dark-*)] dark:border-[--value(--color-light-*)];
+}
+
+@utility -bg--* {
+	@apply bg-[--value(--color-dark-*)] dark:bg-[--value(--color-light-*)];
+}
+
+@utility -text--* {
+	@apply text-[--value(--color-light-*)] dark:text-[--value(--color-dark-*)];
+}
+
+@utility -border--* {
+	@apply border-[--value(--color-light-*)] dark:border-[--value(--color-dark-*)];
 }
 
 @layer {

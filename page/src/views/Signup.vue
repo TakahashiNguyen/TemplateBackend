@@ -52,11 +52,9 @@
 				</div>
 			</template>
 		</CarouselComp>
-		<div class="text-sm font-medium">
-			Registered?
-			<a @click="router.push({ name: 'login' })" class="link ml-1">
-				Login account
-			</a>
+		<div class="flex items-center text-sm font-medium">
+			<span> Registered? </span>
+			<ButtonComp to="login" type="link"> Login account </ButtonComp>
 		</div>
 	</FormContainerComp>
 </template>

@@ -1,5 +1,5 @@
 <template>
-	<div class="flex h-5 items-center">
+	<div class="flex h-7 items-center p-1">
 		<div class="h-9/12 flex aspect-square">
 			<input
 				v-model="model"
