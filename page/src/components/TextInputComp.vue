@@ -17,13 +17,14 @@
 				<IconComp :name="icon.lower"></IconComp>
 			</div>
 			<input
+				:title="(5).string"
 				v-model="model"
+				class="border--primary bg--0 text--0 w-full rounded-lg border p-2.5"
 				:class="{
 					'ps-10!': icon,
 					'border-error!': isObject && isError,
 					'border-success!': isObject && isSuccess,
 				}"
-				class="border--primary text--0 w-full rounded-lg border bg-transparent p-2.5"
 				:type="type"
 				:disabled="disable"
 				:placeholder="placeholder"

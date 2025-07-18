@@ -23,6 +23,7 @@
 		<!-- Slider controls -->
 		<div v-if="!$slots.buttons" class="[&>*]:z-[45]">
 			<button
+				title="previous"
 				ref="carouselPrevious"
 				type="button"
 				class="group absolute left-0 top-0 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
@@ -49,6 +50,7 @@
 				</span>
 			</button>
 			<button
+				title="next"
 				ref="carouselNext"
 				type="button"
 				class="group absolute right-0 top-0 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
@@ -162,6 +164,7 @@ onMounted(async () => {
 			const button = document.createElement('button');
 			button.className = 'h-3 w-3 rounded-full';
 			button.type = 'button';
+			button.title = (5).string;
 
 			carouselIndicatorsWrapper.value?.append(button);
 

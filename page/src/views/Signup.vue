@@ -52,7 +52,7 @@
 				</div>
 			</template>
 		</CarouselComp>
-		<div class="flex items-center text-sm font-medium">
+		<div class="flex items-center p-1 text-sm font-medium">
 			<span> Registered? </span>
 			<ButtonComp to="login" type="link"> Login account </ButtonComp>
 		</div>

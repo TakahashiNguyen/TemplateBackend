@@ -1,6 +1,7 @@
 <template>
 	<div class="p-1">
 		<button
+			:title="(5).string"
 			v-if="type !== 'link'"
 			:ref="buttonRef"
 			:type
@@ -8,7 +9,7 @@
 			:class="{
 				'text--primary bg--primary hover:text--secondary hover:bg--secondary':
 					theme == 'primary',
-				'text--tertiary hover:bg--tertiary hover:-text--0':
+				'text--tertiary hover:bg--tertiary hover:-text--2':
 					theme == 'secondary',
 			}"
 		>
