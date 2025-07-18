@@ -13,6 +13,7 @@
 	"dependencies": {
 		"@apollo/explorer": "^3.7.2",
 		"@tailwindcss/vite": "^4.1.10",
+		"@vueuse/core": "^13.5.0",
 		"axios": "^1.10.0",
 		"flowbite": "^3.1.2",
 		"material-symbols": "^0.32.0",

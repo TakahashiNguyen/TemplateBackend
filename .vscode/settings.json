@@ -7,6 +7,7 @@
 		"templatebackend",
 		"trivago",
 		"unsign",
+		"vueuse",
 		"xxhashjs"
 	],
 	"explorer.fileNesting.enabled": true,

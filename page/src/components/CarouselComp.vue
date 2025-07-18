@@ -21,11 +21,12 @@
 			ref="carouselIndicatorsWrapper"
 		/>
 		<!-- Slider controls -->
-		<div v-if="!$slots.buttons" class="[&>*]:z-50">
+		<div v-if="!$slots.buttons" class="[&>*]:z-[45]">
 			<button
 				ref="carouselPrevious"
 				type="button"
 				class="group absolute left-0 top-0 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
+				:class="{ hidden: !overflowing && !isCycle && isStart }"
 			>
 				<span
 					class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70"
@@ -51,6 +52,7 @@
 				ref="carouselNext"
 				type="button"
 				class="group absolute right-0 top-0 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
+				:class="{ hidden: !overflowing && !isCycle && isEnd }"
 			>
 				<span
 					class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70"
@@ -75,15 +77,16 @@
 		</div>
 		<div
 			v-if="$slots.buttons"
-			class="[&>*]:absolute [&>*]:left-0 [&>*]:top-0 [&>*]:z-50"
+			class="[&>*]:absolute [&>*]:left-0 [&>*]:top-0 [&>*]:z-[45]"
 		>
-			<slot name="buttons" :next="next" :previous="previous" />
+			<slot name="buttons" :next :previous :isEnd :isStart />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { getSlotRefSet, waitForPageLoad } from '@/app/functions';
+import { useElementSize } from '@vueuse/core';
 import { Carousel } from 'flowbite';
 import type {
 	CarouselInterface,
@@ -91,7 +94,7 @@ import type {
 	CarouselOptions,
 	RotationItems,
 } from 'flowbite';
-import { type PropType, onMounted, ref } from 'vue';
+import { type PropType, computed, onMounted, ref, watch } from 'vue';
 
 import DivWrapper from './DivWrapper.vue';
 import LoadingDiv from './LoadingDiv.vue';
@@ -103,36 +106,40 @@ const carouselElement = ref<HTMLElement>(),
 	carouselPrevious = ref<Element>(),
 	next = getSlotRefSet(carouselNext),
 	previous = getSlotRefSet(carouselPrevious),
-	loadingDiv = ref<InstanceType<typeof LoadingDiv>>();
-
-const props = defineProps({
-	isCycle: { type: Boolean, default: false },
-	overflowing: { type: Boolean, default: false },
-	duration: { type: Number, default: 750 },
-	cycleDuration: { type: Number, default: 3000 },
-	indicator: {
-		type: Object as PropType<
-			Omit<Required<CarouselOptions['indicators']>, 'items'>
-		>,
-		default: {
-			activeClasses: 'bg-white dark:bg-white/80',
-			inactiveClasses:
-				'bg-white/50 dark:bg-white/40 hover:bg-white/90 dark:hover:bg-white/70',
+	loadingDiv = ref<InstanceType<typeof LoadingDiv>>(),
+	currentPosition = ref(0),
+	currentElement = ref<HTMLElement>(),
+	isStart = computed(() => currentPosition.value == 1),
+	isEnd = computed(
+		() => currentPosition.value == carouselWrapper.value?.childElementCount,
+	),
+	props = defineProps({
+		isCycle: { type: Boolean, default: false },
+		overflowing: { type: Boolean, default: false },
+		duration: { type: Number, default: 750 },
+		cycleDuration: { type: Number, default: 3000 },
+		indicator: {
+			type: Object as PropType<
+				Omit<Required<CarouselOptions['indicators']>, 'items'>
+			>,
+			default: {
+				activeClasses: 'bg-white dark:bg-white/80',
+				inactiveClasses:
+					'bg-white/50 dark:bg-white/40 hover:bg-white/90 dark:hover:bg-white/70',
+			},
 		},
-	},
-	indicatorsClasses: {
-		type: [String, Object, Array],
-		default: 'bottom-5 left-1/2 -translate-x-1/2',
-	},
-});
+		indicatorsClasses: {
+			type: [String, Object, Array],
+			default: 'bottom-5 left-1/2 -translate-x-1/2',
+		},
+	});
 
 class CustomCarousel extends Carousel {
 	_rotate(rotationItems: RotationItems): void {
 		super._rotate(rotationItems);
 
-		// update carousel height
-		carouselElement.value!.style.height = carouselWrapper.value!.style.height =
-			rotationItems.middle.el.children[0].clientHeight.toString() + 'px';
+		currentPosition.value = rotationItems.middle.position + 1;
+		currentElement.value = rotationItems.middle.el.children[0] as HTMLElement;
 	}
 }
 
@@ -148,23 +155,26 @@ onMounted(async () => {
 			button.className = 'h-3 w-3 rounded-full';
 			button.type = 'button';
 
+			carouselIndicatorsWrapper.value?.append(button);
+
 			return button;
-		});
+		}),
+		options: CarouselOptions = {
+			defaultPosition: 0,
+			interval: props.cycleDuration,
 
-	carouselIndicators.forEach((i) => carouselIndicatorsWrapper.value?.append(i));
+			indicators: {
+				...props.indicator,
+				items: Array.from(carouselIndicators).map((el, i) => ({
+					position: i,
+					el,
+				})),
+			},
+		};
 
-	const options: CarouselOptions = {
-		defaultPosition: 0,
-		interval: props.cycleDuration,
-
-		indicators: {
-			...props.indicator,
-			items: Array.from(carouselIndicators).map((el, i) => ({
-				position: i,
-				el,
-			})),
-		},
-	};
+	watch(useElementSize(currentElement).height, (h) => {
+		carouselElement.value!.style.height = h.toString() + 'px';
+	});
 
 	await waitForPageLoad();
 
@@ -178,16 +188,11 @@ onMounted(async () => {
 	if (props.isCycle) carousel.cycle();
 
 	carouselPrevious.value?.addEventListener('click', () => {
-		if (carousel.getActiveItem().position != 0 || props.overflowing)
-			carousel.prev();
+		if (!isStart.value || props.overflowing || props.isCycle) carousel.prev();
 	});
 
 	carouselNext.value?.addEventListener('click', () => {
-		if (
-			carousel.getActiveItem().position + 1 < items.length ||
-			props.overflowing
-		)
-			carousel.next();
+		if (!isEnd.value || props.overflowing || props.isCycle) carousel.next();
 	});
 
 	loadingDiv.value?.toggleHidden();
