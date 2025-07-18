@@ -75,10 +75,7 @@
 				</span>
 			</button>
 		</div>
-		<div
-			v-if="$slots.buttons"
-			class="[&>*]:absolute [&>*]:left-0 [&>*]:top-0 [&>*]:z-[45]"
-		>
+		<div v-if="$slots.buttons" class="[&>*]:absolute [&>*]:z-[45]">
 			<slot name="buttons" :next :previous :isEnd :isStart />
 		</div>
 	</div>
