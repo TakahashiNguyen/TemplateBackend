@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="primary-text flex flex-col"
+		class="primary-text flex flex-col p-1 primary-black-white-background"
 		:class="{
 			'text-error!': isObject && isError,
 			'text-success!': isObject && isSuccess,
@@ -31,7 +31,7 @@
 				:placeholder="placeholder"
 			/>
 		</div>
-		<p class="mt-1 text-sm" v-if="alert.message && isObject">
+		<p class="mt-1 text-sm" v-if="alert?.message && isObject">
 			{{ alert.message }}
 		</p>
 	</div>
@@ -42,17 +42,30 @@ import { getIsError, getIsObject, getIsSuccess } from '@/app/functions';
 import IconComp from '@/components/IconComp.vue';
 import type { IAlert } from '@/error/interfaces';
 import { type ErrorObject } from 'templatebackend';
+import type { PropType } from 'vue';
 
 const model = defineModel(),
-	props = defineProps<{
-		name: string;
-		type: 'password' | 'text';
-		objects: ErrorObject[];
-		alert: IAlert;
-		icon?: string;
-		placeholder?: string;
-		disable?: boolean;
-	}>(),
+	props = defineProps({
+		name: {
+			type: String,
+			required: true,
+		},
+		type: {
+			type: String as PropType<HTMLInputElement['type']>,
+			default: 'text',
+		},
+		objects: {
+			type: Array as PropType<ErrorObject[]>,
+			required: false,
+		},
+		alert: {
+			type: Object as PropType<IAlert>,
+			required: false,
+		},
+		icon: { type: String, required: false },
+		placeholder: { type: String, required: false },
+		disable: { type: Boolean, required: false },
+	}),
 	isObject = getIsObject(props),
 	isError = getIsError(props),
 	isSuccess = getIsSuccess(props);

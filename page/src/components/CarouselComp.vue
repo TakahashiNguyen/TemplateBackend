@@ -1,22 +1,22 @@
 <template>
 	<div
 		ref="carouselElement"
-		class="relative w-full overflow-hidden rounded-lg"
+		class="relative w-full"
 		:style="{ '--duration': duration + 'ms' }"
 	>
 		<LoadingDiv ref="loadingDiv" class="absolute z-40" />
 		<!-- Carousel wrapper -->
 		<div
 			ref="carouselWrapper"
-			class="[&>*]:absolute! [&>*]:duration-(--duration) relative h-56 [&>*]:w-full [&>*]:ease-in-out"
+			class="[&>*]:absolute! [&>*]:duration-(--duration) relative h-56 overflow-hidden [&>*]:w-full [&>*]:ease-in-out"
 		>
-			<DivWrapper :is-slots="true">
+			<DivWrapper>
 				<slot name="content" />
 			</DivWrapper>
 		</div>
 		<!-- Slider indicators -->
 		<div
-			:class="[indicatorsClasses]"
+			:class="[indicatorsLocation]"
 			class="absolute z-50 flex space-x-3"
 			ref="carouselIndicatorsWrapper"
 		/>
@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { getSlotRefSet, waitForPageLoad } from '@/app/functions';
+import { getSlotRefSet, sleep, waitForPageLoad } from '@/app/functions';
 import { useElementSize } from '@vueuse/core';
 import { Carousel } from 'flowbite';
 import type {
@@ -125,18 +125,29 @@ const carouselElement = ref<HTMLElement>(),
 					'bg-white/50 dark:bg-white/40 hover:bg-white/90 dark:hover:bg-white/70',
 			},
 		},
-		indicatorsClasses: {
+		indicatorsLocation: {
 			type: [String, Object, Array],
 			default: 'bottom-5 left-1/2 -translate-x-1/2',
 		},
 	});
 
 class CustomCarousel extends Carousel {
-	_rotate(rotationItems: RotationItems): void {
+	async _rotate(rotationItems: RotationItems): Promise<void> {
+		Object.values(rotationItems).forEach((i) => {
+			i.el.classList.remove('hidden');
+		});
+
+		await sleep(1);
+
 		super._rotate(rotationItems);
 
 		currentPosition.value = rotationItems.middle.position + 1;
 		currentElement.value = rotationItems.middle.el.children[0] as HTMLElement;
+
+		await sleep(props.duration);
+
+		rotationItems.left.el.classList.add('hidden');
+		rotationItems.right.el.classList.add('hidden');
 	}
 }
 
@@ -170,7 +181,8 @@ onMounted(async () => {
 		};
 
 	watch(useElementSize(currentElement).height, (h) => {
-		carouselElement.value!.style.height = h.toString() + 'px';
+		carouselElement.value!.style.height = carouselWrapper.value!.style.height =
+			h.toString() + 'px';
 	});
 
 	await waitForPageLoad();

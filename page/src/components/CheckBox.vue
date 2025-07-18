@@ -1,15 +1,15 @@
 <template>
-	<div class="h-5 flex items-center">
+	<div class="flex h-5 items-center">
 		<div class="h-9/12 flex aspect-square">
 			<input
 				v-model="model"
 				type="checkbox"
 				value=""
-				class="text-dark-primary h-full w-full rounded-sm"
+				class="text--primary h-full w-full rounded-sm"
 				:required="required"
 			/>
 		</div>
-		<label class="ms-2 font-medium text-sm">
+		<label class="ms-2 text-sm font-medium">
 			{{ title }}
 		</label>
 	</div>

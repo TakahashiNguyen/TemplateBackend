@@ -17,13 +17,13 @@
 		'Liberation Mono', 'Courier New', 'monospace';
 
 	--color-*: initial;
-	--color-black: #001011;
-	--color-white: #fdfffc;
-	--color-dark-white: #f3e8ee;
-	--color-light-black: #001514;
+	--color-dark-0: #001011;
+	--color-light-0: #fdfffc;
+	--color-dark-1: #001514;
+	--color-light-1: #f3e8ee;
 	--color-dark-primary: #880d1e;
-	--color-light-primary: #f49cbb;
-	--color-dark-secondary: #f26a8d;
+	--color-light-primary: #f26a8d;
+	--color-dark-secondary: #dd2d4a;
 	--color-light-secondary: #f49cbb;
 	--color-dark-tertiary: #55d6be;
 	--color-light-tertiary: #fbfef9;
@@ -32,42 +32,25 @@
 	--color-error: #ff6978;
 }
 
-@layer {
-	.center {
-		@apply items-center-safe justify-center-safe flex;
-	}
+@utility bg--* {
+	@apply bg-[--value(--color-light-*)] dark:bg-[--value(--color-dark-*)];
+}
 
+@utility text--* {
+	@apply text-[--value(--color-dark-*)] dark:text-[--value(--color-light-*)];
+}
+
+@utility border--* {
+	@apply border-[--value(--color-dark-*)] dark:border-[--value(--color-light-*)];
+}
+
+@layer {
 	a.link {
-		color: var(--color-light-primary);
 		@apply text-light-primary visited:text-dark-primary hover:underline active:underline;
 	}
 
-	.black-and-white-text {
-		@apply text-black dark:text-white;
-	}
-
-	.primary-black-white-background {
-		@apply bg-white dark:bg-black;
-	}
-
-	.secondary-black-white-background {
-		@apply bg-dark-white dark:bg-light-black;
-	}
-
-	.primary-background {
-		@apply bg-light-primary dark:bg-dark-primary;
-	}
-
-	.secondary-background {
-		@apply bg-light-secondary dark:bg-dark-secondary;
-	}
-
-	.primary-text {
-		@apply text-dark-primary dark:text-light-primary;
-	}
-
-	.secondary-text {
-		@apply text-dark-secondary dark:text-light-secondary;
+	.center {
+		@apply items-center-safe justify-center-safe flex;
 	}
 
 	* {

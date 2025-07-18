@@ -17,11 +17,11 @@ import { type Ref, type VNodeRef, computed } from 'vue';
  */
 export function getIsObject(input: {
 	/** Alert variable. */
-	alert: IAlert;
+	alert?: IAlert;
 	/** Target objects. */
-	objects: ErrorObject[];
+	objects?: ErrorObject[];
 }) {
-	return computed(() => input.objects.some((i) => i === input.alert.object));
+	return computed(() => input.objects?.some((i) => i === input.alert?.object));
 }
 
 /**
@@ -38,7 +38,7 @@ export function getIsObject(input: {
  */
 export function getIsError(input: {
 	/** Alert variable. */
-	alert: IAlert;
+	alert?: IAlert;
 }) {
 	return computed(() => !getIsSuccess(input).value);
 }
@@ -57,10 +57,10 @@ export function getIsError(input: {
  */
 export function getIsSuccess(input: {
 	/** Alert variable. */
-	alert: IAlert;
+	alert?: IAlert;
 }) {
 	return computed(() =>
-		(['Success'] as IAlert['type'][]).some((i) => i == input.alert.type),
+		(['Success'] as IAlert['type'][]).some((i) => i == input.alert?.type),
 	);
 }
 
@@ -100,4 +100,20 @@ export function waitForPageLoad(): Promise<void> {
 			window.addEventListener('load', () => resolve(), { once: true });
 		}
 	});
+}
+
+/**
+ * Sleep function.
+ *
+ * @example
+ *
+ * ```ts
+ * sleep(1000); // sleep for a second.
+ * ```
+ *
+ * @param {number} ms - Milliseconds of sleep.
+ * @returns {Promise<void>} Sleep async for await.
+ */
+export function sleep(ms: number): Promise<void> {
+	return new Promise((resolve) => setTimeout(resolve, ms));
 }

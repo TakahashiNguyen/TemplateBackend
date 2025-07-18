@@ -1,18 +1,36 @@
 <script lang="ts">
-import { defineComponent, h } from 'vue';
+import { type VNode, defineComponent, h } from 'vue';
+
+function unwrapContentVNodes(nodes: VNode[]): VNode[] {
+	const result: VNode[] = [];
+
+	for (const node of nodes) {
+		if (
+			node.key === '_content' &&
+			node.children &&
+			Array.isArray(node.children)
+		) {
+			// @ts-expect-error error-free expression
+			result.push(...unwrapContentVNodes(node.children));
+		} else {
+			const cloned = { ...node } as VNode;
+			if (node.children && Array.isArray(node.children)) {
+				cloned.children = unwrapContentVNodes(node.children as VNode[]);
+			}
+			result.push(cloned);
+		}
+	}
+
+	return result;
+}
 
 export default defineComponent({
-	name: 'WrapperEach',
-	props: {
-		isSlots: { type: Boolean, default: false },
-	},
-	setup({ isSlots }, { slots }) {
+	props: {},
+	setup({}, { slots }) {
 		return () => {
-			const children =
-				(isSlots ? slots.default?.()[0].children : slots.default?.()) || [];
-
-			// @ts-expect-error error-free expression
-			return children.map((node) => h('div', {}, [node]));
+			return unwrapContentVNodes(slots.default?.()!).map((node) =>
+				h('div', { class: ['bg--0'] }, [node]),
+			);
 		};
 	},
 });

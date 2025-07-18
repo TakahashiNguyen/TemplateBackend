@@ -1,11 +1,18 @@
 <template>
-	<button
-		:ref="buttonRef"
-		:type
-		class="primary-text primary-background w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium"
-	>
-		<slot />
-	</button>
+	<div class="p-1">
+		<button
+			:ref="buttonRef"
+			:type
+			class="w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium"
+			:class="{
+				'text--primary bg--primary hover:text--secondary hover:bg--secondary':
+					theme == 'primary',
+				'hover:bg--secondary': theme == 'secondary',
+			}"
+		>
+			<slot />
+		</button>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -16,8 +23,12 @@ defineProps({
 		type: String as PropType<HTMLButtonElement['type']>,
 		default: 'button',
 	},
+	theme: {
+		type: String as PropType<'primary' | 'secondary'>,
+		default: 'primary',
+	},
 	buttonRef: {
-		type: Object as PropType<VNodeRef>,
+		type: Function as unknown as PropType<VNodeRef>,
 		required: false,
 	},
 });
