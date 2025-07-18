@@ -1,43 +1,50 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
 {
-	"containerEnv": { "POSTGRES_HOST": "host.docker.internal" },
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"NicholasHsiang.vscode-javascript-comment",
-				"MichaelCurrin.auto-commit-msg",
-				"dbaeumer.vscode-eslint",
 				"GitHub.vscode-pull-request-github",
-				"Orta.vscode-jest",
-				"esbenp.prettier-vscode",
-				"mutantdino.resourcemonitor",
-				"redhat.vscode-yaml",
+				"dbaeumer.vscode-eslint",
 				"PeterSchmalfeldt.explorer-exclude",
+				"GraphQL.vscode-graphql-syntax",
+				"NicholasHsiang.vscode-javascript-comment",
+				"Orta.vscode-jest",
+				"PKief.material-icon-theme",
+				"esbenp.prettier-vscode",
 				"vscodevim.vim",
-				"aaron-bond.better-comments",
-				"formulahendry.auto-rename-tag",
-				"github.vscode-github-actions",
-				"wayou.vscode-todo-highlight",
-				"ms-vscode.js-debug",
-				"ms-vscode.vscode-typescript-next"
+				"bradlc.vscode-tailwindcss",
+				"ecmel.vscode-html-css",
+				"streetsidesoftware.code-spell-checker",
+				"Vue.volar"
 			]
 		}
 	},
 	"features": {
+		"ghcr.io/devcontainers-extra/features/redis-homebrew:1": {},
 		"ghcr.io/devcontainers/features/git:1": {
 			"ppa": "false",
 			"version": "latest"
 		},
 		"ghcr.io/devcontainers/features/node:1": {
-			"installYarnUsingApt": true,
-			"nodeGypDependencies": true,
+			"nodeGypDependencies": false,
 			"nvmVersion": "latest",
 			"pnpmVersion": "latest",
 			"version": "latest"
-		}
+		},
+		"ghcr.io/takahashinguyen/devcontainer-features/mailpit-homebrew:latest": {
+			"options": "--smtp-require-tls --smtp-tls-cert /cert.pem --smtp-tls-key /key.pem"
+		},
+		"ghcr.io/takahashinguyen/devcontainer-features/minio-client-homebrew:latest": {},
+		"ghcr.io/takahashinguyen/devcontainer-features/minio-homebrew:latest": {}
 	},
-	"forwardPorts": [3000, 2053],
+	"forwardPorts": [3000, 6379, 9000, 9001, 8025, 5173],
 	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-	"name": "PlaceRV-backend",
+	"postAttachCommand": {
+		"redis": "/home/linuxbrew/.linuxbrew/bin/redis-server --daemonize yes"
+	},
+	"postCreateCommand": {
+		"mc": "sleep 5 && mc alias set local 'http://127.0.0.1:9000' 'minioadmin' 'minioadmin' && mc mb local/default",
+		"pnpm": "pnpm install",
+		"ssl": "sudo openssl req -x509 -newkey rsa:4096 -nodes -keyout /key.pem -out /cert.pem -sha256 -days 3650 -subj \"/C=VN/ST=Hanoi/L=Hanoi/O=foo/CN=bar.com\""
+	},
 	"runArgs": ["--add-host=host.docker.internal:host-gateway"]
 }

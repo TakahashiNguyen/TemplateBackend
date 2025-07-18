@@ -3,27 +3,78 @@ name: Test Format Lint
 on:
   pull_request:
     branches:
-      - main
+      - master
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  ACCESS_SECRET: 'ACCESS_SECRET'
+  REFRESH_SECRET: 'REFRESH_SECRET'
+  SERVER_SECRET: 'SERVER_SECRET'
+
+permissions:
+  contents: read
+  actions: read
+  checks: write
+
 jobs:
-  build:
-    name: 'The triathlon'
-
+  FormatAndLint:
+    name: "Format & Lint"
     runs-on: ubuntu-latest
-
-    timeout-minutes: 5
-
     permissions:
       contents: write
-      actions: write
-      checks: write
-      issues: write
-      pull-requests: write
+    outputs:
+      project: ${{ steps.filter.outputs.project }}
+    steps:
+      - uses: actions/checkout@v4
 
+      - id: 'getBranch'
+        run: |
+          if [[ $GITHUB_REF_NAME == 'master' ]]; then
+              echo "test=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          else
+              echo "test='HEAD'" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 23.7
+          cache: 'pnpm'
+
+      - run: pnpm i && npm run format && npm run lint
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        id: auto-commit-action
+        with:
+          skip_dirty_check: false
+
+      - uses: dorny/paths-filter@v3
+        if: steps.auto-commit-action.outputs.changes_detected == 'false'
+        id: filter
+        with:
+          base: ${{ steps.getBranch.outputs.test }}
+          filters: |
+            project:
+              - 'src/**'
+              - 'mail/**'
+              - 'page/**'
+              - 'pnpm-lock.yaml'
+
+  Test:
+    needs: FormatAndLint
+    if: ${{ needs.FormatAndLint.outputs.project == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    name: Test ${{ matrix.service }}
+    strategy:
+      matrix:
+        service: [service, requesters, etc]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -31,29 +82,93 @@ jobs:
 
       - uses: ikalnytskyi/action-setup-postgres@v6
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 23
+          cache: 'pnpm'
 
-      - uses: actions/cache@v4
+      - run: npm run build && npm run test:${{ matrix.service }}
+
+      - uses: actions/upload-artifact@v4
         with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('./package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          name: ${{ matrix.service }}
+          path: |
+            ./reports/${{ matrix.service }}.xml
+            ./coverage/${{ matrix.service }}.txt
 
-      - run: npm run triathlon
+  # Test_web:
+  #   needs: FormatAndLint
+  #   if: ${{ needs.FormatAndLint.outputs.project == 'true' }}
+  #   name: 'Test web'
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 5
+  #   permissions:
+  #     contents: read
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         ref: ${{ github.head_ref }}
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
+  #     - uses: ikalnytskyi/action-setup-postgres@v6
+
+  #     - uses: pnpm/action-setup@v4
+
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 23.7
+  #         cache: 'pnpm'
+
+  #     - run: npm run start:ci
+
+  #     - name: Upload Images
+  #       if: failure()
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: cypress-images
+  #         path: ./cypress/screenshots
+
+  WrapUp:
+    name: 'Wrap up'
+    needs:
+      - Test
+      # - Test_web
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - run: exit 1
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'skipped') || contains(needs.*.result, 'cancelled')
+
+      - name: Delete GitHub Actions Comments
+        uses: izhangzhihao/delete-comment@master
         with:
-          skip_dirty_check: false
+          github_token: ${{ github.token }}
+          delete_user_name: 'github-actions[bot]'
+          issue_number: ${{ github.event.number }}
 
-      - name: Jest Coverage Comment
+      - uses: actions/download-artifact@v4
+
+      - name: Requesters
         uses: MishaKav/jest-coverage-comment@main
-        id: coverageComment
         with:
-          title: Test report
-          coverage-title: Coverage result
-          coverage-path: ./coverage/coverage.txt
+          title: Requesters test result
+          coverage-path: ./requesters/coverage/requesters.txt
           create-new-comment: true
-          junitxml-path: ./reports/junit.xml
+
+      - name: Service
+        uses: MishaKav/jest-coverage-comment@main
+        with:
+          title: Service test result
+          coverage-path: ./service/coverage/service.txt
+          create-new-comment: true
+
+      - uses: dorny/test-reporter@v2
+        with:
+          artifact: /(.*)/
+          name: Tests runtime
+          path: '**/*.xml'
+          reporter: jest-junit

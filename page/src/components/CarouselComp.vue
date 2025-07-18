@@ -1,0 +1,212 @@
+<template>
+	<div
+		ref="carouselElement"
+		class="relative w-full"
+		:style="{ '--duration': duration + 'ms' }"
+	>
+		<LoadingDiv ref="loadingDiv" class="absolute z-40" />
+		<!-- Carousel wrapper -->
+		<div
+			ref="carouselWrapper"
+			class="[&>*]:absolute! [&>*]:duration-(--duration) relative h-56 overflow-hidden [&>*]:w-full [&>*]:ease-in-out"
+		>
+			<DivWrapper>
+				<slot name="content" />
+			</DivWrapper>
+		</div>
+		<!-- Slider indicators -->
+		<div
+			:class="[indicatorsLocation]"
+			class="absolute z-50 flex space-x-3"
+			ref="carouselIndicatorsWrapper"
+		/>
+		<!-- Slider controls -->
+		<div v-if="!$slots.buttons" class="[&>*]:z-[45]">
+			<button
+				title="previous"
+				ref="carouselPrevious"
+				type="button"
+				class="group absolute left-0 top-0 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
+				:class="{ hidden: !overflowing && !isCycle && isStart }"
+			>
+				<span
+					class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70"
+				>
+					<svg
+						class="h-4 w-4 text-white dark:text-gray-800"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 6 10"
+					>
+						<path
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M5 1 1 5l4 4"
+						/>
+					</svg>
+				</span>
+			</button>
+			<button
+				title="next"
+				ref="carouselNext"
+				type="button"
+				class="group absolute right-0 top-0 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
+				:class="{ hidden: !overflowing && !isCycle && isEnd }"
+			>
+				<span
+					class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70"
+				>
+					<svg
+						class="h-4 w-4 text-white dark:text-gray-800"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 6 10"
+					>
+						<path
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="m1 9 4-4-4-4"
+						/>
+					</svg>
+				</span>
+			</button>
+		</div>
+		<div v-if="$slots.buttons" class="[&>*]:absolute [&>*]:z-[45]">
+			<slot name="buttons" :next :previous :isEnd :isStart />
+		</div>
+	</div>
+</template>
+
+<script setup lang="ts">
+import { getSlotRefSet, sleep, waitForPageLoad } from '@/app/functions';
+import { useElementSize } from '@vueuse/core';
+import { Carousel } from 'flowbite';
+import type {
+	CarouselInterface,
+	CarouselItem,
+	CarouselOptions,
+	RotationItems,
+} from 'flowbite';
+import { type PropType, computed, onMounted, ref, watch } from 'vue';
+
+import DivWrapper from './DivWrapper.vue';
+import LoadingDiv from './LoadingDiv.vue';
+
+const carouselElement = ref<HTMLElement>(),
+	carouselWrapper = ref<HTMLElement>(),
+	carouselIndicatorsWrapper = ref<HTMLElement>(),
+	carouselNext = ref<Element>(),
+	carouselPrevious = ref<Element>(),
+	next = getSlotRefSet(carouselNext),
+	previous = getSlotRefSet(carouselPrevious),
+	loadingDiv = ref<InstanceType<typeof LoadingDiv>>(),
+	currentPosition = ref(0),
+	currentElement = ref<HTMLElement>(),
+	isStart = computed(() => currentPosition.value == 1),
+	isEnd = computed(
+		() => currentPosition.value == carouselWrapper.value?.childElementCount,
+	),
+	props = defineProps({
+		isCycle: { type: Boolean, default: false },
+		overflowing: { type: Boolean, default: false },
+		duration: { type: Number, default: 750 },
+		cycleDuration: { type: Number, default: 3000 },
+		indicator: {
+			type: Object as PropType<
+				Omit<Required<CarouselOptions['indicators']>, 'items'>
+			>,
+			default: {
+				activeClasses: 'bg-white dark:bg-white/80',
+				inactiveClasses:
+					'bg-white/50 dark:bg-white/40 hover:bg-white/90 dark:hover:bg-white/70',
+			},
+		},
+		indicatorsLocation: {
+			type: [String, Object, Array],
+			default: 'bottom-5 left-1/2 -translate-x-1/2',
+		},
+	});
+
+class CustomCarousel extends Carousel {
+	async _rotate(rotationItems: RotationItems): Promise<void> {
+		Object.values(rotationItems).forEach((i) => {
+			i.el.classList.remove('hidden');
+		});
+
+		await sleep(1);
+
+		super._rotate(rotationItems);
+
+		currentPosition.value = rotationItems.middle.position + 1;
+		currentElement.value = rotationItems.middle.el.children[0] as HTMLElement;
+
+		await sleep(props.duration);
+
+		rotationItems.left.el.classList.add('hidden');
+		rotationItems.right.el.classList.add('hidden');
+	}
+}
+
+onMounted(async () => {
+	const items: CarouselItem[] = Array.from(carouselWrapper.value!.children).map(
+			(el, i) => ({
+				position: i,
+				el: el as HTMLElement,
+			}),
+		),
+		carouselIndicators = items.map(() => {
+			const button = document.createElement('button');
+			button.className = 'h-3 w-3 rounded-full';
+			button.type = 'button';
+			button.title = (5).string;
+
+			carouselIndicatorsWrapper.value?.append(button);
+
+			return button;
+		}),
+		options: CarouselOptions = {
+			defaultPosition: 0,
+			interval: props.cycleDuration,
+
+			indicators: {
+				...props.indicator,
+				items: Array.from(carouselIndicators).map((el, i) => ({
+					position: i,
+					el,
+				})),
+			},
+		};
+
+	watch(useElementSize(currentElement).height, (h) => {
+		carouselElement.value!.style.height = carouselWrapper.value!.style.height =
+			h.toString() + 'px';
+	});
+
+	await waitForPageLoad();
+
+	const carousel: CarouselInterface = new CustomCarousel(
+		carouselElement.value,
+		items,
+		options,
+		{},
+	);
+
+	if (props.isCycle) carousel.cycle();
+
+	carouselPrevious.value?.addEventListener('click', () => {
+		if (!isStart.value || props.overflowing || props.isCycle) carousel.prev();
+	});
+
+	carouselNext.value?.addEventListener('click', () => {
+		if (!isEnd.value || props.overflowing || props.isCycle) carousel.next();
+	});
+
+	loadingDiv.value?.toggleHidden();
+});
+</script>

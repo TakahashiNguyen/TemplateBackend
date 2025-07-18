@@ -1,0 +1,13 @@
+{
+	"exclude": [
+		"**/*.spec.*",
+		"**/schema.gql",
+		"*.config.*",
+		"**/*.d.ts",
+		"**/*.dto.ts",
+		"**/*.tsx",
+		"main.ts",
+		"dist"
+	],
+	"extends": "./tsconfig.json"
+}

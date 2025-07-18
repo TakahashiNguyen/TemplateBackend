@@ -1,0 +1,83 @@
+@import 'tailwindcss';
+
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+
+@theme {
+	--font-sans:
+		'Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'system-ui',
+		'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif',
+		'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+	--font-body:
+		'Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'system-ui',
+		'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif',
+		'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+	--font-mono:
+		'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas',
+		'Liberation Mono', 'Courier New', 'monospace';
+
+	--color-*: initial;
+	--color-dark-0: #001011;
+	--color-light-0: #fdfffc;
+	--color-dark-1: #001514;
+	--color-light-1: #f3e8ee;
+	--color-dark-primary: #880d1e;
+	--color-light-primary: #f26a8d;
+	--color-dark-secondary: #dd2d4a;
+	--color-light-secondary: #f49cbb;
+	--color-dark-tertiary: #02394A;
+	--color-light-tertiary: #55d6be;
+	--color-gray: #363635;
+	--color-success: #56e39f;
+	--color-error: #ff6978;
+}
+
+@utility bg--* {
+	@apply bg-[--value(--color-light-*)] dark:bg-[--value(--color-dark-*)];
+}
+
+@utility text--* {
+	@apply text-[--value(--color-dark-*)] dark:text-[--value(--color-light-*)];
+}
+
+@utility border--* {
+	@apply border-[--value(--color-dark-*)] dark:border-[--value(--color-light-*)];
+}
+
+@utility -bg--* {
+	@apply bg-[--value(--color-dark-*)] dark:bg-[--value(--color-light-*)];
+}
+
+@utility -text--* {
+	@apply text-[--value(--color-light-*)] dark:text-[--value(--color-dark-*)];
+}
+
+@utility -border--* {
+	@apply border-[--value(--color-light-*)] dark:border-[--value(--color-dark-*)];
+}
+
+@layer {
+	a.link {
+		@apply text-light-primary visited:text-dark-primary hover:underline active:underline;
+	}
+
+	.center {
+		@apply items-center-safe justify-center-safe flex;
+	}
+
+	* {
+		@apply focus:outline-dark-tertiary dark:focus:outline-light-tertiary focus:rounded-sm focus:outline-2 focus:outline-offset-2;
+	}
+}
+
+@custom-variant tablet {
+	@media (width >= 40rem) and (orientation: portrait) {
+		@slot;
+	}
+}
+
+@custom-variant desktop {
+	@media (width >= 64rem) and (orientation: landscape) {
+		@slot;
+	}
+}

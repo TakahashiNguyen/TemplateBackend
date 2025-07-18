@@ -1,0 +1,34 @@
+import { ExecutionContext, Injectable } from '@nestjs/common';
+
+import { UserGuard } from './user.guard';
+
+/** File guard class. */
+@Injectable()
+export class FileGuard extends UserGuard {
+	/**
+	 * Always allow access to file endpoints.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * this.canActivate(ctx);
+	 * ```
+	 *
+	 * @param {ExecutionContext} context - Request context.
+	 * @returns {Promise<boolean>} True if context meets all requirements.
+	 */
+	async canActivate(context: ExecutionContext): Promise<boolean> {
+		try {
+			await super.canActivate(context);
+		} catch (error) {
+			switch ((error as Error).message) {
+				case 'Unauthorized':
+					break;
+
+				default:
+					throw error;
+			}
+		}
+		return true;
+	}
+}

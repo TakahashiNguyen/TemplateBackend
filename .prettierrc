@@ -1,16 +1,22 @@
 {
 	"endOfLine": "lf",
+	"importOrder": ["^[./]"],
 	"importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
-	"importOrderTypeScriptVersion": "5.0.0",
+	"importOrderSeparation": true,
+	"importOrderSortSpecifiers": true,
+	"jsdocDescriptionWithDot": true,
 	"jsonRecursiveSort": true,
+	"jsonSortOrder": "{\"*\": \"lexical\"}",
 	"plugins": [
-		"@ianvs/prettier-plugin-sort-imports",
-		"prettier-plugin-sort-json"
+		"prettier-plugin-sort-json",
+		"@trivago/prettier-plugin-sort-imports",
+		"prettier-plugin-jsdoc",
+		"prettier-plugin-tailwindcss"
 	],
 	"printWidth": 80,
-	"singleAttributePerLine": false,
 	"singleQuote": true,
 	"tabWidth": 2,
 	"trailingComma": "all",
+	"tsdoc": true,
 	"useTabs": true
 }

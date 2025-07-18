@@ -1,0 +1,29 @@
+---
+title: 'Authentication modifying requested'
+preheader: 'A request has been made to update authentication of your account'
+---
+
+<x-main>
+	<p class="text-title text-start">
+		Dear {{`\{\{userName\}\}`}},<br />There has been a request to update the
+		authentication methods associated with your account.
+	</p>
+	<p class="text-normal">Click the button below to proceed</p>
+	<x-button
+		href="{{`\{\{url\}\}`}}"
+		class="inline-block bg-blue-500 text-center text-base font-semibold uppercase no-underline hover:bg-blue-600"
+		align="center"
+		extraStyle="p-9"
+	>
+		Continuing the procedure
+	</x-button>
+	<x-divider />
+	<p class="text-subtitle">
+		Button not working? Copy and paste the link below into your web browser.
+		<br />
+		<a class="text-gray-500" href="{{`\{\{url\}\}`}}"> {{`\{\{url\}\}`}} </a>
+	</p>
+	<p class="text-subtitle">
+		If you did not make this request, you can ignore this email
+	</p>
+</x-main>

@@ -1,129 +1,119 @@
 {
-	"debug.javascript.autoAttachFilter": "disabled",
-	"editor.detectIndentation": false,
-	"editor.foldingImportsByDefault": true,
-	"editor.insertSpaces": false,
-	"editor.tabSize": 2,
+	"cSpell.words": [
+		"apollographql",
+		"flowbite",
+		"gstatic",
+		"minioadmin",
+		"templatebackend",
+		"trivago",
+		"unsign",
+		"vueuse",
+		"xxhashjs"
+	],
+	"explorer.fileNesting.enabled": true,
+	"explorer.fileNesting.patterns": {
+		"*.entity.ts": "$(capture).model.ts, $(capture).graphql.ts, $(capture).dto.ts",
+		"*.guard.ts": "$(capture).strategy.ts",
+		"*.ts": "$(capture).spec.ts, $(capture).spec.util.ts",
+		"package.json": "LICENSE*,*.md,nest-cli.json,.gitignore,.env*,.*rc,*.config.js,*.config.ts,*.config.json,*.config.mjs,*.config.cjs,*.config.yaml,*.config.yml",
+		"tsconfig.json": "tsconfig.*.json"
+	},
 	"explorerExclude.backup": {},
-	"files.eol": "\n",
 	"files.exclude": {
-		"**/*.example*": true,
-		"**/*.js": true,
-		"**/*.json": false,
-		"**/*.tsbuildinfo": true,
-		"**/*spec*": true,
 		"**/.DS_Store": true,
 		"**/.git": true,
 		"**/.hg": true,
 		"**/.svn": true,
-		"**/CVS": true,
 		"**/Thumbs.db": true,
+		"**/dist": true,
+		"**/node_modules": true,
+		"**/pnpm-lock.yaml": true,
 		"**/schema.gql": true,
-		".adminjs": true,
-		".devcontainer": true,
-		".env": true,
-		".git": true,
-		".github": true,
-		".gitignore": true,
-		".prettierrc": true,
-		"LICENSE": true,
-		"coverage": true,
-		"dist": true,
-		"node_modules": true,
-		"reports": true,
-		"secrets": true
+		".pnpm-store": true,
+		".tsup": true,
+		"docs": true
 	},
-	"jest.outputConfig": { "clearOnRun": "terminal" },
+	"jest.outputConfig": {
+		"clearOnRun": "terminal"
+	},
 	"jest.runMode": {
 		"coverage": true,
 		"showInlineError": true,
 		"type": "on-demand"
 	},
-	"testing.openTesting": "neverOpen",
+	"testing.automaticallyOpenTestResults": "neverOpen",
 	"todohighlight.keywords": [
-		{
-			"backgroundColor": "#00bfff",
-			"color": "#4b3621",
-			"isWholeLine": true,
-			"text": " Queries"
-		},
-		{
-			"backgroundColor": "#69359c",
-			"color": "#e3a857",
-			"isWholeLine": true,
-			"text": " Mutations"
-		},
 		{
 			"backgroundColor": "#E4D6A7",
 			"color": "#1C110A",
 			"isWholeLine": true,
-			"text": " Relationships"
+			"text": "// Relationships"
 		},
 		{
-			"backgroundColor": "#CDE7B0",
-			"color": "#BE6E46",
+			"backgroundColor": "#FCBA04",
+			"color": "#A50104",
 			"isWholeLine": true,
-			"text": " Infomations"
-		},
-		{
-			"backgroundColor": "#FF3366",
-			"color": "#011627",
-			"isWholeLine": true,
-			"text": " Sensitive infomations"
-		},
-		{
-			"backgroundColor": "#4464AD",
-			"color": "#FFC759",
-			"isWholeLine": true,
-			"text": " Methods"
-		},
-		{
-			"backgroundColor": "#420039",
-			"color": "#FFC1CF",
-			"isWholeLine": true,
-			"text": " Database requests"
-		},
-		{
-			"backgroundColor": "#ECB0E1",
-			"color": "#A31621",
-			"isWholeLine": true,
-			"text": " Interfaces"
-		},
-		{
-			"backgroundColor": "#E94F37",
-			"color": "#F6F7EB",
-			"isWholeLine": true,
-			"text": " Enums"
-		},
-		{
-			"backgroundColor": "#A50104",
-			"color": "#FCBA04",
-			"isWholeLine": true,
-			"text": " Number.prototype"
+			"text": "// Number.prototype"
 		},
 		{
 			"backgroundColor": "#659157",
 			"color": "#FFCAB1",
 			"isWholeLine": true,
-			"text": " Array.prototype"
+			"text": "// Array.prototype"
 		},
 		{
-			"backgroundColor": "#022B3A",
-			"color": "#B89685",
+			"backgroundColor": "#B89685",
+			"color": "#022B3A",
 			"isWholeLine": true,
-			"text": " String.prototype"
+			"text": "// String.prototype"
 		},
 		{
-			"backgroundColor": "#FDFFFF",
-			"color": "#B10F2E",
+			"backgroundColor": "#ECB0E1",
+			"color": "#A31621",
 			"isWholeLine": true,
-			"text": " Global functions"
+			"text": "// Interfaces"
 		},
 		{
-			"backgroundColor": "#E27396",
-			"color": "#7DDF64",
+			"backgroundColor": "#E94F37",
+			"color": "#F6F7EB",
 			"isWholeLine": true,
-			"text": " Defines"
+			"text": "// Enums"
+		},
+		{
+			"backgroundColor": "#4464AD",
+			"color": "#FFC759",
+			"isWholeLine": true,
+			"text": "// Methods"
+		},
+		{
+			"backgroundColor": "#CDE7B0",
+			"color": "#BE6E46",
+			"isWholeLine": true,
+			"text": "// Information"
+		},
+		{
+			"backgroundColor": "#61E8E1",
+			"color": "#071E22",
+			"isWholeLine": true,
+			"text": "// Read"
+		},
+		{
+			"backgroundColor": "#E3C567",
+			"color": "#16302B",
+			"isWholeLine": true,
+			"text": "// Create"
+		},
+		{
+			"backgroundColor": "#8C1C13",
+			"color": "#D3D0CB",
+			"isWholeLine": true,
+			"text": "// Delete"
+		},
+		{
+			"backgroundColor": "#C6D4FF",
+			"color": "#14281D",
+			"isWholeLine": true,
+			"text": "// Update"
 		}
 	]
 }
