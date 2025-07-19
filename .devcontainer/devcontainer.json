@@ -20,12 +20,12 @@
 		}
 	},
 	"features": {
+		"ghcr.io/devcontainers-extra/features/pnpm:latest": {},
 		"ghcr.io/devcontainers-extra/features/redis-homebrew:1": {},
 		"ghcr.io/devcontainers/features/git:1": {
 			"ppa": "false",
 			"version": "latest"
 		},
-		"ghcr.io/devcontainers-extra/features/pnpm:latest": {},
 		"ghcr.io/takahashinguyen/devcontainer-features/mailpit-homebrew:latest": {
 			"options": "--smtp-require-tls --smtp-tls-cert /cert.pem --smtp-tls-key /key.pem"
 		},
