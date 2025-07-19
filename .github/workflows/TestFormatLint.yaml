@@ -71,6 +71,7 @@ jobs:
     timeout-minutes: 30
     permissions:
       contents: read
+    name: Test ${{ matrix.object }}
     strategy:
       matrix:
         object: [service, requesters, etc]
