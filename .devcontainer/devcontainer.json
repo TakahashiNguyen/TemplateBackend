@@ -25,12 +25,7 @@
 			"ppa": "false",
 			"version": "latest"
 		},
-		"ghcr.io/devcontainers/features/node:1": {
-			"nodeGypDependencies": false,
-			"nvmVersion": "latest",
-			"pnpmVersion": "latest",
-			"version": "latest"
-		},
+		"ghcr.io/devcontainers-extra/features/pnpm:latest": {},
 		"ghcr.io/takahashinguyen/devcontainer-features/mailpit-homebrew:latest": {
 			"options": "--smtp-require-tls --smtp-tls-cert /cert.pem --smtp-tls-key /key.pem"
 		},
@@ -44,6 +39,7 @@
 	},
 	"postCreateCommand": {
 		"mc": "sleep 5 && mc alias set local 'http://127.0.0.1:9000' 'minioadmin' 'minioadmin' && mc mb local/default",
+		"pnpm": "pnpm install",
 		"ssl": "sudo openssl req -x509 -newkey rsa:4096 -nodes -keyout /key.pem -out /cert.pem -sha256 -days 3650 -subj \"/C=VN/ST=Hanoi/L=Hanoi/O=foo/CN=bar.com\""
 	},
 	"runArgs": ["--add-host=host.docker.internal:host-gateway"]
