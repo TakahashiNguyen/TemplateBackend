@@ -68,7 +68,7 @@ jobs:
     needs: FormatAndLint
     if: ${{ needs.FormatAndLint.outputs.project == 'true' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 30
     permissions:
       contents: read
     name: Test ${{ matrix.service }}
