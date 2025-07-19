@@ -1,12 +1,12 @@
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "msedge",
-      "request": "launch",
-      "name": "Launch Edge against localhost",
-      "url": "http://localhost:5173",
-      "webRoot": "${workspaceFolder}"
-    }
-  ]
+	"configurations": [
+		{
+			"name": "Launch Edge against localhost",
+			"request": "launch",
+			"type": "msedge",
+			"url": "http://localhost:5173",
+			"webRoot": "${workspaceFolder}"
+		}
+	],
+	"version": "0.2.0"
 }
