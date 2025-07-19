@@ -8,7 +8,7 @@
 		"dev:api": "cd .. && npm run start",
 		"dev:web": "vite",
 		"types": "cd .. && npm run types",
-		"prebuild": "npm run types && pnpm i",
+		"prebuild": "pnpm i && npm run types",
 		"build": "vue-tsc -b && vite build",
 		"preview": "vite preview"
 	},

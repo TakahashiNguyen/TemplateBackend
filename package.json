@@ -17,7 +17,7 @@
 	},
 	"scripts": {
 		"commit": "cz",
-		"prebuild": "npm run mail:build && npm run page:build",
+		"prebuild": "pnpm i && npm run mail:build && npm run page:build",
 		"build": "nest build",
 		"doc": "compodoc src -p tsconfig.doc.json --disableSourceCode --hideGenerator -d ./docs",
 		"format": "prettier --write \"./**/*.css\" \"./**/*.ts\" \"./**/*.json\" \"./**/*.ts\" \"./**/*.html\" \"./**/*.vue\"",
