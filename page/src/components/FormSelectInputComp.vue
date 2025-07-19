@@ -7,8 +7,8 @@
 			class="select select-bordered w-full"
 			v-model="model"
 			:class="{
-				'input-error': object === alert?.object && alert?.type === 'error',
-				'input-success': object === alert?.object && alert?.type === 'success',
+				'input-error': object === alert?.object && alert?.type === 'Fatal',
+				'input-success': object === alert?.object && alert?.type === 'Success',
 			}"
 		>
 			<option v-for="i in list" v-bind:key="i[0]" :value="i[1]">
@@ -19,8 +19,8 @@
 			<span
 				class="label-text-alt"
 				:class="{
-					'text-green-700': alert?.type === 'success',
-					'text-red-700': alert?.type === 'error',
+					'text-green-700': alert?.type === 'Success',
+					'text-red-700': alert?.type !== 'Success',
 				}"
 			>
 				{{ alert?.message }}
@@ -36,13 +36,13 @@
 
 <script setup lang="ts">
 import type { IAlert } from '@/error/interfaces';
-import type { IObject } from '@/error/types';
+import type { ErrorObject } from 'templatebackend';
 
 const model = defineModel();
 defineProps<{
 	name: string;
 	subBtnClick?: () => void;
-	object?: IObject;
+	object?: ErrorObject;
 	alert?: IAlert;
 	list: Map<string, string>;
 }>();
