@@ -42,10 +42,10 @@
 		"pnpm": "pnpm install",
 		"ssl": "sudo openssl req -x509 -newkey rsa:4096 -nodes -keyout /key.pem -out /cert.pem -sha256 -days 3650 -subj \"/C=VN/ST=Hanoi/L=Hanoi/O=foo/CN=bar.com\""
 	},
-	"runArgs": ["--add-host=host.docker.internal:host-gateway"],
 	"remoteEnv": {
 		"ACCESS_SECRET": "${localEnv:ACCESS_SECRET}",
 		"REFRESH_SECRET": "${localEnv:REFRESH_SECRET}",
 		"SERVER_SECRET": "${localEnv:SERVER_SECRET}"
-	}
+	},
+	"runArgs": ["--add-host=host.docker.internal:host-gateway"]
 }
