@@ -80,7 +80,14 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - run: chmod -R u+rwX $GITHUB_WORKSPACE
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 23.7
+          cache: 'pnpm'
+      
+      - run: pnpm i
 
       - uses: ikalnytskyi/action-setup-postgres@v6
 
