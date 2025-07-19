@@ -14,7 +14,8 @@
 				"bradlc.vscode-tailwindcss",
 				"ecmel.vscode-html-css",
 				"streetsidesoftware.code-spell-checker",
-				"Vue.volar"
+				"Vue.volar",
+				"github.vscode-github-actions"
 			]
 		}
 	},

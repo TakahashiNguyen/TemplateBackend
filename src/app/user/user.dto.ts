@@ -1,7 +1,7 @@
 import { Authentication } from 'app/auth/classes';
 import { type IAuthentication } from 'app/auth/interfaces';
 import { IsDefined } from 'class-validator';
-import { DeepAttributesOnly, Omitting, Subtract } from 'utils/app/types';
+import { type DeepAttributesOnly, Omitting, Subtract } from 'utils/app/types';
 import { BaseEntity } from 'utils/typeorm/classes';
 
 import { User } from './user.entity';
@@ -28,7 +28,7 @@ export class UserSignupDto
 {
 	/** User authentication. */
 	@IsDefined()
-	authentication!: Authentication;
+	authentication!: DeepAttributesOnly<Authentication>;
 
 	/** User's email. */
 	@IsDefined()

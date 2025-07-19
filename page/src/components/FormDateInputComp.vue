@@ -6,8 +6,8 @@
 		<label
 			class="input input-bordered relative -mb-5 flex w-full items-center gap-2"
 			:class="{
-				'input-error': object === alert?.object && alert?.type === 'error',
-				'input-success': object === alert?.object && alert?.type === 'success',
+				'input-error': object === alert?.object && alert?.type !== 'Success',
+				'input-success': object === alert?.object && alert?.type === 'Success',
 			}"
 		>
 			<IconComp name="event" />
@@ -27,8 +27,8 @@
 			<span
 				class="label-text-alt"
 				:class="{
-					'text-green-700': alert?.type === 'success',
-					'text-red-700': alert?.type === 'error',
+					'text-green-700': alert?.type === 'Success',
+					'text-red-700': alert?.type !== 'Success',
 				}"
 			>
 				{{ alert?.message }}
@@ -43,15 +43,13 @@
 </template>
 
 <script setup lang="ts">
-import IconComp from '@/components/IconComp.vue';
 import type { IAlert } from '@/error/interfaces';
-import type { IObject } from '@/error/types';
-import { initFlowbite } from 'flowbite';
-import { onMounted, ref, watch } from 'vue';
+import type { ErrorObject } from 'templatebackend';
+import { ref, watch } from 'vue';
 
 const props = defineProps<{
 		name: string;
-		object?: IObject;
+		object?: ErrorObject;
 		subBtnClick?: () => void;
 		alert?: IAlert;
 		icon?: string;
@@ -62,10 +60,6 @@ const props = defineProps<{
 	emit = defineEmits<{
 		(e: 'update:modelValue', value: Date): void;
 	}>();
-
-onMounted(() => {
-	initFlowbite();
-});
 
 const updateValue = (value: string) => {
 	const date = new Date(value);
