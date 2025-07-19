@@ -49,24 +49,23 @@ import type { ErrorObject } from 'templatebackend';
 import { onMounted, ref, watch } from 'vue';
 
 const props = defineProps<{
-    name: string;
-    object?: ErrorObject;
-    subBtnClick?: () => void;
-    alert?: IAlert;
-    icon?: string;
-    disable?: boolean;
-    modelValue: Date;
-  }>(),
-  datepickerRef = ref<HTMLInputElement | null>(null),
-  emit = defineEmits<{
-    (e: 'update:modelValue', value: Date): void;
-  }>();
-
+		name: string;
+		object?: ErrorObject;
+		subBtnClick?: () => void;
+		alert?: IAlert;
+		icon?: string;
+		disable?: boolean;
+		modelValue: Date;
+	}>(),
+	datepickerRef = ref<HTMLInputElement | null>(null),
+	emit = defineEmits<{
+		(e: 'update:modelValue', value: Date): void;
+	}>();
 
 const updateValue = (value: string) => {
-  const date = new Date(value);
-  if (date instanceof Date && !isNaN(date.getTime()))
-    emit('update:modelValue', new Date(value));
+	const date = new Date(value);
+	if (date instanceof Date && !isNaN(date.getTime()))
+		emit('update:modelValue', new Date(value));
 };
 
 watch(
