@@ -68,19 +68,16 @@ import FormTextInputComp from '@/components/TextInputComp.vue';
 import { apiErrorHandler, getAlert } from '@/error/functions';
 import { UserSignupDto } from 'templatebackend';
 import { reactive } from 'vue';
-import { useRouter } from 'vue-router';
 
 const alert = getAlert(),
 	input = reactive<UserSignupDto>({
 		email: '',
 		authentication: {
-			type: 'password',
 			password: { value: '' },
 		},
 		name: '',
 		urlVisit: '',
 		urlManageNotifications: '',
 	}),
-	router = useRouter(),
 	handleSignup = () => apiErrorHandler(requester('/user/signup', input), alert);
 </script>

@@ -44,9 +44,8 @@
 
 <script setup lang="ts">
 import type { IAlert } from '@/error/interfaces';
-import { initFlowbite } from 'flowbite';
 import type { ErrorObject } from 'templatebackend';
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps<{
 		name: string;

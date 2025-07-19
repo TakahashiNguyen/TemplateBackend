@@ -29,7 +29,7 @@
 		"start:debug": "nest start --debug --watch",
 		"start:prod": "node dist/main",
 		"lint": "eslint ./src --fix",
-		"types:build": "ts-node types/types.build.ts && tsup",
+		"types": "ts-node types/types.build.ts && tsup",
 		"test": "jest --config=./test/jest.all.config.ts",
 		"test:requesters": "jest --config=./test/jest.requesters.config.ts",
 		"test:service": "jest --config=./test/jest.service.config.ts",

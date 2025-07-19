@@ -4,10 +4,11 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "concurrently \"pnpm start:api\" \"pnpm start:web\"",
-		"start:api": "cd .. && npm run start",
-		"start:web": "vite",
-		"prebuild": "pnpm i",
+		"dev": "concurrently \"pnpm dev:api\" \"pnpm dev:web\"",
+		"dev:api": "cd .. && npm run start",
+		"dev:web": "vite",
+		"types": "cd .. && npm run types",
+		"prebuild": "npm run types && pnpm i",
 		"build": "vue-tsc -b && vite build",
 		"preview": "vite preview"
 	},
