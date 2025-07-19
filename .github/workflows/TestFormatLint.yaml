@@ -104,7 +104,7 @@ jobs:
           imageName: ghcr.io/takahashinguyen/templatebackend
           cacheFrom: ghcr.io/takahashinguyen/templatebackend
           push: always
-          runCmd: npm run build && npm run test:${{ matrix.object }}
+          runCmd: npm run test:${{ matrix.object }}
 
       - uses: actions/upload-artifact@v4
         with:
