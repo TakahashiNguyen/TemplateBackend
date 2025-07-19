@@ -41,6 +41,9 @@ jobs:
           build-mode: ${{ matrix.build-mode }}
 
       - if: matrix.language == 'javascript-typescript'
+        uses: pnpm/action-setup@v4
+
+      - if: matrix.language == 'javascript-typescript'
         shell: bash
         run: npm run build
 
