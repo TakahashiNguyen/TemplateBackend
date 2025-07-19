@@ -101,8 +101,8 @@ jobs:
       - name: Pre-build image and run make ci-build in dev container
         uses: devcontainers/ci@v0.3
         with:
-          imageName: ghcr.io/TakahashiNguyen/TemplateBackend
-          cacheFrom: ghcr.io/TakahashiNguyen/TemplateBackend
+          imageName: ghcr.io/takahashinguyen/templatebackend
+          cacheFrom: ghcr.io/takahashinguyen/templatebackend
           push: always
           runCmd: npm run build && npm run test:${{ matrix.object }}
 
