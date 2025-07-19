@@ -54,6 +54,7 @@ export class UserController {
 	 * ```
 	 *
 	 * @param root0
+	 * @param root0.phone
 	 * @param root0.authentication
 	 * @param root0.email
 	 * @param root0.name
@@ -76,6 +77,7 @@ export class UserController {
 			name,
 			urlVisit,
 			urlManageNotifications,
+			phone,
 		}: UserSignupDto,
 		@GetRequest('metadata') metadata: IMetadata,
 		@UploadedFile(AvatarFileUpload) avatar: MulterFile,
@@ -86,6 +88,7 @@ export class UserController {
 			name,
 			role: UserRole.guest,
 			authentication,
+			phone,
 		});
 
 		if (avatar) {
