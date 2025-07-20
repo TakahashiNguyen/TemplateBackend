@@ -6,7 +6,7 @@ export const configModule = ConfigModule.forRoot({
 	isGlobal: true, // Makes the configuration available globally
 	validationSchema: Joi.object({
 		// PostgreSQL database connection
-		DB_HOST: Joi.string().default('localhost'),
+		DB_HOST: Joi.string().default('host.docker.internal'),
 		DB_PORT: Joi.number().default(5432),
 		DB_USER: Joi.string().default('postgres'),
 		DB_NAME: Joi.string().default('postgres'),
