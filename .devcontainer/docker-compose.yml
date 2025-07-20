@@ -20,7 +20,7 @@ services:
     restart: unless-stopped
     network_mode: host
     volumes:
-      - /tmp:/data
+      - data:/data
     ports:
       - 8025:8025
       - 1025:1025
@@ -38,7 +38,7 @@ services:
       - '9000:9000'
       - '9001:9001'
     volumes:
-      - /tmp:/data
+      - data:/data
     command: server /data --console-address ":9001"
 
   redis:
@@ -49,4 +49,7 @@ services:
     ports:
       - '6379:6379'
     volumes:
-      - /tmp:/data
+      - data:/data
+
+volumes:
+  data:
