@@ -99,8 +99,8 @@ jobs:
         uses: devcontainers/ci@v0.3
         with:
           imageName: ghcr.io/${{ github.repository_owner }}/devcontainers
-          cacheFrom: ghcr.io/${{ github.repository_owner }}/devcontainers-cache
-          cacheTo: ghcr.io/${{ github.repository_owner }}/devcontainers-cache
+          cacheFrom: ghcr.io/${{ github.repository_owner }}/devcontainers
+          cacheTo: ghcr.io/${{ github.repository_owner }}/devcontainers
           push: always
           runCmd: |
             sudo apt install nmap -y
