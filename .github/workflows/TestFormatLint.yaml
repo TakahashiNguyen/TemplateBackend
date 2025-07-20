@@ -101,7 +101,7 @@ jobs:
           imageName: ghcr.io/takahashinguyen/templatebackend
           cacheFrom: ghcr.io/takahashinguyen/templatebackend
           push: always
-          runCmd: npx --yes tsx -e 'import { Client } from "pg"; const c=new Client({connectionString:process.argv[1]}); c.connect().then(()=>console.log("Connected")).catch(e=>console.error("Error",e.message)).finally(()=>c.end())' postgresql://postgres:postgres@host.docker.internal/postgres
+          runCmd: npx --yes portscanner host.docker.internal 1 9999
 
       - uses: actions/upload-artifact@v4
         with:
