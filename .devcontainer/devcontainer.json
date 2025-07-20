@@ -33,7 +33,7 @@
 		"ghcr.io/takahashinguyen/devcontainer-features/minio-homebrew:latest": {}
 	},
 	"forwardPorts": [3000, 6379, 9000, 9001, 8025, 5173],
-	"image": "mcr.microsoft.com/devcontainers/base:alpine",
+	"image": "mcr.microsoft.com/devcontainers/base:debian",
 	"postAttachCommand": {
 		"redis": "/home/linuxbrew/.linuxbrew/bin/redis-server --daemonize yes"
 	},
