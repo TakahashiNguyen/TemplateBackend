@@ -9,7 +9,8 @@ RUN corepack prepare pnpm@latest --activate
 # Set up packages
 RUN apt update -y && apt install -y --no-install-recommends git curl ca-certificates
 
+# Set up homebrew
+RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
 # Set up minio-client
-RUN curl https://dl.min.io/client/mc/release/linux-arm64/mc --create-dirs \
-  -o /bin/mc && \
-  chmod +x /bin/mc
+RUN brew install minio-mc
