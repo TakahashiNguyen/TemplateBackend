@@ -70,7 +70,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
+      packages: write
       contents: write
+      pull-requests: write
     name: Test ${{ matrix.object }}
     strategy:
       matrix:
