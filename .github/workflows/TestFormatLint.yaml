@@ -95,15 +95,15 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - id: repository
+        uses: vishalmamidi/lowercase-action@v1
         with:
-          driver: docker-container
+          string: ${{ github.repository }}
 
       - name: Pre-build image and run make ci-build in dev container
         uses: devcontainers/ci@v0.3
         with:
-          imageName: ghcr.io/${{ github.repository_owner }}/devcontainers
+          imageName: ghcr.io/${{ steps.repository.outputs.lowercase }}
           push: always
           runCmd: |
             sudo apt install nmap -y
