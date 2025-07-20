@@ -98,10 +98,13 @@ jobs:
       - name: Pre-build image and run make ci-build in dev container
         uses: devcontainers/ci@v0.3
         with:
-          imageName: ghcr.io/takahashinguyen/templatebackend
-          cacheFrom: ghcr.io/takahashinguyen/templatebackend
+          imageName: ghcr.io/${{ github.repository_owner }}/devcontainers
+          cacheFrom: ghcr.io/${{ github.repository_owner }}/devcontainers-cache
+          cacheTo: ghcr.io/${{ github.repository_owner }}/devcontainers-cache
           push: always
-          runCmd: npx --yes portscanner host.docker.internal 1 9999
+          runCmd: |
+            sudo apt install nmap -y
+            nmap
 
       - uses: actions/upload-artifact@v4
         with:
