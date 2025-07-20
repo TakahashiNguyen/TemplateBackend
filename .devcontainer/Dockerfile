@@ -4,6 +4,7 @@ FROM node:current-slim
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
+RUN corepack prepare pnpm@latest --activate
 
 # Set up packages
 RUN apt update -y && apt install -y --no-install-recommends git curl ca-certificates
