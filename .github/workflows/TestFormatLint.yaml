@@ -104,10 +104,11 @@ jobs:
         uses: devcontainers/ci@v0.3
         with:
           imageName: ghcr.io/${{ steps.repository.outputs.lowercase }}
+          cacheFrom: type=registry,ref=ghcr.io/${{ steps.repository.outputs.lowercase }}
           push: always
           runCmd: |
             sudo apt install nmap -y
-            nmap
+            nmap host.docker.internal
 
       - uses: actions/upload-artifact@v4
         with:
