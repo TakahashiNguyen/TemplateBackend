@@ -1,7 +1,4 @@
 {
-	"dockerComposeFile": "docker-compose.yml",
-	"service": "devcontainer",
-	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -22,10 +19,13 @@
 			]
 		}
 	},
+	"dockerComposeFile": "docker-compose.yml",
 	"forwardPorts": [3000, 6379, 9000, 9001, 8025, 5173],
 	"postCreateCommand": {
 		"mc": "sleep 5 && mc alias set local 'http://localhost:9000' 'minioadmin' 'minioadmin' && mc mb local/default",
 		"pnpm": "pnpm install",
 		"ssl": "openssl req -x509 -newkey rsa:4096 -nodes -keyout /key.pem -out /cert.pem -sha256 -days 3650 -subj \"/C=VN/ST=Hanoi/L=Hanoi/O=foo/CN=bar.com\""
-	}
+	},
+	"service": "devcontainer",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"
 }
