@@ -41,6 +41,17 @@ services:
       - data:/data
     command: server /data --console-address ":9001"
 
+  mc:
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+        sleep 5 &&
+        mc alias set local http://localhost:9000 minioadmin minioadmin &&
+        mc mb -p local/default
+      "
+
   redis:
     image: redis
     container_name: redis
