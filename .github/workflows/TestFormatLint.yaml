@@ -9,11 +9,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-env:
-  ACCESS_SECRET: 'ACCESS_SECRET'
-  REFRESH_SECRET: 'REFRESH_SECRET'
-  SERVER_SECRET: 'SERVER_SECRET'
-
 permissions:
   contents: write
   actions: read
@@ -107,6 +102,10 @@ jobs:
           cacheFrom: ghcr.io/${{ steps.repository.outputs.lowercase }}
           push: always
           runCmd: npm run test:${{ matrix.object }}
+        env:
+          ACCESS_SECRET: 'ACCESS_SECRET'
+          REFRESH_SECRET: 'REFRESH_SECRET'
+          SERVER_SECRET: 'SERVER_SECRET'
 
       - uses: actions/upload-artifact@v4
         with:
