@@ -19,7 +19,7 @@
 			]
 		}
 	},
-	"dockerComposeFile": "docker-compose.yml",
+	"dockerComposeFile": "docker-compose.main.yml",
 	"forwardPorts": [3000, 6379, 9000, 9001, 8025, 5173],
 	"postCreateCommand": {
 		"pnpm": "pnpm fetch",

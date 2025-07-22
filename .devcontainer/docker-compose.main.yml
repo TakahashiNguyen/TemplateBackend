@@ -1,4 +1,8 @@
 version: '3.8'
+
+include:
+  - ./docker-compose.postgres.yml
+
 services:
   devcontainer:
     build:
@@ -16,29 +20,22 @@ services:
 
   mailpit:
     image: axllent/mailpit
-    container_name: mailpit
     restart: unless-stopped
     network_mode: host
-    volumes:
-      - data:/data
     ports:
       - 8025:8025
       - 1025:1025
     environment:
-      MP_DATABASE: /data/mailpit.db
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
 
   minio:
     image: minio/minio
-    container_name: minio
     restart: unless-stopped
     network_mode: host
     ports:
       - '9000:9000'
       - '9001:9001'
-    volumes:
-      - data:/data
     command: server /data --console-address ":9001"
 
   mc:
@@ -54,13 +51,7 @@ services:
 
   redis:
     image: redis
-    container_name: redis
     restart: unless-stopped
     network_mode: host
     ports:
       - '6379:6379'
-    volumes:
-      - data:/data
-
-volumes:
-  data:
