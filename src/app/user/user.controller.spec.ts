@@ -41,48 +41,44 @@ describe('signup', () => {
 	beforeEach(() => {
 		input = {
 			...user,
-			urlManageNotifications: '',
-			urlVisit: '',
+			urlManageNotifications: (5).string + '.com',
+			urlVisit: (5).string + '.com',
 		};
 	});
 
-	it(
-		'success',
-		async () => {
-			await execute(
-				async () =>
-					(
-						await req({
-							method: 'post',
-							url,
-							...submitWithFile(input, 'avatar'),
-						})
-					).body,
-				{
-					expectations: [
-						{
-							type: 'toMatch',
-							parameters: [serverException('Success', 'User', 'Assign')],
-						},
-					],
-				},
-			);
+	it('success', async () => {
+		await execute(
+			async () =>
+				(
+					await req({
+						method: 'post',
+						url,
+						...submitWithFile(input, 'avatar'),
+					})
+				).body,
+			{
+				expectations: [
+					{
+						type: 'toMatch',
+						parameters: [serverException('Success', 'User', 'Assign')],
+					},
+				],
+			},
+		);
 
-			await execute(() => svc.user.email(user.email), {
-				expectations: [{ type: 'toBeDefined', parameters: [] }],
-			});
+		await execute(() => svc.user.email(user.email), {
+			expectations: [{ type: 'toBeDefined', parameters: [] }],
+		});
 
-			await execute(
-				async () =>
-					svc.bloc.find({
-						owner: { email: user.email.lower },
-						cache: false,
-					}),
-				{ expectations: [{ type: 'toHaveLength', parameters: [1] }] },
-			);
-		},
-		(100).m2s,
-	);
+		await execute(
+			async () =>
+				svc.bloc.find({
+					owner: { email: user.email.lower },
+					cache: false,
+				}),
+			{ expectations: [{ type: 'toHaveLength', parameters: [1] }] },
+		);
+	});
 
 	it('fail due to email already exist', async () => {
 		await req().post(url).body(input);
