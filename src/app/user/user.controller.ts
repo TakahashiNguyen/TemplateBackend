@@ -129,13 +129,10 @@ export class UserController {
 		@Body() { email, authentication }: UserLoginDto,
 		@GetRequest('metadata') metadata: IMetadata,
 	): Promise<UserReceiveDto> {
-		const { type: authenticateType, ...authentications } = authentication;
+		const { type: authenticateType, ...authentications } = authentication,
+			user: User = await this.svc.user.email(email);
 
-		let user: User | undefined,
-			isVerified = false;
-
-		if (!(user = await this.svc.user.email(email)))
-			throw new ServerException('Invalid', 'Email', 'Submit');
+		let isVerified = false;
 
 		switch (authenticateType) {
 			case 'password':

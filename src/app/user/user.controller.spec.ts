@@ -102,8 +102,8 @@ describe('login', () => {
 	beforeEach(async () => {
 		const signupInput: UserSignupDto = {
 			...user,
-			urlVisit: '',
-			urlManageNotifications: '',
+			urlVisit: (5).string + '.com',
+			urlManageNotifications: (5).string + '.com',
 		};
 
 		input = {
@@ -157,7 +157,7 @@ describe('login', () => {
 		const input: UserLoginDto = {
 			...user,
 			authentication: { type: 'password', ...user.authentication },
-			email: (20).string,
+			email: (20).string + '@foo.com',
 		};
 
 		await execute(async () => (await req().post(url).body(input)).body, {
@@ -177,8 +177,8 @@ describe('logout', () => {
 	beforeEach(async () => {
 		const signupInput: UserSignupDto = {
 			...user,
-			urlVisit: '',
-			urlManageNotifications: '',
+			urlVisit: (5).string + '.com',
+			urlManageNotifications: (5).string + '.com',
 		};
 
 		({ headers } = await req().post('/user/signup').body(signupInput));

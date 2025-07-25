@@ -46,7 +46,7 @@ function parse_git_dirty {
 }
 
 
-export PS1="\u\[\e[37m\]@\[\e[m\]\[\e[37m\]\h\[\e[m\]:\[\e[37m\]\w\[\e[m\]\n\`parse_git_branch\`\[\e[37m\] \[\e[m\]\[\e[37m\]\\$\[\e[m\]\[\e[37m\] \[\e[m\]"
+export PS1="\n\u\[\e[37m\]@\[\e[m\]\[\e[37m\]\h\[\e[m\]:\[\e[37m\]\w\[\e[m\]\n\`parse_git_branch\`\[\e[37m\] \[\e[m\]\[\e[37m\]\\$\[\e[m\]\[\e[37m\] \[\e[m\]"
 
 set -a
 source "$PWD/.env"

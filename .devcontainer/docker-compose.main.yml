@@ -10,12 +10,13 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ../..:/workspaces:cached
+      - certificates:/certs
     ports:
       - 3000:3000
       - 5173:5173
     network_mode: host
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - 'host.docker.internal:host-gateway'
     command: sleep infinity
 
   mailpit:
@@ -24,17 +25,21 @@ services:
     network_mode: host
     ports:
       - 8025:8025
-      - 1025:1025
     environment:
-      MP_SMTP_AUTH_ACCEPT_ANY: 1
-      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+      MP_SMTP_REQUIRE_TLS: 'true'
+      MP_SMTP_TLS_CERT: /certs/cert.pem
+      MP_SMTP_TLS_KEY: /certs/key.pem
+      MP_SMTP_BIND_ADDR: 0.0.0.0:465
+      MP_SMTP_AUTH_ACCEPT_ANY: 'true'
+      MP_SMTP_AUTH_USERS: mailpit:mailpit
+    volumes:
+      - certificates:/certs:ro
 
   minio:
     image: minio/minio
     restart: unless-stopped
     network_mode: host
     ports:
-      - '9000:9000'
       - '9001:9001'
     command: server /data --console-address ":9001"
 
@@ -55,3 +60,6 @@ services:
     network_mode: host
     ports:
       - '6379:6379'
+
+volumes:
+  certificates:
