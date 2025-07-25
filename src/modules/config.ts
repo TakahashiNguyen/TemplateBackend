@@ -28,7 +28,7 @@ export const configModule = ConfigModule.forRoot({
 		// Admin settings
 		ADMIN_EMAIL: Joi.string().default('test@test.test'),
 		// AWS S3 settings
-		AWS_ENDPOINT: Joi.string().default('http://127.0.0.1:9000 '),
+		AWS_ENDPOINT: Joi.string().default('http://127.0.0.1:9000'),
 		AWS_REGION: Joi.string().default('us-east-1'),
 		AWS_BUCKET: Joi.string().default('default'),
 		AWS_ACCESS_KEY_ID: Joi.string().default('minioadmin'),

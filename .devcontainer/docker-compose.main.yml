@@ -48,6 +48,7 @@ services:
     image: minio/mc:latest
     depends_on:
       - minio
+    network_mode: host
     entrypoint: >
       /bin/sh -c "
         sleep 5 &&
