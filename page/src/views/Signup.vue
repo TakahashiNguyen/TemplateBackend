@@ -31,8 +31,11 @@
 				</div>
 			</template>
 			<template #content>
-				<div class="">
+				<div>
 					<FormTextInputComp name="Name" v-model="input.name" />
+				</div>
+				<div>
+					<FormTextInputComp name="Phone number" v-model="input.phone" />
 				</div>
 				<div class="space-y-6">
 					<FormTextInputComp
@@ -71,6 +74,7 @@ import { reactive } from 'vue';
 
 const alert = getAlert(),
 	input = reactive<UserSignupDto>({
+		phone: '',
 		email: '',
 		authentication: {
 			password: { value: '' },

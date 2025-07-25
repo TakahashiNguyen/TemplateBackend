@@ -1,6 +1,6 @@
 import { Authentication } from 'app/auth/classes';
 import { type IAuthentication } from 'app/auth/interfaces';
-import { IsDefined } from 'class-validator';
+import { IsDefined, IsEmail, IsNumberString, IsUrl } from 'class-validator';
 import { type DeepAttributesOnly, Omitting, Subtract } from 'utils/app/types';
 import { BaseEntity } from 'utils/typeorm/classes';
 
@@ -12,6 +12,7 @@ export class UserLoginDto
 {
 	/** User's email. */
 	@IsDefined()
+	@IsEmail()
 	email!: string;
 
 	/** User authentication. */
@@ -30,8 +31,14 @@ export class UserSignupDto
 	@IsDefined()
 	authentication!: DeepAttributesOnly<Authentication>;
 
+	/** User's phone number. */
+	@IsDefined()
+	@IsNumberString()
+	phone!: string;
+
 	/** User's email. */
 	@IsDefined()
+	@IsEmail()
 	email!: string;
 
 	/** User's name. */
@@ -40,10 +47,12 @@ export class UserSignupDto
 
 	/** Client's hostname visit url. */
 	@IsDefined()
+	@IsUrl()
 	urlVisit!: string;
 
 	/** Client's hostname notification management url. */
 	@IsDefined()
+	@IsUrl()
 	urlManageNotifications!: string;
 }
 
@@ -51,9 +60,11 @@ export class UserSignupDto
 export class RequestModifyingAuthenticationDto implements Pick<User, 'email'> {
 	/** User's email. */
 	@IsDefined()
+	@IsEmail()
 	email!: string;
 
 	/** Client's url to modifying authentication. */
 	@IsDefined()
+	@IsUrl()
 	urlModifyingAuthentication!: string;
 }

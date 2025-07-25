@@ -49,6 +49,7 @@ export class User extends BaseEntity {
 	) {
 		super(object);
 		this.name = object?.name;
+		this.phone = object?.phone;
 		this.email = object?.email;
 		this.role = object?.role;
 		this.files = object?.files?.map((i) => new File(i));
@@ -80,6 +81,9 @@ export class User extends BaseEntity {
 	/** User's name. */
 	@Column() name: string;
 
+	/** User's phone. */
+	@Column() phone: string;
+
 	/** User's role. */
 	@Field(() => UserRole)
 	@Column({
@@ -105,6 +109,7 @@ export class User extends BaseEntity {
 	 *
 	 * @param {string} unit - The unit its testing from.
 	 * @param root
+	 * @param root.phone
 	 * @param root.role
 	 * @param root.authentication
 	 * @param root.email
@@ -114,6 +119,7 @@ export class User extends BaseEntity {
 		unit: string,
 		{
 			email = (20).string + '@example.com',
+			phone = (10).numeric,
 			authentication,
 			role = UserRole.guest,
 		}: Partial<ConstructorParameters<typeof User>[0]>,
@@ -122,6 +128,7 @@ export class User extends BaseEntity {
 			name: unit + '_' + (5).string,
 			email,
 			role,
+			phone,
 			authentication: authentication || Authentication.test({}),
 		};
 	}
