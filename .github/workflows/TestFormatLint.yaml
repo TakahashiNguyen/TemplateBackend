@@ -79,33 +79,10 @@ jobs:
         object: [service, requesters, etc]
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-
-      - name: Fix workspace permissions
-        run: |
-          sudo chmod -R 777 $GITHUB_WORKSPACE
-
-      - uses: ikalnytskyi/action-setup-postgres@v7
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - id: repository
-        uses: vishalmamidi/lowercase-action@v1
-        with:
-          string: ${{ github.repository }}
 
       - name: Pre-build image and run make ci-build in dev container
         uses: devcontainers/ci@v0.3
         with:
-          imageName: ghcr.io/${{ steps.repository.outputs.lowercase }}
-          cacheFrom: ghcr.io/${{ steps.repository.outputs.lowercase }}
-          push: always
           runCmd: |
             npm run test:${{ matrix.object }}
 
