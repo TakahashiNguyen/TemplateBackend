@@ -1,0 +1,67 @@
+version: '3.8'
+
+include:
+  - ./docker-compose.postgres.yml
+
+services:
+  devcontainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ../..:/workspaces:cached
+      - certificates:/certs
+    ports:
+      - 3000:3000
+      - 5173:5173
+    network_mode: host
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    command: sleep infinity
+
+  mailpit:
+    image: axllent/mailpit
+    restart: unless-stopped
+    network_mode: host
+    ports:
+      - 8025:8025
+    environment:
+      MP_SMTP_REQUIRE_TLS: 'true'
+      MP_SMTP_TLS_CERT: /certs/cert.pem
+      MP_SMTP_TLS_KEY: /certs/key.pem
+      MP_SMTP_BIND_ADDR: 0.0.0.0:465
+      MP_SMTP_AUTH_ACCEPT_ANY: 'true'
+      MP_SMTP_AUTH_USERS: mailpit:mailpit
+    volumes:
+      - certificates:/certs:ro
+
+  minio:
+    image: minio/minio
+    restart: unless-stopped
+    network_mode: host
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    command: server /data --console-address ":9001"
+
+  mc:
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    network_mode: host
+    entrypoint: >
+      /bin/sh -c "
+        sleep 5 &&
+        mc alias set local http://localhost:9000 minioadmin minioadmin &&
+        mc mb -p local/default
+      "
+
+  redis:
+    image: redis
+    restart: unless-stopped
+    network_mode: host
+    ports:
+      - '6379:6379'
+
+volumes:
+  certificates:

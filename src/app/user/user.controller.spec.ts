@@ -41,48 +41,44 @@ describe('signup', () => {
 	beforeEach(() => {
 		input = {
 			...user,
-			urlManageNotifications: '',
-			urlVisit: '',
+			urlManageNotifications: (5).string + '.com',
+			urlVisit: (5).string + '.com',
 		};
 	});
 
-	it(
-		'success',
-		async () => {
-			await execute(
-				async () =>
-					(
-						await req({
-							method: 'post',
-							url,
-							...submitWithFile(input, 'avatar'),
-						})
-					).body,
-				{
-					expectations: [
-						{
-							type: 'toMatch',
-							parameters: [serverException('Success', 'User', 'Assign')],
-						},
-					],
-				},
-			);
+	it('success', async () => {
+		await execute(
+			async () =>
+				(
+					await req({
+						method: 'post',
+						url,
+						...submitWithFile(input, 'avatar'),
+					})
+				).body,
+			{
+				expectations: [
+					{
+						type: 'toMatch',
+						parameters: [serverException('Success', 'User', 'Assign')],
+					},
+				],
+			},
+		);
 
-			await execute(() => svc.user.email(user.email), {
-				expectations: [{ type: 'toBeDefined', parameters: [] }],
-			});
+		await execute(() => svc.user.email(user.email), {
+			expectations: [{ type: 'toBeDefined', parameters: [] }],
+		});
 
-			await execute(
-				async () =>
-					svc.bloc.find({
-						owner: { email: user.email.lower },
-						cache: false,
-					}),
-				{ expectations: [{ type: 'toHaveLength', parameters: [1] }] },
-			);
-		},
-		(100).m2s,
-	);
+		await execute(
+			async () =>
+				svc.bloc.find({
+					owner: { email: user.email.lower },
+					cache: false,
+				}),
+			{ expectations: [{ type: 'toHaveLength', parameters: [1] }] },
+		);
+	});
 
 	it('fail due to email already exist', async () => {
 		await req().post(url).body(input);
@@ -106,8 +102,8 @@ describe('login', () => {
 	beforeEach(async () => {
 		const signupInput: UserSignupDto = {
 			...user,
-			urlVisit: '',
-			urlManageNotifications: '',
+			urlVisit: (5).string + '.com',
+			urlManageNotifications: (5).string + '.com',
 		};
 
 		input = {
@@ -161,7 +157,7 @@ describe('login', () => {
 		const input: UserLoginDto = {
 			...user,
 			authentication: { type: 'password', ...user.authentication },
-			email: (20).string,
+			email: (20).string + '@foo.com',
 		};
 
 		await execute(async () => (await req().post(url).body(input)).body, {
@@ -181,8 +177,8 @@ describe('logout', () => {
 	beforeEach(async () => {
 		const signupInput: UserSignupDto = {
 			...user,
-			urlVisit: '',
-			urlManageNotifications: '',
+			urlVisit: (5).string + '.com',
+			urlManageNotifications: (5).string + '.com',
 		};
 
 		({ headers } = await req().post('/user/signup').body(signupInput));

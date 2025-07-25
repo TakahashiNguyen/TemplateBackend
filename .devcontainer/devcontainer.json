@@ -19,33 +19,17 @@
 			]
 		}
 	},
-	"features": {
-		"ghcr.io/devcontainers-extra/features/redis-homebrew:1": {},
-		"ghcr.io/devcontainers/features/git:1": {
-			"ppa": "false",
-			"version": "latest"
-		},
-		"ghcr.io/devcontainers/features/node:1": {
-			"nodeGypDependencies": false,
-			"nvmVersion": "latest",
-			"pnpmVersion": "latest",
-			"version": "latest"
-		},
-		"ghcr.io/takahashinguyen/devcontainer-features/mailpit-homebrew:latest": {
-			"options": "--smtp-require-tls --smtp-tls-cert /cert.pem --smtp-tls-key /key.pem"
-		},
-		"ghcr.io/takahashinguyen/devcontainer-features/minio-client-homebrew:latest": {},
-		"ghcr.io/takahashinguyen/devcontainer-features/minio-homebrew:latest": {}
-	},
+	"dockerComposeFile": "docker-compose.main.yml",
 	"forwardPorts": [3000, 6379, 9000, 9001, 8025, 5173],
-	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-	"postAttachCommand": {
-		"redis": "/home/linuxbrew/.linuxbrew/bin/redis-server --daemonize yes"
-	},
 	"postCreateCommand": {
-		"mc": "sleep 5 && mc alias set local 'http://127.0.0.1:9000' 'minioadmin' 'minioadmin' && mc mb local/default",
-		"pnpm": "pnpm install",
-		"ssl": "sudo openssl req -x509 -newkey rsa:4096 -nodes -keyout /key.pem -out /cert.pem -sha256 -days 3650 -subj \"/C=VN/ST=Hanoi/L=Hanoi/O=foo/CN=bar.com\""
+		"compile": "pnpm build",
+		"ssl": "openssl req -x509 -newkey rsa:4096 -nodes -keyout /certs/key.pem -out /certs/cert.pem -sha256 -days 3650 -subj \"/C=VN/ST=Hanoi/L=Hanoi/O=foo/CN=bar.com\""
 	},
-	"runArgs": ["--add-host=host.docker.internal:host-gateway"]
+	"remoteEnv": {
+		"ACCESS_SECRET": "${localEnv:ACCESS_SECRET}",
+		"REFRESH_SECRET": "${localEnv:REFRESH_SECRET}",
+		"SERVER_SECRET": "${localEnv:SERVER_SECRET}"
+	},
+	"service": "devcontainer",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"
 }
