@@ -54,6 +54,7 @@ export class UserController {
 	 * ```
 	 *
 	 * @param root0
+	 * @param root0.phone
 	 * @param root0.authentication
 	 * @param root0.email
 	 * @param root0.name
@@ -76,6 +77,7 @@ export class UserController {
 			name,
 			urlVisit,
 			urlManageNotifications,
+			phone,
 		}: UserSignupDto,
 		@GetRequest('metadata') metadata: IMetadata,
 		@UploadedFile(AvatarFileUpload) avatar: MulterFile,
@@ -86,6 +88,7 @@ export class UserController {
 			name,
 			role: UserRole.guest,
 			authentication,
+			phone,
 		});
 
 		if (avatar) {
@@ -126,13 +129,10 @@ export class UserController {
 		@Body() { email, authentication }: UserLoginDto,
 		@GetRequest('metadata') metadata: IMetadata,
 	): Promise<UserReceiveDto> {
-		const { type: authenticateType, ...authentications } = authentication;
+		const { type: authenticateType, ...authentications } = authentication,
+			user: User = await this.svc.user.email(email);
 
-		let user: User | undefined,
-			isVerified = false;
-
-		if (!(user = await this.svc.user.email(email)))
-			throw new ServerException('Invalid', 'Email', 'Submit');
+		let isVerified = false;
 
 		switch (authenticateType) {
 			case 'password':

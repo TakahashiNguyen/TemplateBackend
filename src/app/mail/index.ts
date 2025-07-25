@@ -18,14 +18,10 @@ import { MailService } from './mail.service';
 						? { secure: false, host: 'localhost', port: 7777 }
 						: {
 								host: config.getOrThrow('SMTP_HOST'),
-								secure: config.getOrThrow('SMTP_SECURE'),
-								port: config.getOrThrow('SMTP_PORT'),
+								secure: true,
 								auth: {
 									user: config.getOrThrow('SMTP_USER'),
 									pass: config.getOrThrow('SMTP_PASS'),
-								},
-								tls: {
-									rejectUnauthorized: !config.getOrThrow('SMTP_UNAUTHORIZED'),
 								},
 							},
 					template: {

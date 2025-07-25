@@ -37,8 +37,8 @@ describe('seeUploadedFile', () => {
 			} = submitWithFile(
 				{
 					...testUser,
-					urlManageNotifications: '',
-					urlVisit: '',
+					urlManageNotifications: (5).string + '.com',
+					urlVisit: (5).string + '.com',
 				} as UserSignupDto,
 				'avatar',
 			),

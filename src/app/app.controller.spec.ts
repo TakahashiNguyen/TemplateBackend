@@ -33,8 +33,8 @@ describe('refresh', () => {
 	beforeEach(async () => {
 		const signupInput: UserSignupDto = {
 			...user,
-			urlVisit: '',
-			urlManageNotifications: '',
+			urlVisit: (5).string + '.com',
+			urlManageNotifications: (5).string + '.com',
 		};
 
 		({ headers } = await req().post('/user/signup').body(signupInput));
