@@ -11,3 +11,42 @@ enum CacheControlScope {
 
 """DateTime custom scalar type"""
 scalar DateTime
+
+type PaginateClass {
+  currentPage: Float!
+  entities: [User!]!
+  hasNext: Boolean!
+  hasPrevious: Boolean!
+  pageSize: Float!
+  total: Float!
+  totalPages: Float!
+}
+
+input Paging {
+  index: Float! = 0
+  take: Float! = 1e+101
+}
+
+type Query {
+  getUsers(input: UserFind!, page: Paging): PaginateClass!
+  me: User!
+}
+
+type User {
+  role: UserRole!
+}
+
+input UserFind {
+  avatarPath: String
+  email: String
+  id: String
+  name: String
+  phone: String
+  role: String
+}
+
+enum UserRole {
+  admin
+  guest
+  undefined
+}

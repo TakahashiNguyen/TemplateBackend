@@ -153,9 +153,9 @@ export class BlocService extends DatabaseRequests<typeof Bloc> {
 	 * ```
 	 *
 	 * @param {string} currentHash - Current bloc id.
-	 * @returns {Promise<Bloc | undefined>} Found bloc by request.
+	 * @returns {Promise<Bloc | null>} Found bloc by request.
 	 */
-	async findContinuousBloc(currentHash: string): Promise<Bloc | undefined> {
+	async findContinuousBloc(currentHash: string): Promise<Bloc | null> {
 		return this.findOne({ cache: false, previousHash: currentHash });
 	}
 
@@ -169,11 +169,9 @@ export class BlocService extends DatabaseRequests<typeof Bloc> {
 	 * ```
 	 *
 	 * @param {string | undefined} currentHash - Current bloc hash.
-	 * @returns {Promise<Bloc | undefined>} Found bloc by hash.
+	 * @returns {Promise<Bloc | null>} Found bloc by hash.
 	 */
-	async currentHash(
-		currentHash: string | undefined,
-	): Promise<Bloc | undefined> {
+	async currentHash(currentHash: string | undefined): Promise<Bloc | null> {
 		if (currentHash == undefined)
 			throw new ServerException('Invalid', 'Input', 'Submit');
 

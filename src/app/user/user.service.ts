@@ -30,6 +30,7 @@ export class UserService extends DatabaseRequests<typeof User> {
 	 *
 	 * @param {string} input - User's email.
 	 * @returns {Promise<User>} Found user by email.
+	 * @throws {ServerException} Will throw an error if none user found.
 	 */
 	async email(input: string): Promise<User> {
 		const user = await this.findOne({ cache: false, email: input.lower });
@@ -51,20 +52,17 @@ export class UserService extends DatabaseRequests<typeof User> {
 	 * @param {string | undefined} input - User email to resolve.
 	 * @returns {Promise<string>} Resolved user email.
 	 */
-	private async resolveEmailIfExisted(
+	private async resolveEmailIfNotFound(
 		input: string | undefined,
 	): Promise<string> {
-		const email = input?.lower;
-
-		if (!email) throw new ServerException('Invalid', 'Email', 'Submit');
+		if (!input) throw new ServerException('Invalid', 'Email', 'Submit');
 
 		try {
-			await this.email(email);
+			await this.email(input);
 
 			throw new ServerException('Invalid', 'Email', 'Assign');
 		} catch (e) {
 			const { message } = e as ServerException;
-
 			switch (true) {
 				case message.includes(serverException('Invalid', 'Email', 'Submit')):
 					break;
@@ -74,7 +72,7 @@ export class UserService extends DatabaseRequests<typeof User> {
 			}
 		}
 
-		return email;
+		return input.lower;
 	}
 
 	/**
@@ -91,7 +89,7 @@ export class UserService extends DatabaseRequests<typeof User> {
 	 */
 	public async create(...args: Parameters<typeof this.$create>): Promise<User> {
 		const [input] = args,
-			email = await this.resolveEmailIfExisted(input.email);
+			email = await this.resolveEmailIfNotFound(input.email);
 
 		return this.$create({ ...input, email });
 	}
@@ -112,16 +110,13 @@ export class UserService extends DatabaseRequests<typeof User> {
 		const [target, update] = args;
 
 		if (update.email) {
-			const email = await this.resolveEmailIfExisted(update.email.toString());
+			const email = await this.resolveEmailIfNotFound(update.email);
 
 			return this.$update(
-				{ ...target, email: target.email?.toString().lower },
+				{ ...target, email: target.email?.lower },
 				{ ...update, email },
 			);
 		} else
-			return this.$update(
-				{ ...target, email: target.email?.toString().lower },
-				update,
-			);
+			return this.$update({ ...target, email: target.email?.lower }, update);
 	}
 }

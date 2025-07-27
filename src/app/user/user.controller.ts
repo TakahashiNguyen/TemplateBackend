@@ -204,9 +204,7 @@ export class UserController {
 	): Promise<UserReceiveDto> {
 		return new UserReceiveDto({
 			hook: await this.svc.hook.create(metadata, async (signature) => {
-				const user = await this.svc.user.findOne({ email });
-
-				if (!user) throw new ServerException('Invalid', 'Email', 'Submit');
+				const user = await this.svc.user.email(email);
 
 				await this.svc.mail.send(
 					email,

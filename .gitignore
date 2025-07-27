@@ -5,6 +5,8 @@
 /docs/
 /.pnpm-store/
 types/index.ts
+/src/graphQL/*
+!/src/graphQL/*.ts
 
 # Logs
 logs

@@ -8,10 +8,11 @@ import {
 	getCookies,
 	getCurrentTestFileName,
 	jestInitialization,
-	submitWithFile,
+	submitWithFiles,
 } from 'utils/test/functions';
 import { JestInitializationReturns } from 'utils/test/interfaces';
 
+import { userSignup } from './user.controller.spec.util';
 import { UserLoginDto, UserSignupDto } from './user.dto';
 import { User } from './user.entity';
 
@@ -53,7 +54,12 @@ describe('signup', () => {
 					await req({
 						method: 'post',
 						url,
-						...submitWithFile(input, 'avatar'),
+						...submitWithFiles(input, {
+							[(5).string + '.png']: {
+								fieldName: 'avatar',
+								content: (40).string,
+							},
+						}),
 					})
 				).body,
 			{
@@ -100,18 +106,12 @@ describe('login', () => {
 	let input: UserLoginDto;
 
 	beforeEach(async () => {
-		const signupInput: UserSignupDto = {
-			...user,
-			urlVisit: (5).string + '.com',
-			urlManageNotifications: (5).string + '.com',
-		};
-
 		input = {
 			...user,
 			authentication: { type: 'password', ...user.authentication },
 		};
 
-		await req().post('/user/signup').body(signupInput);
+		await userSignup(user, req);
 	});
 
 	it('success', async () => {
@@ -175,13 +175,7 @@ describe('logout', () => {
 	const url = '/user/logout';
 
 	beforeEach(async () => {
-		const signupInput: UserSignupDto = {
-			...user,
-			urlVisit: (5).string + '.com',
-			urlManageNotifications: (5).string + '.com',
-		};
-
-		({ headers } = await req().post('/user/signup').body(signupInput));
+		({ headers } = await userSignup(user, req));
 	});
 
 	it('success', async () => {

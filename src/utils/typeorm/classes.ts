@@ -139,10 +139,10 @@ export abstract class DatabaseRequests<
 	 * ```
 	 *
 	 * @param {string | undefined} id - The entity's id.
-	 * @returns {Promise<T | undefined>} Found entity.
+	 * @returns {Promise<T | null>} Found entity.
 	 * @throws {ServerException} If the id is null or undefined.
 	 */
-	public readonly id = (id: string | undefined): Promise<T | undefined> => {
+	public readonly id = (id: string | undefined): Promise<T | null> => {
 		if (id == undefined) throw new ServerException('Invalid', 'ID', 'Submit');
 
 		// @ts-expect-error error-free expression
@@ -213,11 +213,11 @@ export abstract class DatabaseRequests<
 	 *
 	 * @param {FindWhereExtend<T, ExtendedFindOneOptions>} options - Function's
 	 *   option.
-	 * @returns {Promise<T | undefined>} An entity match `option` request.
+	 * @returns {Promise<T | null>} An entity match `option` request.
 	 */
 	public readonly findOne = async (
 		options: DeepPartial<P> & ExtendedFindOneOptions,
-	): Promise<T | undefined> => {
+	): Promise<T | null> => {
 		const {
 				deep = 1,
 				relations: requestRelation = [''],
@@ -237,8 +237,23 @@ export abstract class DatabaseRequests<
 				: undefined,
 			found = await this.repo.findOne({ where, order, relations, cache, lock });
 
-		// @ts-expect-error entity input
-		return found != null ? new ctor(found) : undefined;
+		// @ts-expect-error error-free expression
+		return found != null ? new ctor(found) : null;
+	};
+
+	/**
+	 * Get total of entity.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * this.total();
+	 * ```
+	 *
+	 * @returns {Promise<number>} Number of entities.
+	 */
+	public readonly total = async (): Promise<number> => {
+		return this.repo.count();
 	};
 
 	// Create

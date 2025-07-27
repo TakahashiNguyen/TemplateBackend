@@ -1,8 +1,13 @@
-import { DynamicModule } from '@nestjs/common';
+import { DynamicModule, Type } from '@nestjs/common';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { validateOrReject } from 'class-validator';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { ServerException } from 'utils/error/classes';
+import { BaseEntity, DatabaseRequests } from 'utils/typeorm/classes';
+
+import { Paging } from './dto';
+import { IPaginateResult } from './interfaces';
 
 /**
  * The function validate object has `validate-class` decorators.
@@ -111,4 +116,88 @@ export function getDefaultExportFromSubdirectory(
 			}
 		})
 		.filter((i) => i != undefined);
+}
+
+/**
+ * Paginating entity.
+ *
+ * @example
+ *
+ * ```ts
+ * PaginatedEntity(Entity);
+ * ```
+ *
+ * @template T
+ * @param {Type<T>} ItemType - Entity type.
+ */
+export function PaginatedEntity<T>(
+	ItemType: Type<T>,
+): abstract new () => IPaginateResult<T> {
+	/** Paginated output class. */
+	@ObjectType({ isAbstract: true })
+	abstract class PaginateClass implements IPaginateResult<T> {
+		/** Found entities. */
+		@Field(() => [ItemType]) entities!: T[];
+
+		/** Number of entities found. */
+		@Field() total!: number;
+
+		/** Current page index. */
+		@Field() currentPage!: number;
+
+		/** Total pages number. */
+		@Field() totalPages!: number;
+
+		/** Page size number. */
+		@Field() pageSize!: number;
+
+		/** If it has next page. */
+		@Field() hasNext!: boolean;
+
+		/** If it has previous page. */
+		@Field() hasPrevious!: boolean;
+	}
+
+	return PaginateClass;
+}
+
+/**
+ * Paginate response converter.
+ *
+ * @example
+ *
+ * ```ts
+ * paginateResponse();
+ * ```
+ *
+ * @template C
+ * @template T
+ * @template P
+ * @param {DatabaseRequests<C, T, P>} service - Service input.
+ * @param {Parameters<(typeof DatabaseRequests.prototype)['find']>} args - Find
+ *   arguments.
+ * @param {Paging} root0
+ * @param {number} root0.index
+ * @param {number} root0.take
+ */
+export async function paginateResponse<
+	C extends new (args: P) => T,
+	T extends BaseEntity,
+	P extends object,
+>(
+	service: DatabaseRequests<C, T, P>,
+	args: Parameters<DatabaseRequests<C, T, P>['find']>,
+	{ index, take }: Paging,
+): Promise<IPaginateResult<T>> {
+	const total = await service.total(),
+		totalPages = total / take + 1;
+	return {
+		entities: await service.find(...{ ...args, take, skip: index * take }),
+		total,
+		totalPages,
+		currentPage: index,
+		pageSize: take,
+		hasNext: !(index < totalPages - 1),
+		hasPrevious: index != 0,
+	};
 }

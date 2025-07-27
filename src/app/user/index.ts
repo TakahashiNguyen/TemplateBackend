@@ -6,12 +6,13 @@ import { AppModule } from 'app';
 import { UserController } from './user.controller';
 import { User } from './user.entity';
 import { UserRole } from './user.model';
+import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 
 /** User module class. */
 @Module({
 	imports: [TypeOrmModule.forFeature([User]), forwardRef(() => AppModule)],
-	providers: [UserService],
+	providers: [UserService, UserResolver],
 	exports: [UserService],
 	controllers: [UserController],
 })

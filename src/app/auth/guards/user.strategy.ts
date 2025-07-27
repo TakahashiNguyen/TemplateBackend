@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AccessTokenGuard } from 'utils/auth/functions';
 import { ITokens } from 'utils/auth/interfaces';
@@ -18,6 +18,7 @@ export class UserStrategy extends AccessTokenGuard('user') {
 	 */
 	constructor(
 		config: ConfigService,
+		@Inject(forwardRef(() => BlocService))
 		private bloc: BlocService,
 	) {
 		super(config);
@@ -39,7 +40,7 @@ export class UserStrategy extends AccessTokenGuard('user') {
 		if (accessToken == null)
 			throw new ServerException('Invalid', 'Client', 'Request');
 
-		let bloc: Bloc | undefined;
+		let bloc: Bloc | null;
 
 		bloc = await this.bloc.currentHash(accessToken);
 

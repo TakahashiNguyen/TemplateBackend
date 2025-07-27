@@ -17,6 +17,7 @@ import { Readable } from 'node:stream';
 import { isAsyncFunction } from 'node:util/types';
 import { FastifyFramework } from 'utils/app/fastify';
 import { AppExceptionFilter } from 'utils/app/filter';
+import { IFilesForm } from 'utils/app/interfaces';
 import { ServerException } from 'utils/error/classes';
 
 import { JestInitializationReturns } from './interfaces';
@@ -209,21 +210,25 @@ export function getCookies(headers: OutgoingHttpHeaders): {
  * @example
  *
  * ```ts
- * submitWithFile(body, 'foo');
+ * submitWithFiles(body, 'foo');
  * ```
  *
- * @template T
- * @param {T} body - Fields to send.
- * @param {string} fileName - File name.
+ * @param {{ [k: never]: string | object }} body - Fields to send.
+ * @param {{
+ * 	[k: string]: {
+ * 		fieldName: string;
+ * 		content: string;
+ * 	};
+ * }} files
+ *   - Input files.
+ *
  * @returns {InjectOptions} A form data to send.
  */
-export function submitWithFile<T extends object>(
-	body: T,
-	fileName: string,
-): InjectOptions & {
-	/** Content of file. */
-	fileContent: string;
-} {
+export function submitWithFiles(
+	// @ts-expect-error error-free expression
+	body: { [k: never]: string | object },
+	files: IFilesForm,
+): InjectOptions {
 	const form = new FormData(),
 		appendObjectFormData = <T>(data: T, parentKey = '') => {
 			for (const key in data) {
@@ -236,11 +241,12 @@ export function submitWithFile<T extends object>(
 					form.append(fullKey, String(value));
 				}
 			}
-		},
-		fileContent = (40).string;
+		};
 
-	form.append(fileName, Readable.from(Buffer.from(fileContent)), {
-		filename: 'test.png',
+	Object.entries(files).map(([key, value]) => {
+		form.append(value.fieldName, Readable.from(Buffer.from(value.content)), {
+			filename: key,
+		});
 	});
 
 	Object.entries(body).map(([key, value]) => {
@@ -252,6 +258,5 @@ export function submitWithFile<T extends object>(
 	return {
 		body: form,
 		headers: form.getHeaders(),
-		fileContent,
 	};
 }

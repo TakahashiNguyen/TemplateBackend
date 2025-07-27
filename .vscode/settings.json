@@ -1,7 +1,9 @@
 {
 	"cSpell.words": [
 		"apollographql",
+		"codegen",
 		"flowbite",
+		"gqlg",
 		"gstatic",
 		"minioadmin",
 		"pgadmin",
@@ -29,7 +31,6 @@
 		"**/dist": true,
 		"**/node_modules": true,
 		"**/pnpm-lock.yaml": true,
-		"**/schema.gql": true,
 		".pnpm-store": true,
 		".tsup": true,
 		"docs": true
@@ -115,6 +116,12 @@
 			"color": "#14281D",
 			"isWholeLine": true,
 			"text": "// Update"
+		},
+		{
+			"backgroundColor": "#00bfff",
+			"color": "#4b3621",
+			"isWholeLine": true,
+			"text": "// Queries"
 		}
 	]
 }

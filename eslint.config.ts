@@ -1,19 +1,23 @@
 import js from '@eslint/js';
 import json from '@eslint/json';
 import markdown from '@eslint/markdown';
-import pluginJest from 'eslint-plugin-jest';
 import jsdoc from 'eslint-plugin-jsdoc';
-import { defineConfig } from 'eslint/config';
+import { defineConfig, globalIgnores } from 'eslint/config';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
+	globalIgnores(['**/*.js']),
+	// @ts-expect-error error-free expression
 	tseslint.configs.strict,
 	{
 		files: ['**/*.ts'],
 		plugins: {
 			jsdoc,
+			js,
 		},
+		extends: ['js/recommended'],
+		languageOptions: { globals: globals.node },
 		rules: {
 			'jsdoc/check-access': 'error',
 			'jsdoc/check-param-names': ['error', { enableFixer: true }],
@@ -59,25 +63,13 @@ export default defineConfig([
 			'jsdoc/require-template': ['error', { requireSeparateTemplates: true }],
 			'jsdoc/require-throws': 'error',
 			'jsdoc/valid-types': ['error'],
-		},
-		settings: {
-			jsdoc: { exemptDestructuredRootsFromChecks: true, mode: 'typescript' },
-		},
-	},
-	{
-		files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
-		plugins: { js },
-		extends: ['js/recommended'],
-	},
-	{ files: ['**/*.js'], languageOptions: { sourceType: 'commonjs' } },
-	{
-		files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
-		languageOptions: { globals: globals.node },
-		rules: {
 			'no-unused-vars': 'off',
 			'no-undef': 'off',
 			'no-redeclare': 'off',
 			'@typescript-eslint/no-redeclare': ['error'],
+		},
+		settings: {
+			jsdoc: { exemptDestructuredRootsFromChecks: true, mode: 'typescript' },
 		},
 	},
 	{
@@ -105,17 +97,14 @@ export default defineConfig([
 		extends: ['markdown/recommended'],
 	},
 	{
-		files: ['**/*.spec.js', '**/*.test.js'],
-		plugins: { jest: pluginJest },
-		languageOptions: {
-			globals: pluginJest.environments.globals.globals,
+		files: ['src/graphQL/**/*.ts'],
+		plugins: {
+			jsdoc,
 		},
 		rules: {
-			'jest/no-disabled-tests': 'warn',
-			'jest/no-focused-tests': 'error',
-			'jest/no-identical-title': 'error',
-			'jest/prefer-to-have-length': 'warn',
-			'jest/valid-expect': 'error',
+			'jsdoc/require-jsdoc': 'off',
+			'@typescript-eslint/no-explicit-any': 'off',
+			'@typescript-eslint/no-empty-object-type': 'off',
 		},
 	},
 ]);

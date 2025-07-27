@@ -8,7 +8,7 @@ import {
 	getCookies,
 	getCurrentTestFileName,
 	jestInitialization,
-	submitWithFile,
+	submitWithFiles,
 } from 'utils/test/functions';
 import { JestInitializationReturns } from 'utils/test/interfaces';
 
@@ -30,17 +30,19 @@ describe('seeUploadedFile', () => {
 
 	beforeEach(async () => {
 		const testUser = User.test(unit, {}),
-			{
-				body,
-				headers: submitHeaders,
-				fileContent: receivedFileContent,
-			} = submitWithFile(
+			avatarContent = (40).string,
+			{ body, headers: submitHeaders } = submitWithFiles(
 				{
 					...testUser,
 					urlManageNotifications: (5).string + '.com',
 					urlVisit: (5).string + '.com',
 				} as UserSignupDto,
-				'avatar',
+				{
+					[(5).string + '.png']: {
+						fieldName: 'avatar',
+						content: avatarContent,
+					},
+				},
 			),
 			{ headers: receivedHeaders } = await req({
 				method: 'post',
@@ -51,7 +53,7 @@ describe('seeUploadedFile', () => {
 
 		user = await userService.email(testUser.email);
 		headers = receivedHeaders;
-		fileContent = receivedFileContent;
+		fileContent = avatarContent;
 	});
 
 	it(

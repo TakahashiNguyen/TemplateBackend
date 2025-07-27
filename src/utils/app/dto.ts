@@ -1,3 +1,4 @@
+import { Field, InputType } from '@nestjs/graphql';
 import { Bloc } from 'app/auth/bloc/bloc.entity';
 import { Hook } from 'app/auth/hook/hook.entity';
 
@@ -40,4 +41,13 @@ export class UserReceiveDto {
 
 	/** Token. */
 	token: string;
+}
+
+/** Paging class. */
+@InputType()
+export class Paging {
+	/** Page index. */
+	@Field() index: number = 0;
+	/** Number of entities taken. */
+	@Field() take: number = 10e100;
 }

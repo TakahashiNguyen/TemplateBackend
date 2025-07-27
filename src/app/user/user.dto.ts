@@ -1,3 +1,4 @@
+import { Field, InputType } from '@nestjs/graphql';
 import { Authentication } from 'app/auth/classes';
 import { type IAuthentication } from 'app/auth/interfaces';
 import { IsDefined, IsEmail, IsNumberString, IsUrl } from 'class-validator';
@@ -5,6 +6,7 @@ import { type DeepAttributesOnly, Omitting, Subtract } from 'utils/app/types';
 import { BaseEntity } from 'utils/typeorm/classes';
 
 import { User } from './user.entity';
+import { UserRole } from './user.model';
 
 /** User login dto. */
 export class UserLoginDto
@@ -67,4 +69,26 @@ export class RequestModifyingAuthenticationDto implements Pick<User, 'email'> {
 	@IsDefined()
 	@IsUrl()
 	urlModifyingAuthentication!: string;
+}
+
+/** Find user dto. */
+@InputType()
+export class UserFind
+	implements
+		DeepAttributesOnly<
+			Omitting<User, 'authentication' | 'createdAt' | 'updatedAt'>
+		>
+{
+	/** User's email. */
+	@Field({ nullable: true }) email!: string;
+	/** User's phone number. */
+	@Field({ nullable: true }) phone!: string;
+	/** User's role. */
+	@Field({ nullable: true }) role!: UserRole;
+	/** User's avatar path. */
+	@Field({ nullable: true }) avatarPath!: string;
+	/** User's identifier. */
+	@Field({ nullable: true }) id!: string;
+	/** User's name. */
+	@Field({ nullable: true }) name!: string;
 }
