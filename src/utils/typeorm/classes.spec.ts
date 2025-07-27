@@ -143,7 +143,7 @@ describe('delete', () => {
 			expectations: [{ type: 'toThrow', not: true, parameters: [] }],
 			onFinish: async () => {
 				await execute(() => testEntityService.id(id), {
-					expectations: [{ type: 'toEqual', parameters: [undefined] }],
+					expectations: [{ type: 'toBeNull', parameters: [] }],
 				});
 			},
 		});

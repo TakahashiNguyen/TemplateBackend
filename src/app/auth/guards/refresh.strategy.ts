@@ -1,4 +1,4 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { RefreshTokenGuard } from 'utils/auth/functions';
 import { ITokens } from 'utils/auth/interfaces';
@@ -18,7 +18,6 @@ export class RefreshStrategy extends RefreshTokenGuard('refresh') {
 	 */
 	constructor(
 		config: ConfigService,
-		@Inject(forwardRef(() => BlocService))
 		private bloc: BlocService,
 	) {
 		super(config);

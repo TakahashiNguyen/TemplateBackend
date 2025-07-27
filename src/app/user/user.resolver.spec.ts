@@ -1,17 +1,19 @@
 import { beforeAll, beforeEach, describe, expect, it } from '@jest/globals';
 import { AppService } from 'app/app.service';
+import { GetUsers, Me } from 'graphQL/methods';
 import {
 	GetUsersQueryVariables_gql,
 	GetUsersQuery_gql,
-	GetUsers_gql,
+	MeQueryVariables_gql,
+	MeQuery_gql,
 } from 'graphQL/types';
 import { OutgoingHttpHeaders } from 'http';
 import { ServerException } from 'utils/error/classes';
-import { sendGraphQL } from 'utils/graphql/functions';
 import {
 	execute,
 	getCurrentTestFileName,
 	jestInitialization,
+	sendGraphQL,
 } from 'utils/test/functions';
 import { JestInitializationReturns } from 'utils/test/interfaces';
 
@@ -37,7 +39,7 @@ beforeEach(async () => {
 
 	({ headers } = await userSignup(user, req));
 
-	const foundUser = await svc.user.findOne(user);
+	const foundUser = await svc.user.email(user.email);
 
 	if (!foundUser) throw new ServerException('Invalid', 'User', 'Assign');
 
@@ -47,21 +49,20 @@ beforeEach(async () => {
 describe('getUsers', () => {
 	const send = sendGraphQL<GetUsersQuery_gql, GetUsersQueryVariables_gql>(
 		req,
-		GetUsers_gql,
+		GetUsers,
 	);
 
 	it('success', async () => {
 		await execute(
-			async () => (await send({ input: {} }, { headers })).getUsers.items,
+			async () => (await send({ input: {} }, { headers })).getUsers.entities,
 			{
-				exps: [
+				expectations: [
 					{
 						type: 'toEqual',
-						params: [
+						parameters: [
 							expect.arrayContaining([
 								expect.objectContaining({
-									...employee.eventCreator.user.info,
-									lastLogin: expect.anything(),
+									...user,
 								}),
 							]),
 						],
@@ -74,17 +75,15 @@ describe('getUsers', () => {
 	it('success with id', async () => {
 		await execute(
 			async () =>
-				(await send({ input: { id: employee.id } }, { headers })).getUsers
-					.items,
+				(await send({ input: { id: user.id } }, { headers })).getUsers.entities,
 			{
-				exps: [
+				expectations: [
 					{
 						type: 'toEqual',
-						params: [
+						parameters: [
 							[
 								{
-									...employee.eventCreator.user.info,
-									lastLogin: expect.anything(),
+									...user,
 								},
 							],
 						],
@@ -97,17 +96,16 @@ describe('getUsers', () => {
 	it('success with name', async () => {
 		await execute(
 			async () =>
-				(await send({ input: { name: employee.info.user.name } }, { headers }))
-					.getUsers.items,
+				(await send({ input: { name: user.name } }, { headers })).getUsers
+					.entities,
 			{
-				exps: [
+				expectations: [
 					{
 						type: 'toEqual',
-						params: [
+						parameters: [
 							[
 								{
-									...employee.eventCreator.user.info,
-									lastLogin: expect.anything(),
+									...user,
 								},
 							],
 						],
@@ -118,17 +116,15 @@ describe('getUsers', () => {
 	});
 });
 
-describe('getCurrent', () => {
-	const send = sendGraphQL<GetCurrentQuery, GetCurrentQueryVariables>(
-		GetCurrent,
-	);
+describe('me', () => {
+	const send = sendGraphQL<MeQuery_gql, MeQueryVariables_gql>(req, Me);
 
 	it('success', async () => {
-		await execute(async () => (await send({}, { headers })).getCurrent, {
-			exps: [
+		await execute(async () => (await send({}, { headers })).me, {
+			expectations: [
 				{
 					type: 'toHaveProperty',
-					params: ['name', employee.eventCreator.user.baseUser.name],
+					parameters: ['name', user.name],
 				},
 			],
 		});

@@ -5,7 +5,6 @@ import { User } from 'app/user/user.entity';
 import { File as MulterFile } from 'fastify-multer/lib/interfaces';
 import { FileUpload } from 'graphql-upload-ts';
 import { createHmac } from 'node:crypto';
-import { extname } from 'path';
 import { Repository } from 'typeorm';
 import { RequireOnlyOne } from 'utils/app/types';
 import { ServerException } from 'utils/error/classes';
@@ -126,7 +125,7 @@ export class FileService extends DatabaseRequests<typeof File> {
 		if (!buffer) throw new ServerException('Invalid', 'File', 'Submit');
 
 		const title = originalname,
-			path = `${createHmac('sha256', this.cfg.getOrThrow('SERVER_SECRET')).update(buffer).digest('base64url')}${extname(title)}`;
+			path = `${createHmac('sha256', this.cfg.getOrThrow('SERVER_SECRET')).update(buffer).digest('base64url')}`;
 
 		await this.aws.upload(path, buffer);
 

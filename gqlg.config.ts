@@ -6,15 +6,14 @@ const config: CodegenConfig = {
 	schema: 'src/schema.gql',
 	generates: {
 		'src/graphQL/types.ts': {
-			plugins: [
-				'typescript-document-nodes',
-				'typescript',
-				'typescript-operations',
-			],
+			plugins: ['typescript', 'typescript-operations'],
 			config: {
 				typesSuffix: '_gql',
 				enumsAsTypes: true,
 			},
+		},
+		'src/graphQL/methods.ts': {
+			plugins: ['typescript-document-nodes'],
 		},
 	},
 };

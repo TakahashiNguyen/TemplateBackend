@@ -11,6 +11,7 @@ import {
 	LightMyRequestResponse,
 } from 'fastify';
 import FormData from 'form-data';
+import { DocumentNode, print } from 'graphql';
 import { TestModule } from 'modules/test';
 import { OutgoingHttpHeaders } from 'node:http';
 import { Readable } from 'node:stream';
@@ -21,7 +22,7 @@ import { IFilesForm } from 'utils/app/interfaces';
 import { ServerException } from 'utils/error/classes';
 
 import { JestInitializationReturns } from './interfaces';
-import { ExecuteOptions } from './types';
+import { ExecuteOptions, SendGraphQLType } from './types';
 
 /**
  * Get the current processing file's name with a random postfix.
@@ -258,5 +259,65 @@ export function submitWithFiles(
 	return {
 		body: form,
 		headers: form.getHeaders(),
+	};
+}
+
+/**
+ * GraphQL query runner.
+ *
+ * @example
+ *
+ * ```ts
+ * sendGraphQL(query);
+ * ```
+ *
+ * @template T
+ * @template K
+ * @param {JestInitializationReturns['requester']} requester - Client's
+ *   requester.
+ * @param {DocumentNode} astQuery - The graphql query.
+ * @returns {T} Response from server.
+ */
+export function sendGraphQL<T, K>(
+	requester: JestInitializationReturns['requester'],
+	astQuery: DocumentNode,
+): SendGraphQLType<T, K> {
+	const query = print(astQuery);
+
+	return async (
+		variables: K,
+		{ headers: inputHeader, map = {}, files = {} },
+	): Promise<T> => {
+		const body = { query, variables },
+			cookies = inputHeader['set-cookie'] ? getCookies(inputHeader) : {};
+
+		Object.values(files).map((value) => {
+			map = { ...map, [value.fieldName]: [`variables.${value.fieldName}`] };
+		});
+
+		const { payload, headers } = submitWithFiles(
+				{
+					...{ operations: JSON.stringify(body), map: JSON.stringify(map) },
+				},
+				files,
+			),
+			l0 = requester({
+				method: 'post',
+				url: '/graphql',
+				payload,
+				headers: {
+					...headers,
+					'apollo-require-preflight': 'true',
+				},
+				cookies,
+			}),
+			{ data, errors } = (await l0).json<{
+				/** Response data. */ data: T;
+				/** Response errors. */ errors: Error[];
+			}>();
+
+		if (!data) throw new Error(errors.map((i) => i.message).join('\n'));
+
+		return data as T;
 	};
 }

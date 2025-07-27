@@ -1,3 +1,6 @@
+import { OutgoingHttpHeaders } from 'http';
+import { IFilesForm } from 'utils/app/interfaces';
+
 import { Expectation } from './interfaces';
 
 /**
@@ -24,3 +27,25 @@ export type ExecuteOptions<K extends keyof jest.Matchers<Promise<R>>, R, F> = {
 	/** Handler function for loop execution before testing. */
 	handleLoopExecution?: (func: F) => void | Promise<void>;
 };
+
+/**
+ * Function `sendGraphQL` return type.
+ *
+ * @template T
+ * @template K
+ */
+export type SendGraphQLType<T, K> = (
+	variables: K,
+	{
+		headers,
+		map,
+		files,
+	}: {
+		/** Input files. */
+		files?: IFilesForm;
+		/** Input headers. */
+		headers: OutgoingHttpHeaders;
+		/** Input map. */
+		map?: object;
+	},
+) => Promise<T>;

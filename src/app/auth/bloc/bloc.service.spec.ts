@@ -92,11 +92,11 @@ describe('removeTree', () => {
 		});
 
 		await execute(() => blocService.id(blocs[0].id), {
-			expectations: [{ type: 'toBeUndefined', parameters: [] }],
+			expectations: [{ type: 'toBeNull', parameters: [] }],
 		});
 
 		await execute(() => blocService.id(blocs[length - 1].id), {
-			expectations: [{ type: 'toBeUndefined', parameters: [] }],
+			expectations: [{ type: 'toBeNull', parameters: [] }],
 		});
 	});
 
@@ -106,11 +106,11 @@ describe('removeTree', () => {
 		});
 
 		await execute(() => blocService.id(blocs[0].id), {
-			expectations: [{ type: 'toBeUndefined', parameters: [] }],
+			expectations: [{ type: 'toBeNull', parameters: [] }],
 		});
 
 		await execute(() => blocService.id(blocs[length - 1].id), {
-			expectations: [{ type: 'toBeUndefined', parameters: [] }],
+			expectations: [{ type: 'toBeNull', parameters: [] }],
 		});
 	});
 
@@ -123,11 +123,11 @@ describe('removeTree', () => {
 		);
 
 		await execute(() => blocService.id(blocs[0].id), {
-			expectations: [{ type: 'toBeUndefined', parameters: [] }],
+			expectations: [{ type: 'toBeNull', parameters: [] }],
 		});
 
 		await execute(() => blocService.id(blocs[length - 1].id), {
-			expectations: [{ type: 'toBeUndefined', parameters: [] }],
+			expectations: [{ type: 'toBeNull', parameters: [] }],
 		});
 	});
 

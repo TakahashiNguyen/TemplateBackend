@@ -1,12 +1,4 @@
-import {
-	Controller,
-	Get,
-	Inject,
-	Post,
-	Res,
-	UseGuards,
-	forwardRef,
-} from '@nestjs/common';
+import { Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { ApiSecurity } from '@nestjs/swagger';
 import {
 	DiskHealthIndicator,
@@ -22,8 +14,8 @@ import { UserReceiveDto } from 'utils/app/dto';
 import { ServerException } from 'utils/error/classes';
 import { serverException } from 'utils/error/functions';
 
-import { AppService } from './app.service';
 import { Bloc } from './auth/bloc/bloc.entity';
+import { BlocService } from './auth/bloc/bloc.service';
 import { GetRequest, type IMetadata } from './auth/guards';
 import { RefreshGuard } from './auth/guards/refresh.guard';
 
@@ -76,11 +68,9 @@ export class AppController {
 	/**
 	 * Initiate controller.
 	 *
-	 * @param {AppService} svc - Server app service.
+	 * @param {BlocService} bloc - Bloc service.
 	 */
-	constructor(
-		@Inject(forwardRef(() => AppService)) protected svc: AppService,
-	) {}
+	constructor(private bloc: BlocService) {}
 
 	/**
 	 * Refreshing tokens request.
@@ -107,7 +97,7 @@ export class AppController {
 		let isSuccess = false;
 
 		if (!(isSuccess = bloc.metadata.verify(metadata)))
-			await this.svc.bloc.removeTree({ id: bloc.id });
+			await this.bloc.removeTree({ id: bloc.id });
 
 		return new UserReceiveDto({
 			message: isSuccess

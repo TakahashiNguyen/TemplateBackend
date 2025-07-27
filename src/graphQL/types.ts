@@ -1,5 +1,3 @@
-import gql from 'graphql-tag';
-
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -20,29 +18,6 @@ export type Incremental<T> =
 	| {
 			[P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
 	  };
-
-export const GetUsers_gql = gql`
-	query getUsers($input: UserFind!, $page: Paging) {
-		getUsers(input: $input, page: $page) {
-			currentPage
-			entities {
-				role
-			}
-			hasNext
-			hasPrevious
-			pageSize
-			total
-			totalPages
-		}
-	}
-`;
-export const Me_gql = gql`
-	query me {
-		me {
-			role
-		}
-	}
-`;
 /** All built-in and custom scalars, mapped to their actual values. */
 export type Scalars = {
 	ID: { input: string; output: string };
@@ -56,8 +31,8 @@ export type Scalars = {
 
 export type CacheControlScope_gql = 'PRIVATE' | 'PUBLIC';
 
-export type PaginateClass_gql = {
-	__typename?: 'PaginateClass';
+export type PaginatedUser_gql = {
+	__typename?: 'PaginatedUser';
 	currentPage: Scalars['Float']['output'];
 	entities: Array<User_gql>;
 	hasNext: Scalars['Boolean']['output'];
@@ -74,7 +49,7 @@ export type Paging_gql = {
 
 export type Query_gql = {
 	__typename?: 'Query';
-	getUsers: PaginateClass_gql;
+	getUsers: PaginatedUser_gql;
 	me: User_gql;
 };
 
@@ -107,7 +82,7 @@ export type GetUsersQueryVariables_gql = Exact<{
 export type GetUsersQuery_gql = {
 	__typename?: 'Query';
 	getUsers: {
-		__typename?: 'PaginateClass';
+		__typename?: 'PaginatedUser';
 		currentPage: number;
 		hasNext: boolean;
 		hasPrevious: boolean;
