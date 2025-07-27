@@ -1,7 +1,8 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Authentication } from 'app/auth/classes';
 import { type IAuthentication } from 'app/auth/interfaces';
 import { IsDefined, IsEmail, IsNumberString, IsUrl } from 'class-validator';
+import { PaginatedEntity } from 'utils/app/functions';
 import { type DeepAttributesOnly, Omitting, Subtract } from 'utils/app/types';
 import { BaseEntity } from 'utils/typeorm/classes';
 
@@ -92,3 +93,7 @@ export class UserFind
 	/** User's name. */
 	@Field({ nullable: true }) name!: string;
 }
+
+/** User paginate class. */
+@ObjectType()
+export class PaginatedUser extends PaginatedEntity(User) {}

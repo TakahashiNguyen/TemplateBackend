@@ -12,7 +12,7 @@ enum CacheControlScope {
 """DateTime custom scalar type"""
 scalar DateTime
 
-type PaginateClass {
+type PaginatedUser {
   currentPage: Float!
   entities: [User!]!
   hasNext: Boolean!
@@ -28,7 +28,7 @@ input Paging {
 }
 
 type Query {
-  getUsers(input: UserFind!, page: Paging): PaginateClass!
+  getUsers(input: UserFind!, page: Paging): PaginatedUser!
   me: User!
 }
 

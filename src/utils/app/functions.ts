@@ -132,10 +132,10 @@ export function getDefaultExportFromSubdirectory(
  */
 export function PaginatedEntity<T>(
 	ItemType: Type<T>,
-): abstract new () => IPaginateResult<T> {
+): Type<IPaginateResult<T>> {
 	/** Paginated output class. */
 	@ObjectType({ isAbstract: true })
-	abstract class PaginateClass implements IPaginateResult<T> {
+	class PaginateClass implements IPaginateResult<T> {
 		/** Found entities. */
 		@Field(() => [ItemType]) entities!: T[];
 

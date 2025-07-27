@@ -4,10 +4,10 @@ import { Allow, GetRequest } from 'app/auth/guards';
 import { UserGuard } from 'app/auth/guards/user.guard';
 import { Hook } from 'app/auth/hook/hook.entity';
 import { Paging } from 'utils/app/dto';
-import { PaginatedEntity, paginateResponse } from 'utils/app/functions';
+import { paginateResponse } from 'utils/app/functions';
 import { IPaginateResult } from 'utils/app/interfaces';
 
-import { UserFind } from './user.dto';
+import { PaginatedUser, UserFind } from './user.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
@@ -39,7 +39,7 @@ export class UserResolver {
 	 * @param root0.take
 	 * @returns {Promise<IPaginateResult<User>>} Processed result.
 	 */
-	@Query(() => PaginatedEntity(User)) @Allow([]) async getUsers(
+	@Query(() => PaginatedUser) @Allow([]) async getUsers(
 		@Args('input') input: UserFind,
 		@Args('page', { nullable: true }) { index, take }: Paging,
 	): Promise<IPaginateResult<User>> {
