@@ -36,7 +36,7 @@ import CheckBox from '@/components/CheckBox.vue';
 import FormContainerComp from '@/components/FormContainerComp.vue';
 import FormTextInputComp from '@/components/TextInputComp.vue';
 import { apiErrorHandler, getAlert } from '@/error/functions';
-import { UserLoginDto } from 'templatebackend';
+import { UserLoginDto } from 'templatebackend-types';
 import { reactive } from 'vue';
 
 const alert = getAlert(),

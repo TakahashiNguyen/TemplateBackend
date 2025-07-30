@@ -18,15 +18,14 @@
 		"*.entity.ts": "$(capture).model.ts, $(capture).graphql.ts, $(capture).dto.ts",
 		"*.guard.ts": "$(capture).strategy.ts",
 		"*.ts": "$(capture).spec.ts, $(capture).spec.util.ts",
-		"package.json": "LICENSE*,*.md,nest-cli.json,.gitignore,.env*,.*rc,*.config.js,*.config.ts,*.config.json,*.config.mjs,*.config.cjs,*.config.yaml,*.config.yml",
+		"package.json": "LICENSE*,*.md,nest-cli.json,.gitignore,.env*,.*rc,*.config.js,*.config.ts,*.config.json,*.config.mjs,*.config.cjs,*.config.yaml,*.config.yml,*lock.yaml",
 		"tsconfig.json": "tsconfig.*.json"
 	},
-	"explorerExclude.backup": {},
-	"files.exclude": {
-		"**/.DS_Store": true,
+	"explorerExclude.backup": {
 		"**/.git": true,
-		"**/.hg": true,
 		"**/.svn": true,
+		"**/.hg": true,
+		"**/.DS_Store": true,
 		"**/Thumbs.db": true,
 		"**/dist": true,
 		"**/node_modules": true,
@@ -34,6 +33,19 @@
 		".pnpm-store": true,
 		".tsup": true,
 		"docs": true
+	},
+	"files.exclude": {
+		"**/.git": false,
+		"**/.svn": false,
+		"**/.hg": false,
+		"**/.DS_Store": false,
+		"**/Thumbs.db": false,
+		"**/dist": false,
+		"**/node_modules": false,
+		"**/pnpm-lock.yaml": false,
+		".pnpm-store": false,
+		".tsup": false,
+		"docs": false
 	},
 	"jest.outputConfig": {
 		"clearOnRun": "terminal"

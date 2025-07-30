@@ -1,11 +1,10 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-	entry: ['types/index.ts'],
+	entry: ['main.ts'],
 	clean: true,
-	external: ['@nestjs/microservices'],
 	dts: {
-		entry: 'types/index.ts',
+		entry: 'main.ts',
 	},
 	minify: true,
 	format: ['cjs', 'esm'],

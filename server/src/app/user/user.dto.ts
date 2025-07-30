@@ -77,7 +77,7 @@ export class RequestModifyingAuthenticationDto implements Pick<User, 'email'> {
 export class UserFind
 	implements
 		DeepAttributesOnly<
-			Omitting<User, 'authentication' | 'createdAt' | 'updatedAt'>
+			Omitting<User, 'authentication' | 'createdAt' | 'updatedAt' | 'files'>
 		>
 {
 	/** User's email. */

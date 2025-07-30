@@ -1,7 +1,7 @@
 import { Colors } from 'picocolors/types';
 import { Omitting } from 'utils/app/types';
 
-import { KeepBgKeys, RemoveBgKeys } from '.';
+import { KeepBgKeys, RemoveBgKeys } from './types';
 
 /** Options for color logging. */
 interface ColorLogOptions {

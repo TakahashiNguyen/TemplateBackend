@@ -8,7 +8,7 @@ const config: CodegenConfig = {
 		'src/graphQL/types.ts': {
 			plugins: ['typescript', 'typescript-operations'],
 			config: {
-				typesSuffix: '_gql',
+				typesPrefix: 'gql',
 				enumsAsTypes: true,
 			},
 		},

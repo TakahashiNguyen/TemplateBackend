@@ -1,6 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { IMetadata } from 'app/auth/guards';
+import { StringValue } from 'ms';
 import {
 	CipherGCMTypes,
 	createCipheriv,
@@ -30,13 +31,13 @@ export abstract class SecurityService {
 	private accessSecret: string;
 
 	/** Access expire. */
-	private accessExpire: string;
+	private accessExpire: StringValue;
 
 	/** Refresh secret. */
 	private refreshSecret: string;
 
 	/** Refresh expire. */
-	private refreshExpire: string;
+	private refreshExpire: StringValue;
 
 	/** Server secret. */
 	private serverSecret: string;
@@ -85,7 +86,7 @@ export abstract class SecurityService {
 	 * @example
 	 *
 	 * ```ts
-	 * cosnt jwtAccess = this.access(str);
+	 * const jwtAccess = this.access(str);
 	 * ```
 	 *
 	 * @param {string} input - Input string to sign.
@@ -237,7 +238,7 @@ export class Metadata {
 	 * @example
 	 *
 	 * ```ts
-	 * this.hashMetadata(mtdt);
+	 * this.hashMetadata(metadata);
 	 * ```
 	 *
 	 * @param {IMetadata} input - Input metadata.
@@ -253,7 +254,7 @@ export class Metadata {
 	 * @example
 	 *
 	 * ```ts
-	 * this.verify(mtdt);
+	 * this.verify(metadata);
 	 * ```
 	 *
 	 * @param {IMetadata} input - Input metadata.

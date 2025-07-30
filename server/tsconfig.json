@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"allowSyntheticDefaultImports": true,
 		"baseUrl": "./src",
-		"declaration": true,
+		"declaration": false,
 		"emitDecoratorMetadata": true,
 		"esModuleInterop": true,
 		"experimentalDecorators": true,
@@ -15,7 +15,7 @@
 		"removeComments": true,
 		"rootDir": "./",
 		"skipLibCheck": true,
-		"sourceMap": true,
+		"sourceMap": false,
 		"strict": true,
 		"strictBindCallApply": true,
 		"strictNullChecks": true,

@@ -1,15 +1,12 @@
 # compiled output
 /**/dist
 /**/node_modules
-/build
-/docs/
-/.pnpm-store/
-types/index.ts
-/src/graphQL/*
-!/src/graphQL/*.ts
+/**/build
+/**/docs/
+/**/.pnpm-store/
 
 # Logs
-logs
+/**/logs
 *.log
 npm-debug.log*
 pnpm-debug.log*
@@ -21,9 +18,9 @@ lerna-debug.log*
 .DS_Store
 
 # Tests
-/coverage
+/**/coverage
 /.nyc_output
-/reports
+/**/reports
 
 # IDEs and editors
 /.idea
@@ -35,11 +32,11 @@ lerna-debug.log*
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+/**/*/.vscode/*
+!/**/*/.vscode/settings.json
+!/**/.vscode/tasks.json
+!/**/.vscode/launch.json
+!/**/.vscode/extensions.json
 
 # dotenv environment variable files
 .env
@@ -49,8 +46,8 @@ lerna-debug.log*
 .env.local
 
 # temp directory
-.temp
-.tmp
+/**/.temp
+/**/.tmp
 
 # Runtime data
 pids

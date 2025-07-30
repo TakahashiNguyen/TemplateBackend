@@ -1,6 +1,6 @@
 import pc from 'picocolors';
 
-import { ColorLogOptions } from '.';
+import { ColorLogOptions } from './interfaces';
 
 /**
  * Logs a message with specified background and font colors.

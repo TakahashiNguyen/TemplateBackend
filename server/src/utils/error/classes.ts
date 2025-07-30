@@ -1,5 +1,5 @@
 import { HttpException } from '@nestjs/common';
-import { colorLogging } from 'utils/log';
+import { colorLogging } from 'utils/log/functions';
 
 import { serverException } from './functions';
 import { ErrorAction, ErrorObject, ErrorType } from './types';

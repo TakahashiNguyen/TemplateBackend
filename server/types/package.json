@@ -1,0 +1,41 @@
+{
+  "types": "./dist/main.d.ts",
+  "name": "templatebackend-types",
+  "main": "./dist/main.js",
+  "module": "./dist/main.mjs",
+  "exports": {
+    ".": {
+      "types": "./dist/main.d.ts",
+      "import": "./dist/main.mjs",
+      "require": "./dist/main.js"
+    }
+  },
+  "scripts": {
+    "prebuild": "pnpm i && ts-node types.build.ts",
+    "build": "tsup",
+    "postbuild": "rimraf node_modules"
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.1",
+    "ts-morph": "^26.0.0",
+    "ts-node": "^10.9.2",
+    "@swc/core": "^1.13.3",
+    "tsup": "^8.5.0"
+  },
+  "description": "A NestJS backend template project.",
+  "author": "Takahashi Nguyen <takahashi.nguyen@icloud.com>",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "@nestjs/common": "^11.1.5",
+    "@nestjs/graphql": "^13.1.0",
+    "@nestjs/passport": "^11.0.5",
+    "@node-rs/argon2": "^2.0.2",
+    "@node-rs/argon2-wasm32-wasi": "^2.0.2",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
+    "passport-jwt": "^4.0.1",
+    "typeorm": "^0.3.25"
+  }
+}

@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"baseUrl": "../src",
+		"emitDecoratorMetadata": true,
+		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"module": "commonjs",
+		"resolveJsonModule": true,
+		"rootDirs": ["..", "."],
+		"strict": true,
+		"target": "esnext"
+	},
+	"include": ["../src"]
+}

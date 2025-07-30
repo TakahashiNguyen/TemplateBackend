@@ -29,12 +29,12 @@ export type Scalars = {
 	DateTime: { input: any; output: any };
 };
 
-export type CacheControlScope_gql = 'PRIVATE' | 'PUBLIC';
+export type gqlCacheControlScope = 'PRIVATE' | 'PUBLIC';
 
-export type PaginatedUser_gql = {
+export type gqlPaginatedUser = {
 	__typename?: 'PaginatedUser';
 	currentPage: Scalars['Float']['output'];
-	entities: Array<User_gql>;
+	entities: Array<gqlUser>;
 	hasNext: Scalars['Boolean']['output'];
 	hasPrevious: Scalars['Boolean']['output'];
 	pageSize: Scalars['Float']['output'];
@@ -42,28 +42,28 @@ export type PaginatedUser_gql = {
 	totalPages: Scalars['Float']['output'];
 };
 
-export type Paging_gql = {
+export type gqlPaging = {
 	index?: Scalars['Float']['input'];
 	take?: Scalars['Float']['input'];
 };
 
-export type Query_gql = {
+export type gqlQuery = {
 	__typename?: 'Query';
-	getUsers: PaginatedUser_gql;
-	me: User_gql;
+	getUsers: gqlPaginatedUser;
+	me: gqlUser;
 };
 
-export type QueryGetUsersArgs_gql = {
-	input: UserFind_gql;
-	page?: InputMaybe<Paging_gql>;
+export type gqlQueryGetUsersArgs = {
+	input: gqlUserFind;
+	page?: InputMaybe<gqlPaging>;
 };
 
-export type User_gql = {
+export type gqlUser = {
 	__typename?: 'User';
-	role: UserRole_gql;
+	role: gqlUserRole;
 };
 
-export type UserFind_gql = {
+export type gqlUserFind = {
 	avatarPath?: InputMaybe<Scalars['String']['input']>;
 	email?: InputMaybe<Scalars['String']['input']>;
 	id?: InputMaybe<Scalars['String']['input']>;
@@ -72,14 +72,14 @@ export type UserFind_gql = {
 	role?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type UserRole_gql = 'admin' | 'guest' | 'undefined';
+export type gqlUserRole = 'admin' | 'guest' | 'undefined';
 
-export type GetUsersQueryVariables_gql = Exact<{
-	input: UserFind_gql;
-	page?: InputMaybe<Paging_gql>;
+export type gqlGetUsersQueryVariables = Exact<{
+	input: gqlUserFind;
+	page?: InputMaybe<gqlPaging>;
 }>;
 
-export type GetUsersQuery_gql = {
+export type gqlGetUsersQuery = {
 	__typename?: 'Query';
 	getUsers: {
 		__typename?: 'PaginatedUser';
@@ -89,13 +89,13 @@ export type GetUsersQuery_gql = {
 		pageSize: number;
 		total: number;
 		totalPages: number;
-		entities: Array<{ __typename?: 'User'; role: UserRole_gql }>;
+		entities: Array<{ __typename?: 'User'; role: gqlUserRole }>;
 	};
 };
 
-export type MeQueryVariables_gql = Exact<{ [key: string]: never }>;
+export type gqlMeQueryVariables = Exact<{ [key: string]: never }>;
 
-export type MeQuery_gql = {
+export type gqlMeQuery = {
 	__typename?: 'Query';
-	me: { __typename?: 'User'; role: UserRole_gql };
+	me: { __typename?: 'User'; role: gqlUserRole };
 };

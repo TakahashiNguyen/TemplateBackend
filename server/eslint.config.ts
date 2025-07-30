@@ -7,7 +7,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
-	globalIgnores(['**/*.js']),
+	globalIgnores(['**/*.js', 'src/graphQL/**/*.ts']),
 	// @ts-expect-error error-free expression
 	tseslint.configs.strict,
 	{
@@ -95,16 +95,5 @@ export default defineConfig([
 		plugins: { markdown },
 		language: 'markdown/gfm',
 		extends: ['markdown/recommended'],
-	},
-	{
-		files: ['src/graphQL/**/*.ts'],
-		plugins: {
-			jsdoc,
-		},
-		rules: {
-			'jsdoc/require-jsdoc': 'off',
-			'@typescript-eslint/no-explicit-any': 'off',
-			'@typescript-eslint/no-empty-object-type': 'off',
-		},
 	},
 ]);

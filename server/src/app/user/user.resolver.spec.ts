@@ -2,10 +2,10 @@ import { beforeAll, beforeEach, describe, expect, it } from '@jest/globals';
 import { AppService } from 'app/app.service';
 import { GetUsers, Me } from 'graphQL/methods';
 import {
-	GetUsersQueryVariables_gql,
-	GetUsersQuery_gql,
-	MeQueryVariables_gql,
-	MeQuery_gql,
+	gqlGetUsersQuery,
+	gqlGetUsersQueryVariables,
+	gqlMeQuery,
+	gqlMeQueryVariables,
 } from 'graphQL/types';
 import { OutgoingHttpHeaders } from 'http';
 import { ServerException } from 'utils/error/classes';
@@ -47,7 +47,7 @@ beforeEach(async () => {
 });
 
 describe('getUsers', () => {
-	const send = sendGraphQL<GetUsersQuery_gql, GetUsersQueryVariables_gql>(
+	const send = sendGraphQL<gqlGetUsersQuery, gqlGetUsersQueryVariables>(
 		req,
 		GetUsers,
 	);
@@ -117,7 +117,7 @@ describe('getUsers', () => {
 });
 
 describe('me', () => {
-	const send = sendGraphQL<MeQuery_gql, MeQueryVariables_gql>(req, Me);
+	const send = sendGraphQL<gqlMeQuery, gqlMeQueryVariables>(req, Me);
 
 	it('success', async () => {
 		await execute(async () => (await send({}, { headers })).me, {
