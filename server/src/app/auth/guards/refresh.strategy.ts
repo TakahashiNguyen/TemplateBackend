@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { RefreshTokenGuard } from 'utils/auth/functions';
+import { TokenGuard } from 'utils/auth/functions';
 import { ITokens } from 'utils/auth/interfaces';
 import { ServerException } from 'utils/error/classes';
 
@@ -9,7 +9,7 @@ import { BlocService } from '../bloc/bloc.service';
 
 /** Check the refresh token from client. */
 @Injectable()
-export class RefreshStrategy extends RefreshTokenGuard('refresh') {
+export class RefreshStrategy extends TokenGuard('refresh', 'refresh') {
 	/**
 	 * Initiate refresh strategy.
 	 *

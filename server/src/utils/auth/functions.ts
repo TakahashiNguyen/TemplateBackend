@@ -2,7 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { hashSync as argon2Hash, verifySync } from '@node-rs/argon2';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { ServerException } from 'utils/error/classes';
+import { AbstractConstructor } from 'utils/app/types';
 
 import { ModifiedArgon2Options } from './types';
 
@@ -75,81 +75,46 @@ export function roleMatching<T>(input: T, required: T[]): boolean {
 }
 
 /**
- * Access guard class .
+ * Token guard class.
  *
  * @example
  *
  * ```ts
- * AccessGuard('access');
+ * TokenGuard('access', 'access');
  * ```
  *
+ * @param {'access' | 'refresh'} type - Token type.
  * @param {string} name - Guard name.
+ * @returns {AbstractConstructor<
+ * 	ReturnType<typeof PassportStrategy.prototype>
+ * >}
+ *   An abstract token guard class.
  */
-export function AccessTokenGuard(
+export function TokenGuard(
+	type: 'access' | 'refresh',
 	name: string,
-): ReturnType<typeof PassportStrategy> {
-	/** Access guard class. */
-	class AccessTokenGuard extends PassportStrategy(Strategy, name) {
-		// eslint-disable-next-line  jsdoc/require-jsdoc, @typescript-eslint/no-unused-vars
-		validate(...args: never[]): unknown {
-			throw new ServerException('Fatal', 'Server', 'Implementation');
-		}
+): AbstractConstructor<ReturnType<typeof PassportStrategy.prototype>> & {
+	/** Header name. */
+	header: string;
+} {
+	/** Token guard class. */
+	abstract class TokenGuard extends PassportStrategy(Strategy, name) {
 		/** Request header authentication. */
-		static readonly header: string = 'access';
+		static readonly header: string = type;
 
 		/**
-		 * Initiate access strategy.
+		 * Initiate token guard strategy.
 		 *
 		 * @param {ConfigService} config - Server config service.
 		 */
 		constructor(config: ConfigService) {
 			super({
-				jwtFromRequest: ExtractJwt.fromHeader(AccessTokenGuard.header),
-				secretOrKey: config.getOrThrow('ACCESS_SECRET'),
+				jwtFromRequest: ExtractJwt.fromHeader(TokenGuard.header),
+				secretOrKey: config.getOrThrow(type.toUpperCase() + '_SECRET'),
 				ignoreExpiration: false,
 			});
 		}
 	}
 
-	return AccessTokenGuard;
-}
-
-/**
- * Refresh guard class .
- *
- * @example
- *
- * ```ts
- * RefreshGuard('access');
- * ```
- *
- * @param {string} name - Guard name.
- */
-export function RefreshTokenGuard(
-	name: string,
-): ReturnType<typeof PassportStrategy> {
-	/** Refresh guard class. */
-	class RefreshTokenGuard extends PassportStrategy(Strategy, name) {
-		// eslint-disable-next-line jsdoc/require-jsdoc, @typescript-eslint/no-unused-vars
-		validate(...args: never[]): unknown {
-			throw new ServerException('Fatal', 'Server', 'Implementation');
-		}
-		/** Request header authentication. */
-		static readonly header: string = 'refresh';
-
-		/**
-		 * Initiate refresh strategy.
-		 *
-		 * @param {ConfigService} config - Server config service.
-		 */
-		constructor(config: ConfigService) {
-			super({
-				jwtFromRequest: ExtractJwt.fromHeader(RefreshTokenGuard.header),
-				secretOrKey: config.getOrThrow('REFRESH_SECRET'),
-				ignoreExpiration: false,
-			});
-		}
-	}
-
-	return RefreshTokenGuard;
+	return TokenGuard;
 }

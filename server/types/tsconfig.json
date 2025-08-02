@@ -2,14 +2,21 @@
 	"compilerOptions": {
 		"allowSyntheticDefaultImports": true,
 		"baseUrl": "../src",
-		"emitDecoratorMetadata": true,
 		"esModuleInterop": true,
 		"experimentalDecorators": true,
 		"module": "commonjs",
 		"resolveJsonModule": true,
-		"rootDirs": ["..", "."],
+		"rootDirs": [
+			"..",
+			"."
+		],
 		"strict": true,
-		"target": "esnext"
+		"target": "esnext",
+		"paths": {
+			"*": ["./node_modules", "../src"]
+		}
 	},
-	"include": ["../src"]
+	"include": [
+		"../src"
+	]
 }

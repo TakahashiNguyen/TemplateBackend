@@ -60,7 +60,7 @@
 		"class-transformer": "^0.5.1",
 		"class-validator": "^0.14.2",
 		"dotenv": "^17.2.0",
-		"fastify": "^5.4.0",
+		"fastify": "5.3.3",
 		"fastify-multer": "^2.0.3",
 		"graphql": "^16.11.0",
 		"graphql-upload-ts": "^2.1.2",

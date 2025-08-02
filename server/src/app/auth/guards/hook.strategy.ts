@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AccessTokenGuard } from 'utils/auth/functions';
+import { TokenGuard } from 'utils/auth/functions';
 import { ITokens } from 'utils/auth/interfaces';
 import { ServerException } from 'utils/error/classes';
 
@@ -9,7 +9,7 @@ import { HookService } from '../hook/hook.service';
 
 /** Check the hook is valid. */
 @Injectable()
-export class HookStrategy extends AccessTokenGuard('hook') {
+export class HookStrategy extends TokenGuard('access', 'hook') {
 	/**
 	 * Initiate hook strategy.
 	 *

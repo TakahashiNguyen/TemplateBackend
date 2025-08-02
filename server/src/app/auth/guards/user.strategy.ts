@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AccessTokenGuard } from 'utils/auth/functions';
+import { TokenGuard } from 'utils/auth/functions';
 import { ITokens } from 'utils/auth/interfaces';
 import { ServerException } from 'utils/error/classes';
 
@@ -9,7 +9,7 @@ import { BlocService } from '../bloc/bloc.service';
 
 /** Check user from client. */
 @Injectable()
-export class UserStrategy extends AccessTokenGuard('user') {
+export class UserStrategy extends TokenGuard('access', 'user') {
 	/**
 	 * Initiate access strategy.
 	 *
