@@ -2,6 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { hashSync as argon2Hash, verifySync } from '@node-rs/argon2';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import { ServerException } from 'utils/error/classes';
 
 import { ModifiedArgon2Options } from './types';
 
@@ -84,9 +85,15 @@ export function roleMatching<T>(input: T, required: T[]): boolean {
  *
  * @param {string} name - Guard name.
  */
-export function AccessTokenGuard(name: string) {
+export function AccessTokenGuard(
+	name: string,
+): ReturnType<typeof PassportStrategy> {
 	/** Access guard class. */
-	abstract class AccessTokenGuard extends PassportStrategy(Strategy, name) {
+	class AccessTokenGuard extends PassportStrategy(Strategy, name) {
+		// eslint-disable-next-line  jsdoc/require-jsdoc, @typescript-eslint/no-unused-vars
+		validate(...args: never[]): unknown {
+			throw new ServerException('Fatal', 'Server', 'Implementation');
+		}
 		/** Request header authentication. */
 		static readonly header: string = 'access';
 
@@ -118,9 +125,15 @@ export function AccessTokenGuard(name: string) {
  *
  * @param {string} name - Guard name.
  */
-export function RefreshTokenGuard(name: string) {
+export function RefreshTokenGuard(
+	name: string,
+): ReturnType<typeof PassportStrategy> {
 	/** Refresh guard class. */
-	abstract class RefreshTokenGuard extends PassportStrategy(Strategy, name) {
+	class RefreshTokenGuard extends PassportStrategy(Strategy, name) {
+		// eslint-disable-next-line jsdoc/require-jsdoc, @typescript-eslint/no-unused-vars
+		validate(...args: never[]): unknown {
+			throw new ServerException('Fatal', 'Server', 'Implementation');
+		}
 		/** Request header authentication. */
 		static readonly header: string = 'refresh';
 
