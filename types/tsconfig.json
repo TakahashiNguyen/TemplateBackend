@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"baseUrl": "../server/src",
+		"rootDirs": [
+			"..",
+			"."
+		],
+		"paths": {
+			"*": ["./node_modules/*", "../server/src/*"]
+		}
+	},
+	"include": [
+		"../server/src"
+	]
+}

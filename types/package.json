@@ -1,6 +1,6 @@
 {
   "types": "./dist/main.d.ts",
-  "name": "templatebackend-types",
+  "name": "templatefullstack-types",
   "main": "./dist/main.js",
   "module": "./dist/main.mjs",
   "exports": {
@@ -15,22 +15,15 @@
     "build": "tsup"
   },
   "devDependencies": {
-    "@swc/core": "^1.13.3",
+    "@types/node": "^24.2.0",
     "ts-morph": "^26.0.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.5.0"
   },
   "description": "A NestJS backend template project.",
   "author": "Takahashi Nguyen <takahashi.nguyen@icloud.com>",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "private": true,
   "license": "MIT",
-  "dependencies": {
-    "@node-rs/argon2": "^2.0.2",
-    "@node-rs/argon2-wasm32-wasi": "^2.0.2",
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.2",
-    "passport-jwt": "^4.0.1",
-    "typeorm": "^0.3.25"
-  }
+  "dependencies": {}
 }

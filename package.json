@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "author": "Takahashi Nguyen <takahashi.nguyen@icloud.com>",
   "private": true,
+  "description": "A full stack application",
   "license": "MIT",
   "scripts": {
     "mail": "cd mail && npm run build",
