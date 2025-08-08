@@ -22,10 +22,10 @@
 		"tsconfig.json": "tsconfig.*.json"
 	},
 	"explorerExclude.backup": {
-		"**/.git": true,
-		"**/.svn": true,
-		"**/.hg": true,
 		"**/.DS_Store": true,
+		"**/.git": true,
+		"**/.hg": true,
+		"**/.svn": true,
 		"**/Thumbs.db": true,
 		"**/dist": true,
 		"**/node_modules": true,
@@ -35,10 +35,10 @@
 		"docs": true
 	},
 	"files.exclude": {
-		"**/.git": false,
-		"**/.svn": false,
-		"**/.hg": false,
 		"**/.DS_Store": false,
+		"**/.git": false,
+		"**/.hg": false,
+		"**/.svn": false,
 		"**/Thumbs.db": false,
 		"**/dist": false,
 		"**/node_modules": false,

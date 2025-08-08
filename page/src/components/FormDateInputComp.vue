@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 import type { IAlert } from '@/error/interfaces';
-import type { ErrorObject } from 'templatebackend-types';
+import type { ErrorObject } from 'templatefullstack-types';
 import { ref, watch } from 'vue';
 
 const props = defineProps<{

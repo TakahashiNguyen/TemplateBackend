@@ -1,29 +1,35 @@
 {
-  "types": "./dist/main.d.ts",
-  "name": "templatefullstack-types",
-  "main": "./dist/main.js",
-  "module": "./dist/main.mjs",
-  "exports": {
-    ".": {
-      "types": "./dist/main.d.ts",
-      "import": "./dist/main.mjs",
-      "require": "./dist/main.js"
-    }
-  },
-  "scripts": {
-    "prebuild": "pnpm i && ts-node types.build.ts",
-    "build": "tsup"
-  },
-  "devDependencies": {
-    "@types/node": "^24.2.0",
-    "ts-morph": "^26.0.0",
-    "ts-node": "^10.9.2",
-    "tsup": "^8.5.0"
-  },
-  "description": "A NestJS backend template project.",
-  "author": "Takahashi Nguyen <takahashi.nguyen@icloud.com>",
-  "version": "0.0.0",
-  "private": true,
-  "license": "MIT",
-  "dependencies": {}
+	"types": "./dist/index.d.ts",
+	"name": "templatefullstack-types",
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.js"
+		}
+	},
+	"scripts": {
+		"prebuild": "pnpm i",
+		"build": "ts-node types.build.ts && tsup"
+	},
+	"devDependencies": {
+		"@types/jest": "^30.0.0",
+		"@types/node": "^24.2.0",
+		"esbuild": "^0.25.8",
+		"esbuild-plugin-polyfill-node": "^0.3.0",
+		"jose": "^6.0.12",
+		"ts-morph": "^26.0.0",
+		"ts-node": "^10.9.2",
+		"tsup": "^8.5.0"
+	},
+	"description": "A NestJS backend template project.",
+	"author": "Takahashi Nguyen <takahashi.nguyen@icloud.com>",
+	"version": "0.0.0",
+	"private": true,
+	"license": "MIT",
+	"dependencies": {
+		"class-transformer": "^0.5.1"
+	}
 }

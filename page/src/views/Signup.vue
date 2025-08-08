@@ -69,7 +69,7 @@ import CarouselComp from '@/components/CarouselComp.vue';
 import FormContainerComp from '@/components/FormContainerComp.vue';
 import FormTextInputComp from '@/components/TextInputComp.vue';
 import { apiErrorHandler, getAlert } from '@/error/functions';
-import { UserSignupDto } from 'templatebackend-types';
+import { UserSignupDto } from 'templatefullstack-types';
 import { reactive } from 'vue';
 
 const alert = getAlert(),

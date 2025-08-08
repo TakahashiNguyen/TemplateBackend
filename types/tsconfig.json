@@ -1,16 +1,13 @@
 {
 	"compilerOptions": {
-		"strict": true,
 		"baseUrl": "../server/src",
-		"rootDirs": [
-			"..",
-			"."
-		],
-		"paths": {
-			"*": ["./node_modules/*", "../server/src/*"]
-		}
-	},
-	"include": [
-		"../server/src"
-	]
+		"emitDecoratorMetadata": true,
+		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"module": "commonjs",
+		"resolveJsonModule": true,
+		"rootDirs": ["../server", "."],
+		"strict": true,
+		"target": "esnext"
+	}
 }
