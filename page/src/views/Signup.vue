@@ -33,7 +33,7 @@
 			<template #content>
 				<FormTextInputComp name="Name" v-model="input.name" />
 				<FormTextInputComp name="Phone number" v-model="input.phone" />
-				<div class="space-y-6 w-full">
+				<div class="w-full space-y-6">
 					<FormTextInputComp
 						name="Email"
 						v-model="input.email"

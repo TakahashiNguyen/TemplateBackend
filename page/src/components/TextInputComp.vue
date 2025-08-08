@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="text--primary bg--0 flex flex-col p-1 w-full"
+		class="text--primary bg--0 flex w-full flex-col p-1"
 		:class="{
 			'text-error!': isObject && isError,
 			'text-success!': isObject && isSuccess,
