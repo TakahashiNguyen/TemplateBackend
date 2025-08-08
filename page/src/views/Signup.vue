@@ -9,7 +9,7 @@
 				activeClasses: 'bg-light-primary/90',
 				inactiveClasses: 'bg-light-primary/50 hover:bg-light-primary/70',
 			}"
-			class="mb-20"
+			class="min-h-30 mb-20"
 		>
 			<template #buttons="{ next, isEnd, previous, isStart }">
 				<div
@@ -31,13 +31,9 @@
 				</div>
 			</template>
 			<template #content>
-				<div>
-					<FormTextInputComp name="Name" v-model="input.name" />
-				</div>
-				<div>
-					<FormTextInputComp name="Phone number" v-model="input.phone" />
-				</div>
-				<div class="space-y-6">
+				<FormTextInputComp name="Name" v-model="input.name" />
+				<FormTextInputComp name="Phone number" v-model="input.phone" />
+				<div class="space-y-6 w-full">
 					<FormTextInputComp
 						name="Email"
 						v-model="input.email"

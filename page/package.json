@@ -2,7 +2,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "concurrently \"pnpm dev:api\" \"pnpm dev:web\"",
-		"dev:api": "cd .. && npm run start",
+		"dev:api": "cd ../server && npm run start",
 		"dev:web": "vite",
 		"pretypes": "cd ../types && npm run build",
 		"types": "pnpm add file:../types",

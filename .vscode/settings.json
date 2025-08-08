@@ -7,7 +7,7 @@
 		"gstatic",
 		"minioadmin",
 		"pgadmin",
-		"templatebackend",
+		"templatefullstack",
 		"trivago",
 		"unsign",
 		"vueuse",
@@ -21,7 +21,8 @@
 		"package.json": "LICENSE*,*.md,nest-cli.json,.gitignore,.env*,.*rc,*.config.js,*.config.ts,*.config.json,*.config.mjs,*.config.cjs,*.config.yaml,*.config.yml,*lock.yaml",
 		"tsconfig.json": "tsconfig.*.json"
 	},
-	"explorerExclude.backup": {
+	"explorerExclude.backup": {},
+	"files.exclude": {
 		"**/.DS_Store": true,
 		"**/.git": true,
 		"**/.hg": true,
@@ -33,19 +34,6 @@
 		".pnpm-store": true,
 		".tsup": true,
 		"docs": true
-	},
-	"files.exclude": {
-		"**/.DS_Store": false,
-		"**/.git": false,
-		"**/.hg": false,
-		"**/.svn": false,
-		"**/Thumbs.db": false,
-		"**/dist": false,
-		"**/node_modules": false,
-		"**/pnpm-lock.yaml": false,
-		".pnpm-store": false,
-		".tsup": false,
-		"docs": false
 	},
 	"jest.outputConfig": {
 		"clearOnRun": "terminal"
