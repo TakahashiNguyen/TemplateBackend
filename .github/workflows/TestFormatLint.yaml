@@ -45,7 +45,7 @@ jobs:
           node-version: 23.7
           cache: 'pnpm'
 
-      - run: pnpm i && npm run format && npm run lint
+      - run: pnpm -r i && npm run format && npm run lint
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         id: auto-commit-action
@@ -77,6 +77,9 @@ jobs:
     strategy:
       matrix:
         object: [service, requesters, etc]
+    defaults:
+      run:
+        working-directory: server
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 

@@ -7,7 +7,6 @@
 	"license": "MIT",
 	"scripts": {
 		"commit": "cz",
-		"postinstall": "pnpm run -r --parallel install",
 		"lint": "pnpm run -r --if-present --parallel lint",
 		"format": "prettier --write \"./**/*.css\" \"./**/*.ts\" \"./**/*.json\" \"./**/*.ts\" \"./**/*.html\" \"./**/*.vue\"",
 		"mail": "cd mail && npm run build",

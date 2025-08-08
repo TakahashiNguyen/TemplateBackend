@@ -4,6 +4,7 @@
 /**/build
 /**/docs/
 /**/.pnpm-store/
+/**/node-compile-cache/
 
 # Logs
 /**/logs
