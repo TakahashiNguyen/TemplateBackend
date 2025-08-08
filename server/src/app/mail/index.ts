@@ -25,7 +25,7 @@ import { MailService } from './mail.service';
 								},
 							},
 					template: {
-						dir: join(process.cwd(), './mail/dist'),
+						dir: join(process.cwd(), '../mail/dist'),
 						adapter: new HandlebarsAdapter(),
 						options: { strict: true },
 					},
