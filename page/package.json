@@ -30,5 +30,10 @@
 		"vite": "^6.3.5",
 		"vite-plugin-node-polyfills": "^0.24.0",
 		"vue-tsc": "^2.2.8"
+	},
+	"pnpm": {
+		"overrides": {
+			"form-data": "^4.0.4"
+		}
 	}
 }

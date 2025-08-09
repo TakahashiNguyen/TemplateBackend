@@ -110,7 +110,8 @@
 	},
 	"pnpm": {
 		"overrides": {
-			"html-minifier": "npm:html-minifier-terser@7.2.0"
+			"html-minifier": "npm:html-minifier-terser@7.2.0",
+			"multer": "^2.0.2"
 		}
 	}
 }
