@@ -94,8 +94,8 @@ jobs:
         with:
           name: ${{ matrix.object }}
           path: |
-            ./reports/${{ matrix.object }}.xml
-            ./coverage/${{ matrix.object }}.txt
+            ./server/reports/${{ matrix.object }}.xml
+            ./server/coverage/${{ matrix.object }}.txt
 
   # Test_web:
   #   needs: FormatAndLint
@@ -155,14 +155,14 @@ jobs:
         uses: MishaKav/jest-coverage-comment@main
         with:
           title: Requesters test result
-          coverage-path: ./requesters/coverage/requesters.txt
+          coverage-path: ./requesters/server/coverage/requesters.txt
           create-new-comment: true
 
       - name: Service
         uses: MishaKav/jest-coverage-comment@main
         with:
           title: Service test result
-          coverage-path: ./service/coverage/service.txt
+          coverage-path: ./service/server/coverage/service.txt
           create-new-comment: true
 
       - uses: dorny/test-reporter@v2
