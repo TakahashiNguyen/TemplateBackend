@@ -76,13 +76,13 @@ export class User extends BaseEntity {
 	// Information
 
 	/** User's email. */
-	@Column() email: string;
+	@Field() @Column() email: string;
 
 	/** User's name. */
-	@Column() name: string;
+	@Field() @Column() name: string;
 
 	/** User's phone. */
-	@Column() phone: string;
+	@Field() @Column() phone: string;
 
 	/** User's role. */
 	@Field(() => UserRole)

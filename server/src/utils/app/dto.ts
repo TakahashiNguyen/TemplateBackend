@@ -49,5 +49,5 @@ export class Paging {
 	/** Page index. */
 	@Field() index: number = 0;
 	/** Number of entities taken. */
-	@Field() take: number = 10e100;
+	@Field() take: number = 1e12;
 }

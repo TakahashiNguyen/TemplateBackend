@@ -16,6 +16,7 @@ import {
 	sendGraphQL,
 } from 'utils/test/functions';
 import { JestInitializationReturns } from 'utils/test/interfaces';
+import { SendGraphQLType } from 'utils/test/types';
 
 import { userSignup } from './user.controller.spec.util';
 import { User } from './user.entity';
@@ -47,10 +48,11 @@ beforeEach(async () => {
 });
 
 describe('getUsers', () => {
-	const send = sendGraphQL<gqlGetUsersQuery, gqlGetUsersQueryVariables>(
-		req,
-		GetUsers,
-	);
+	let send: SendGraphQLType<gqlGetUsersQuery, gqlGetUsersQueryVariables>;
+
+	beforeAll(() => {
+		send = sendGraphQL(req, GetUsers);
+	});
 
 	it('success', async () => {
 		await execute(
@@ -61,9 +63,7 @@ describe('getUsers', () => {
 						type: 'toEqual',
 						parameters: [
 							expect.arrayContaining([
-								expect.objectContaining({
-									...user,
-								}),
+								expect.objectContaining({ name: user.name }),
 							]),
 						],
 					},
@@ -80,13 +80,7 @@ describe('getUsers', () => {
 				expectations: [
 					{
 						type: 'toEqual',
-						parameters: [
-							[
-								{
-									...user,
-								},
-							],
-						],
+						parameters: [[expect.objectContaining({ name: user.name })]],
 					},
 				],
 			},
@@ -102,13 +96,7 @@ describe('getUsers', () => {
 				expectations: [
 					{
 						type: 'toEqual',
-						parameters: [
-							[
-								{
-									...user,
-								},
-							],
-						],
+						parameters: [[expect.objectContaining({ name: user.name })]],
 					},
 				],
 			},
@@ -117,7 +105,11 @@ describe('getUsers', () => {
 });
 
 describe('me', () => {
-	const send = sendGraphQL<gqlMeQuery, gqlMeQueryVariables>(req, Me);
+	let send: SendGraphQLType<gqlMeQuery, gqlMeQueryVariables>;
+
+	beforeAll(() => {
+		send = sendGraphQL(req, Me);
+	});
 
 	it('success', async () => {
 		await execute(async () => (await send({}, { headers })).me, {

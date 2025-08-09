@@ -186,13 +186,14 @@ export async function paginateResponse<
 	P extends object,
 >(
 	service: DatabaseRequests<C, T, P>,
-	args: Parameters<DatabaseRequests<C, T, P>['find']>,
+	args: Parameters<DatabaseRequests<C, T, P>['find']>[0],
 	{ index, take }: Paging,
 ): Promise<IPaginateResult<T>> {
 	const total = await service.total(),
 		totalPages = total / take + 1;
 	return {
-		entities: await service.find(...{ ...args, take, skip: index * take }),
+		// @ts-expect-error error-free
+		entities: await service.find({ ...args, take, skip: index * take }),
 		total,
 		totalPages,
 		currentPage: index,

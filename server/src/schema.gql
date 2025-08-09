@@ -24,7 +24,7 @@ type PaginatedUser {
 
 input Paging {
   index: Float! = 0
-  take: Float! = 1e+101
+  take: Float! = 1000000000000
 }
 
 type Query {
@@ -33,6 +33,9 @@ type Query {
 }
 
 type User {
+  email: String!
+  name: String!
+  phone: String!
   role: UserRole!
 }
 

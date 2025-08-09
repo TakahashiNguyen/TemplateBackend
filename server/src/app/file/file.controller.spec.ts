@@ -31,7 +31,7 @@ describe('seeUploadedFile', () => {
 	beforeEach(async () => {
 		const testUser = User.test(unit, {}),
 			avatarContent = (40).string,
-			{ body, headers: submitHeaders } = submitWithFiles(
+			{ payload, headers: submitHeaders } = submitWithFiles(
 				{
 					...testUser,
 					urlManageNotifications: (5).string + '.com',
@@ -47,7 +47,7 @@ describe('seeUploadedFile', () => {
 			{ headers: receivedHeaders } = await req({
 				method: 'post',
 				url: '/user/signup',
-				body,
+				payload,
 				headers: submitHeaders,
 			});
 

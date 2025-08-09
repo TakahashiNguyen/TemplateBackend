@@ -223,13 +223,13 @@ export function getCookies(headers: OutgoingHttpHeaders): {
  * }} files
  *   - Input files.
  *
- * @returns {InjectOptions} A form data to send.
+ * @returns {Pick<InjectOptions, 'payload' | 'headers'>} A form data to send.
  */
 export function submitWithFiles(
 	// @ts-expect-error error-free expression
 	body: { [k: never]: string | object },
 	files: IFilesForm,
-): InjectOptions {
+): Pick<InjectOptions, 'payload' | 'headers'> {
 	const form = new FormData(),
 		appendObjectFormData = <T>(data: T, parentKey = '') => {
 			for (const key in data) {
@@ -257,7 +257,7 @@ export function submitWithFiles(
 	});
 
 	return {
-		body: form,
+		payload: form,
 		headers: form.getHeaders(),
 	};
 }

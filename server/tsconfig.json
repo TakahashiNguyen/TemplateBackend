@@ -15,7 +15,7 @@
 		"removeComments": true,
 		"rootDir": "./",
 		"skipLibCheck": true,
-		"sourceMap": false,
+		"sourceMap": true,
 		"strict": true,
 		"strictBindCallApply": true,
 		"strictNullChecks": true,

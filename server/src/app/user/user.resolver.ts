@@ -41,9 +41,9 @@ export class UserResolver {
 	 */
 	@Query(() => PaginatedUser) @Allow([]) async getUsers(
 		@Args('input') input: UserFind,
-		@Args('page', { nullable: true }) { index, take }: Paging,
+		@Args('page', { nullable: true }) { index, take }: Paging = new Paging(),
 	): Promise<IPaginateResult<User>> {
-		return paginateResponse(this.user, [input], { take, index });
+		return paginateResponse(this.user, input, { take, index });
 	}
 
 	/**
