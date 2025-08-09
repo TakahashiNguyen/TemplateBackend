@@ -1,4 +1,4 @@
-import { type ErrorObject, type ErrorType } from 'templatebackend';
+import { type ErrorObject, type ErrorType } from 'templatefullstack-types';
 
 /** Alert interface. */
 export interface IAlert {

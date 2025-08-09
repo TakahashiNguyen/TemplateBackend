@@ -1,0 +1,121 @@
+/** This type for set cookie credentials. */
+export type CookieCredential = {
+	/** The name of the cookie. */
+	name: string;
+
+	/**
+	 * The password used to secure the cookie. It should be a string that is at
+	 * least 32 characters long.
+	 */
+	password: string;
+};
+
+/**
+ * This type handle ambiguous return type.
+ *
+ * @template T
+ */
+export type AmbiguousReturn<T> = Promise<T> | T;
+
+/**
+ * Remove properties and methods in `A` that already has in `B`.
+ *
+ * @template A
+ * @template B
+ */
+export type Subtract<A, B> = {
+	[K in keyof A as K extends keyof B
+		? A[K] extends B[K]
+			? B[K] extends A[K]
+				? never
+				: never
+			: K
+		: K]: A[K];
+};
+
+/**
+ * Get methods' key from `T`.
+ *
+ * @template T
+ */
+export type MethodKeys<T> = {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	[K in keyof T]: T[K] extends (...args: any[]) => any ? K : never;
+}[keyof T];
+
+/**
+ * Get methods from `T`.
+ *
+ * @template T
+ */
+export type MethodsOnly<T> = Pick<T, MethodKeys<T>>;
+
+/**
+ * Get attributes from `T`.
+ *
+ * @template T
+ */
+export type AttributesOnly<T> = Omitting<T, MethodKeys<T>>;
+
+/**
+ * Only required one of specified keys and remove remains.
+ *
+ * @template T
+ * @template Keys
+ */
+export type RequireOnlyOne<T, Keys extends keyof T = keyof T> = {
+	[K in Keys]-?: Required<Pick<T, K>> &
+		Partial<Pick<T, Exclude<Keys, K>>> &
+		Omitting<T, Keys>;
+}[Keys];
+
+/**
+ * Better omit type.
+ *
+ * @template T
+ * @template K
+ */
+export type Omitting<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+
+/**
+ * Apply partial to keys of `T`.
+ *
+ * @template T
+ * @template K
+ */
+export type ApplyPartial<T, K extends keyof T> = Omitting<T, K> &
+	Partial<Pick<T, K>>;
+
+/**
+ * Class type in class.
+ *
+ * @template T
+ */
+export type ClassType<T extends new (...args: never[]) => unknown> =
+	| InstanceType<T>
+	| ConstructorParameters<T>[0];
+
+/**
+ * Apply attributes only recursively.
+ *
+ * @template T
+ * @template F
+ */
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+export type DeepAttributesOnly<T> = T extends Function
+	? T
+	: T extends Array<infer U>
+		? Array<DeepAttributesOnly<U>>
+		: T extends object
+			? AttributesOnly<{
+					[K in keyof AttributesOnly<T>]: DeepAttributesOnly<T[K]>;
+				}>
+			: T;
+
+/**
+ * Apply abstract to class.
+ *
+ * @template T
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AbstractConstructor<T> = abstract new (...args: any[]) => T;

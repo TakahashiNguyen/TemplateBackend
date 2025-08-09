@@ -10,8 +10,7 @@ function unwrapContentVNodes(nodes: VNode[]): VNode[] {
 			node.children &&
 			Array.isArray(node.children)
 		) {
-			// @ts-expect-error error-free expression
-			result.push(...unwrapContentVNodes(node.children));
+			result.push(...unwrapContentVNodes(node.children as VNode[]));
 		} else {
 			const cloned = { ...node } as VNode;
 			if (node.children && Array.isArray(node.children)) {
@@ -25,11 +24,11 @@ function unwrapContentVNodes(nodes: VNode[]): VNode[] {
 }
 
 export default defineComponent({
-	props: {},
-	setup({}, { slots }) {
+	inheritAttrs: false,
+	setup({}, { slots, attrs }) {
 		return () => {
 			return unwrapContentVNodes(slots.default?.()!).map((node) =>
-				h('div', { class: ['bg--0'] }, [node]),
+				h('div', { class: ['bg--0', `h-fit`, 'flex', attrs.class] }, [node]),
 			);
 		};
 	},

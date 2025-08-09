@@ -10,7 +10,7 @@
 			ref="carouselWrapper"
 			class="[&>*]:absolute! [&>*]:duration-(--duration) relative h-56 overflow-hidden [&>*]:w-full [&>*]:ease-in-out"
 		>
-			<DivWrapper>
+			<DivWrapper v-bind="$attrs">
 				<slot name="content" />
 			</DivWrapper>
 		</div>
@@ -85,7 +85,7 @@
 
 <script setup lang="ts">
 import { getSlotRefSet, sleep, waitForPageLoad } from '@/app/functions';
-import { useElementSize } from '@vueuse/core';
+import { useElementBounding } from '@vueuse/core';
 import { Carousel } from 'flowbite';
 import type {
 	CarouselInterface,
@@ -93,7 +93,14 @@ import type {
 	CarouselOptions,
 	RotationItems,
 } from 'flowbite';
-import { type PropType, computed, onMounted, ref, watch } from 'vue';
+import {
+	type PropType,
+	computed,
+	defineComponent,
+	onMounted,
+	ref,
+	watch,
+} from 'vue';
 
 import DivWrapper from './DivWrapper.vue';
 import LoadingDiv from './LoadingDiv.vue';
@@ -115,7 +122,7 @@ const carouselElement = ref<HTMLElement>(),
 	props = defineProps({
 		isCycle: { type: Boolean, default: false },
 		overflowing: { type: Boolean, default: false },
-		duration: { type: Number, default: 750 },
+		duration: { type: Number, default: 500 },
 		cycleDuration: { type: Number, default: 3000 },
 		indicator: {
 			type: Object as PropType<
@@ -133,6 +140,10 @@ const carouselElement = ref<HTMLElement>(),
 		},
 	});
 
+defineComponent({
+	inheritAttrs: false,
+});
+
 class CustomCarousel extends Carousel {
 	async _rotate(rotationItems: RotationItems): Promise<void> {
 		Object.values(rotationItems).forEach((i) => {
@@ -144,7 +155,7 @@ class CustomCarousel extends Carousel {
 		super._rotate(rotationItems);
 
 		currentPosition.value = rotationItems.middle.position + 1;
-		currentElement.value = rotationItems.middle.el.children[0] as HTMLElement;
+		currentElement.value = rotationItems.middle.el;
 
 		await sleep(props.duration);
 
@@ -183,7 +194,7 @@ onMounted(async () => {
 			},
 		};
 
-	watch(useElementSize(currentElement).height, (h) => {
+	watch(useElementBounding(currentElement).height, (h) => {
 		carouselElement.value!.style.height = carouselWrapper.value!.style.height =
 			h.toString() + 'px';
 	});

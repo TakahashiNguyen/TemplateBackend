@@ -9,6 +9,29 @@ export default defineConfig({
 	optimizeDeps: {
 		force: true,
 	},
+	build: {
+		minify: true,
+		rollupOptions: {
+			output: {
+				manualChunks(id: string) {
+					if (id.includes('node_modules')) {
+						const modulePath = id.split('node_modules/')[1],
+							topLevelFolder = modulePath?.split('/')[0];
+
+						if (topLevelFolder !== '.pnpm') return topLevelFolder;
+
+						const scopedPackageName = modulePath?.split('/')[1],
+							chunkName =
+								scopedPackageName?.split('@')[
+									scopedPackageName.startsWith('@') ? 1 : 0
+								];
+
+						return chunkName;
+					}
+				},
+			},
+		},
+	},
 	server: {
 		host: '127.0.0.1',
 		fs: {
@@ -21,5 +44,9 @@ export default defineConfig({
 			},
 		},
 	},
-	resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
+	resolve: {
+		alias: {
+			'@': fileURLToPath(new URL('./src', import.meta.url)),
+		},
+	},
 });

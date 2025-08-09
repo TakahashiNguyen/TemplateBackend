@@ -1,5 +1,5 @@
 import type { IAlert } from '@/error/interfaces';
-import type { ErrorObject } from 'templatebackend';
+import type { ErrorObject } from 'templatefullstack-types';
 import { type Ref, type VNodeRef, computed } from 'vue';
 
 /**

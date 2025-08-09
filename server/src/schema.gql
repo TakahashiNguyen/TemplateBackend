@@ -1,0 +1,55 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @cacheControl(inheritMaxAge: Boolean, maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | INTERFACE | OBJECT | QUERY | UNION
+
+enum CacheControlScope {
+  PRIVATE
+  PUBLIC
+}
+
+"""DateTime custom scalar type"""
+scalar DateTime
+
+type PaginatedUser {
+  currentPage: Float!
+  entities: [User!]!
+  hasNext: Boolean!
+  hasPrevious: Boolean!
+  pageSize: Float!
+  total: Float!
+  totalPages: Float!
+}
+
+input Paging {
+  index: Float! = 0
+  take: Float! = 1000000000000
+}
+
+type Query {
+  getUsers(input: UserFind!, page: Paging): PaginatedUser!
+  me: User!
+}
+
+type User {
+  email: String!
+  name: String!
+  phone: String!
+  role: UserRole!
+}
+
+input UserFind {
+  avatarPath: String
+  email: String
+  id: String
+  name: String
+  phone: String
+  role: String
+}
+
+enum UserRole {
+  admin
+  guest
+  undefined
+}

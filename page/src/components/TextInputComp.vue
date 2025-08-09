@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="text--primary bg--0 flex flex-col p-1"
+		class="text--primary bg--0 flex w-full flex-col p-1"
 		:class="{
 			'text-error!': isObject && isError,
 			'text-success!': isObject && isSuccess,
@@ -40,7 +40,7 @@
 import { getIsError, getIsObject, getIsSuccess } from '@/app/functions';
 import IconComp from '@/components/IconComp.vue';
 import type { IAlert } from '@/error/interfaces';
-import { type ErrorObject } from 'templatebackend';
+import { type ErrorObject } from 'templatefullstack-types';
 import type { PropType } from 'vue';
 
 const model = defineModel(),

@@ -9,7 +9,7 @@
 				activeClasses: 'bg-light-primary/90',
 				inactiveClasses: 'bg-light-primary/50 hover:bg-light-primary/70',
 			}"
-			class="mb-20"
+			class="min-h-30 mb-20"
 		>
 			<template #buttons="{ next, isEnd, previous, isStart }">
 				<div
@@ -31,13 +31,9 @@
 				</div>
 			</template>
 			<template #content>
-				<div>
-					<FormTextInputComp name="Name" v-model="input.name" />
-				</div>
-				<div>
-					<FormTextInputComp name="Phone number" v-model="input.phone" />
-				</div>
-				<div class="space-y-6">
+				<FormTextInputComp name="Name" v-model="input.name" />
+				<FormTextInputComp name="Phone number" v-model="input.phone" />
+				<div class="w-full space-y-6">
 					<FormTextInputComp
 						name="Email"
 						v-model="input.email"
@@ -69,7 +65,7 @@ import CarouselComp from '@/components/CarouselComp.vue';
 import FormContainerComp from '@/components/FormContainerComp.vue';
 import FormTextInputComp from '@/components/TextInputComp.vue';
 import { apiErrorHandler, getAlert } from '@/error/functions';
-import { UserSignupDto } from 'templatebackend';
+import { UserSignupDto } from 'templatefullstack-types';
 import { reactive } from 'vue';
 
 const alert = getAlert(),
