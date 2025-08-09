@@ -155,14 +155,14 @@ jobs:
         uses: MishaKav/jest-coverage-comment@main
         with:
           title: Requesters test result
-          coverage-path: ./requesters/server/coverage/requesters.txt
+          coverage-path: ./requesters/coverage/requesters.txt
           create-new-comment: true
 
       - name: Service
         uses: MishaKav/jest-coverage-comment@main
         with:
           title: Service test result
-          coverage-path: ./service/server/coverage/service.txt
+          coverage-path: ./service/coverage/service.txt
           create-new-comment: true
 
       - uses: dorny/test-reporter@v2
