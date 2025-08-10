@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"erasableSyntaxOnly": true,
 		"noFallthroughCasesInSwitch": true,
-		"noUncheckedSideEffectImports": true,
+		"noUncheckedSideEffectImports": false,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"paths": {
