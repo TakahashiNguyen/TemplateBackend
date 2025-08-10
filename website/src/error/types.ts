@@ -1,4 +1,4 @@
-import { type Omitting, UserReceiveDto } from 'templatefullstack-types';
+import { type Omitting, UserReceiveDto } from 'types';
 
 /** Received response. */
 export type IResponse = Omitting<UserReceiveDto, 'bloc' | 'hook'>;

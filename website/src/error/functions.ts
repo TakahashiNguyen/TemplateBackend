@@ -1,5 +1,5 @@
 import type { AxiosError } from 'axios';
-import { serverException } from 'templatefullstack-types';
+import { serverException } from 'types';
 import { reactive } from 'vue';
 
 import type { IAlert } from './interfaces';
