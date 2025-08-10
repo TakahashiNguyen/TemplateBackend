@@ -1,10 +1,8 @@
 {
 	"scripts": {
-		"prebuild": "pnpm i && npm run gqlg && npm run doc && npm run page && npm run mail",
+		"prebuild": "pnpm i && npm run gqlg && npm run doc",
 		"build": "nest build",
 		"doc": "compodoc src -p tsconfig.doc.json --disableSourceCode --hideGenerator -d ./docs",
-		"mail": "cd .. && npm run mail",
-		"page": "cd .. && npm run page",
 		"pregqlg": "gqlg --schemaFilePath ./src/schema.gql --destDirPath ./src/graphQL --ext graphql",
 		"gqlg": "graphql-codegen --config gqlg.config.ts",
 		"start": "nest start",

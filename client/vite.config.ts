@@ -7,7 +7,7 @@ const host = process.env.TAURI_DEV_HOST;
 
 // https://vite.dev/config/
 export default defineConfig({
-	root: '../page',
+	root: '../website',
 
 	plugins: [vue(), tailwindcss()],
 
@@ -35,7 +35,7 @@ export default defineConfig({
 
 	resolve: {
 		alias: {
-			'@': fileURLToPath(new URL('../page/src', import.meta.url)),
+			'@': fileURLToPath(new URL('../website/src', import.meta.url)),
 		},
 	},
 });

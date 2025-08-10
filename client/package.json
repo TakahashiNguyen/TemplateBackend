@@ -2,7 +2,6 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"pretypes": "cd ../types && npm run build",
 		"types": "pnpm add file:../types",
 		"icon": "tauri icon src-tauri/icons/index.png",
 		"prebuild": "pnpm i && npm run types && npm run icon",

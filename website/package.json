@@ -4,7 +4,6 @@
 		"dev": "concurrently \"pnpm dev:api\" \"pnpm dev:web\"",
 		"dev:api": "cd ../server && npm run start",
 		"dev:web": "vite",
-		"pretypes": "cd ../types && npm run build",
 		"types": "pnpm add file:../types",
 		"prebuild": "pnpm i && npm run types",
 		"build": "vue-tsc -b && vite build",

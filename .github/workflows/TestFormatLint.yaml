@@ -1,4 +1,4 @@
-name: Test Format Lint
+name: Server workflow
 
 on:
   pull_request:
@@ -97,44 +97,13 @@ jobs:
             ./server/reports/${{ matrix.object }}.xml
             ./server/coverage/${{ matrix.object }}.txt
 
-  # Test_web:
-  #   needs: FormatAndLint
-  #   if: ${{ needs.FormatAndLint.outputs.project == 'true' }}
-  #   name: 'Test web'
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 5
-  #   permissions:
-  #     contents: read
-  #   steps:
-  #     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-  #       with:
-  #         ref: ${{ github.head_ref }}
-
-  #     - uses: ikalnytskyi/action-setup-postgres@v6
-
-  #     - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda
-
-  #     - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-  #       with:
-  #         node-version: 23.7
-  #         cache: 'pnpm'
-
-  #     - run: npm run start:ci
-
-  #     - name: Upload Images
-  #       if: failure()
-  #       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-  #       with:
-  #         name: cypress-images
-  #         path: ./cypress/screenshots
-
   WrapUp:
     name: 'Wrap up'
     needs:
       - Test
-      # - Test_web
     runs-on: ubuntu-latest
     timeout-minutes: 1
+    if: always()
     permissions:
       contents: read
       pull-requests: write

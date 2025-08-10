@@ -9,10 +9,8 @@
 		"commit": "cz",
 		"lint": "pnpm run -r --if-present --parallel lint",
 		"format": "prettier \"!**/*/debug\" --write \"./**/*.css\" \"./**/*.ts\" \"./**/*.json\" \"./**/*.ts\" \"./**/*.html\" \"./**/*.vue\"",
-		"mail": "cd mail && npm run build",
-		"server": "cd server && npm run build",
-		"page": "cd page && npm run build",
-		"build": "npm run server"
+		"prebuild": "cd types && npm run build",
+		"build": "pnpm run -r --if-present --parallel --filter \"!./types\" build"
 	},
 	"devDependencies": {
 		"@trivago/prettier-plugin-sort-imports": "^5.2.2",
