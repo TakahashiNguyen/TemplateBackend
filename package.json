@@ -9,7 +9,8 @@
 		"commit": "cz",
 		"lint": "pnpm run -r --if-present --parallel lint",
 		"format": "prettier \"!**/*/debug\" --write \"./**/*.css\" \"./**/*.ts\" \"./**/*.json\" \"./**/*.ts\" \"./**/*.html\" \"./**/*.vue\"",
-		"prebuild": "cd types && npm run build",
+		"types": "cd types && npm run build",
+		"prebuild": "pnpm i -r && npm run types",
 		"build": "pnpm run -r --if-present --parallel --filter \"!./types\" build"
 	},
 	"devDependencies": {
