@@ -148,6 +148,9 @@ jobs:
       - name: Pre-build image and run make ci-build in dev container
         uses: devcontainers/ci@8bf61b26e9c3a98f69cb6ce2f88d24ff59b785c6
         with:
+          cacheFrom: ghcr.io/${{ github.repository }}-ci
+          imageName: ghcr.io/${{ github.repository }}-ci
+          push: always
           runCmd: |
             cd server
             npm run test:${{ matrix.object }}
@@ -200,7 +203,7 @@ jobs:
 
       - uses: dorny/test-reporter@dc3a92680fcc15842eef52e8c4606ea7ce6bd3f3
         with:
-          artifact: /(.*)/
+          artifact: /reports_(.*)/
           name: Tests runtime
           path: '**/*.xml'
           reporter: jest-junit
