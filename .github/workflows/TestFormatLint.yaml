@@ -1,7 +1,10 @@
 name: Server workflow
 
 on:
-  pull_request:
+  workflow_run:
+    workflows: ["Build and Push Docker Image"]
+    types:
+      - completed
     branches:
       - main
 
