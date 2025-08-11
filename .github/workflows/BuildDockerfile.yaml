@@ -44,3 +44,4 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           sbom: true 
           provenance: mode=max
+          file: .devcontainer/Dockerfile
