@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'material-symbols';
 
 @plugin "flowbite/plugin";
 @source "../node_modules/flowbite";

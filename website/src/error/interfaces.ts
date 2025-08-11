@@ -1,4 +1,4 @@
-import { type ErrorObject, type ErrorType } from 'templatefullstack-types';
+import { type ErrorObject, type ErrorType } from 'types';
 
 /** Alert interface. */
 export interface IAlert {

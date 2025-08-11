@@ -40,7 +40,7 @@
 import { getIsError, getIsObject, getIsSuccess } from '@/app/functions';
 import IconComp from '@/components/IconComp.vue';
 import type { IAlert } from '@/error/interfaces';
-import { type ErrorObject } from 'templatefullstack-types';
+import { type ErrorObject } from 'types';
 import type { PropType } from 'vue';
 
 const model = defineModel(),

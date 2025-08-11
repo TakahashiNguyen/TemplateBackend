@@ -7,26 +7,16 @@ settings:
 importers:
 
   .:
-    dependencies:
-      class-transformer:
-        specifier: ^0.5.1
-        version: 0.5.1
     devDependencies:
       '@types/jest':
         specifier: ^30.0.0
         version: 30.0.0
-      '@types/node':
-        specifier: ^24.2.0
-        version: 24.2.0
       esbuild:
         specifier: ^0.25.8
         version: 0.25.8
       esbuild-plugin-polyfill-node:
         specifier: ^0.3.0
         version: 0.3.0(esbuild@0.25.8)
-      jose:
-        specifier: ^6.0.12
-        version: 6.0.12
       ts-morph:
         specifier: ^26.0.0
         version: 26.0.0
@@ -565,9 +555,6 @@ packages:
     resolution: {integrity: sha512-l+2bNRMiQgcfILUi33labAZYIWlH1kWDp+ecNo5iisRKrbm0xcRyCww71/YU0Fkw0mAFpz9bJayXPjey6vkmaQ==}
     engines: {node: '>=8'}
 
-  class-transformer@0.5.1:
-    resolution: {integrity: sha512-SQa1Ws6hUbfC98vKGxZH3KFY0Y1lm5Zm0SY8XX9zbK7FJCyVEac3ATW0RIpwzW+oOfmHE5PMPufDG9hCfoEOMw==}
-
   code-block-writer@13.0.3:
     resolution: {integrity: sha512-Oofo0pq3IKnsFtuHqSF7TqBfr71aeyZDVJ0HpmqB7FBM2qEigL0iPONSCZSO9pE9dZTAxANe5XHG9Uy0YMv8cg==}
 
@@ -730,9 +717,6 @@ packages:
   jest-util@30.0.5:
     resolution: {integrity: sha512-pvyPWssDZR0FlfMxCBoc0tvM8iUEskaRFALUtGQYzVEAqisAztmy+R8LnU14KT4XA0H/a5HMVTXat1jLne010g==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
-
-  jose@6.0.12:
-    resolution: {integrity: sha512-T8xypXs8CpmiIi78k0E+Lk7T2zlK4zDyg+o1CZ4AkOHgDg98ogdP2BeZ61lTFKFyoEwJ9RgAgN+SdM3iPgNonQ==}
 
   joycon@3.1.1:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
@@ -1415,8 +1399,6 @@ snapshots:
 
   ci-info@4.3.0: {}
 
-  class-transformer@0.5.1: {}
-
   code-block-writer@13.0.3: {}
 
   color-convert@2.0.1:
@@ -1610,8 +1592,6 @@ snapshots:
       ci-info: 4.3.0
       graceful-fs: 4.2.11
       picomatch: 4.0.3
-
-  jose@6.0.12: {}
 
   joycon@3.1.1: {}
 

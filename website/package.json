@@ -4,7 +4,6 @@
 		"dev": "concurrently \"pnpm dev:api\" \"pnpm dev:web\"",
 		"dev:api": "cd ../server && npm run start",
 		"dev:web": "vite",
-		"pretypes": "cd ../types && npm run build",
 		"types": "pnpm add file:../types",
 		"prebuild": "pnpm i && npm run types",
 		"build": "vue-tsc -b && vite build",
@@ -18,7 +17,7 @@
 		"flowbite": "^3.1.2",
 		"material-symbols": "^0.32.0",
 		"tailwindcss": "^4.1.10",
-		"templatefullstack-types": "file:../types",
+		"types": "file:../types",
 		"vue": "^3.5.13",
 		"vue-router": "^4.5.1"
 	},

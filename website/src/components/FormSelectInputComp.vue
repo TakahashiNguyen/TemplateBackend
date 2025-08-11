@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import type { IAlert } from '@/error/interfaces';
-import type { ErrorObject } from 'templatefullstack-types';
+import type { ErrorObject } from 'types';
 
 const model = defineModel();
 defineProps<{

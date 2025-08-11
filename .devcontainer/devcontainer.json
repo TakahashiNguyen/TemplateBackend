@@ -15,7 +15,10 @@
 				"ecmel.vscode-html-css",
 				"streetsidesoftware.code-spell-checker",
 				"Vue.volar",
-				"github.vscode-github-actions"
+				"github.vscode-github-actions",
+				"tauri-apps.tauri-vscode",
+				"rust-lang.rust-analyzer",
+				"tamasfe.even-better-toml"
 			]
 		}
 	},
