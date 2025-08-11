@@ -148,8 +148,6 @@ jobs:
       - name: Pre-build image and run make ci-build in dev container
         uses: devcontainers/ci@8bf61b26e9c3a98f69cb6ce2f88d24ff59b785c6
         with:
-          cacheFrom: ghcr.io/${{ github.repository }}-ci
-          imageName: ghcr.io/${{ github.repository }}-ci
           push: always
           runCmd: |
             cd server
