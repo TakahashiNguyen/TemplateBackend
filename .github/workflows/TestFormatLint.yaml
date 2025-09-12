@@ -121,7 +121,7 @@ jobs:
       - build-push
     if: ${{ needs.FormatAndLint.outputs.project == 'true' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 10
     permissions:
       packages: write
       contents: write
@@ -141,6 +141,7 @@ jobs:
         with:
           push: always
           runCmd: |
+            npm run build
             cd server
             npm run test:${{ matrix.object }}
 
