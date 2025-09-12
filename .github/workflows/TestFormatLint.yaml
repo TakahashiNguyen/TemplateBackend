@@ -149,8 +149,8 @@ jobs:
         with:
           push: always
           runCmd: |
-            cd server
             pnpm run build
+            cd server
             npm run test:${{ matrix.object }}
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
