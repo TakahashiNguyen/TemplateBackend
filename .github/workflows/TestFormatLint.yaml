@@ -40,16 +40,9 @@ jobs:
     needs: filter-dockerfile
     if: ${{ needs.filter-dockerfile.outputs.dockerfile_changed == 'true' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 7
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-
-      - id: 'getBranch'
-        run: |
-          if [[ $GITHUB_REF_NAME == 'master' ]]; then
-              echo "test=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-          else
-              echo "test='HEAD'" >> "$GITHUB_OUTPUT"
-          fi
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1
@@ -76,6 +69,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           sbom: true
           provenance: mode=max
           context: .devcontainer
@@ -92,8 +87,8 @@ jobs:
 
       - id: 'getBranch'
         run: |
-          if [[ $GITHUB_REF_NAME == 'master' ]]; then
-              echo "test=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          if [[ $GITHUB_REF_NAME == 'main' ]]; then
+              echo "test=$(git rev-parse HEAD~1)" >> "$GITHUB_OUTPUT"
           else
               echo "test='HEAD'" >> "$GITHUB_OUTPUT"
           fi
@@ -119,9 +114,8 @@ jobs:
           base: ${{ steps.getBranch.outputs.test }}
           filters: |
             project:
-              - 'src/**'
-              - 'mail/**'
-              - 'page/**'
+              - '**/*.json'
+              - '**/*.ts'
               - 'pnpm-lock.yaml'
 
   Test:
@@ -130,7 +124,7 @@ jobs:
       - build-push
     if: ${{ needs.FormatAndLint.outputs.project == 'true' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 5
     permissions:
       packages: write
       contents: write
@@ -189,14 +183,14 @@ jobs:
         uses: MishaKav/jest-coverage-comment@main
         with:
           title: Requesters test result
-          coverage-path: ./requesters/coverage/requesters.txt
+          coverage-path: ./reports_requesters/coverage/requesters.txt
           create-new-comment: true
 
       - name: Service
         uses: MishaKav/jest-coverage-comment@main
         with:
           title: Service test result
-          coverage-path: ./service/coverage/service.txt
+          coverage-path: ./reports_service/coverage/service.txt
           create-new-comment: true
 
       - uses: dorny/test-reporter@dc3a92680fcc15842eef52e8c4606ea7ce6bd3f3

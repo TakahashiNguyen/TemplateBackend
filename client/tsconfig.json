@@ -10,6 +10,9 @@
 		"noFallthroughCasesInSwitch": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
+		"paths": {
+			"@/*": ["./src/*"]
+		},
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"strict": true,
