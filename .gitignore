@@ -5,6 +5,7 @@
 /**/docs/
 /**/.pnpm-store/
 /**/node-compile-cache/
+/**/src-tauri/gen/
 
 # Logs
 /**/logs

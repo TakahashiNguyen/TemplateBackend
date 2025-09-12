@@ -25,7 +25,7 @@
 	"dockerComposeFile": "docker-compose.main.yml",
 	"forwardPorts": [3000, 6379, 9000, 9001, 8025, 5173],
 	"postCreateCommand": {
-		"compile": "pnpm build",
+		"build": "pnpm run build",
 		"ssl": "openssl req -x509 -newkey rsa:4096 -nodes -keyout /certs/key.pem -out /certs/cert.pem -sha256 -days 3650 -subj \"/C=VN/ST=Hanoi/L=Hanoi/O=foo/CN=bar.com\""
 	},
 	"remoteEnv": {

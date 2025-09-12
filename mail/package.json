@@ -2,8 +2,8 @@
 	"type": "module",
 	"scripts": {
 		"prebuild": "pnpm i",
-		"dev": "maizzle serve",
-		"build": "maizzle build production"
+		"build": "maizzle build production",
+		"dev": "maizzle serve"
 	},
 	"dependencies": {
 		"@maizzle/framework": "latest",
