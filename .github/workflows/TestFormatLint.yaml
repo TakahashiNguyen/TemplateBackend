@@ -40,6 +40,7 @@ jobs:
     needs: filter-dockerfile
     if: ${{ needs.filter-dockerfile.outputs.dockerfile_changed == 'true' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 7
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
@@ -121,7 +122,7 @@ jobs:
       - build-push
     if: ${{ needs.FormatAndLint.outputs.project == 'true' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     permissions:
       packages: write
       contents: write
@@ -141,7 +142,6 @@ jobs:
         with:
           push: always
           runCmd: |
-            npm run build
             cd server
             npm run test:${{ matrix.object }}
 
@@ -181,14 +181,14 @@ jobs:
         uses: MishaKav/jest-coverage-comment@main
         with:
           title: Requesters test result
-          coverage-path: ./requesters/coverage/requesters.txt
+          coverage-path: ./reports_requesters/coverage/requesters.txt
           create-new-comment: true
 
       - name: Service
         uses: MishaKav/jest-coverage-comment@main
         with:
           title: Service test result
-          coverage-path: ./service/coverage/service.txt
+          coverage-path: ./reports_service/coverage/service.txt
           create-new-comment: true
 
       - uses: dorny/test-reporter@dc3a92680fcc15842eef52e8c4606ea7ce6bd3f3
