@@ -38,10 +38,12 @@ jobs:
   build-push:
     name: Build and push Docker image
     needs: filter-dockerfile
-    if: ${{ needs.filter-dockerfile.outputs.dockerfile_changed == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 7
     steps:
+      - run: exit 0
+        if: ${{ needs.filter-dockerfile.outputs.dockerfile_changed == 'true' }}
+
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Log in to GitHub Container Registry
@@ -122,7 +124,6 @@ jobs:
     needs:
       - FormatAndLint
       - build-push
-    if: ${{ needs.FormatAndLint.outputs.project == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -137,6 +138,9 @@ jobs:
       run:
         working-directory: server
     steps:
+      - run: exit 0
+        if: ${{ needs.FormatAndLint.outputs.project == 'true' }}
+
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Pre-build image and run make ci-build in dev container
