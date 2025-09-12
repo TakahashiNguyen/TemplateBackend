@@ -7,7 +7,8 @@
 		"icon": "tauri icon src-tauri/icons/index.png",
 		"prebuild": "pnpm i && npm run types && npm run icon",
 		"build:website": "vue-tsc --noEmit && vite build",
-		"build": "tauri build",
+		"//": "https://github.com/tauri-apps/tauri/issues/8929",
+		"build": "NO_STRIP=true tauri build",
 		"build:android": "tauri android build --apk --split-per-abi",
 		"preview": "vite preview",
 		"tauri": "tauri"
