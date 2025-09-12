@@ -10,7 +10,7 @@ export default defineConfig({
 	plugins: [vue(), tailwindcss()],
 
 	optimizeDeps: { force: true },
-	build: { minify: true, cssMinify: true, },
+	build: { minify: true, cssMinify: true },
 
 	// Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
 	//
