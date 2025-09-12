@@ -6,9 +6,10 @@
 		"types": "pnpm add file:../types",
 		"icon": "tauri icon src-tauri/icons/index.png",
 		"prebuild": "pnpm i && npm run types && npm run icon",
+		"build": "npm run build:website",
 		"build:website": "vue-tsc --noEmit && vite build",
 		"//": "https://github.com/tauri-apps/tauri/issues/8929",
-		"build": "NO_STRIP=true tauri build",
+		"build:native": "NO_STRIP=true tauri build",
 		"build:android": "tauri android build --apk --split-per-abi",
 		"preview": "vite preview",
 		"tauri": "tauri"
