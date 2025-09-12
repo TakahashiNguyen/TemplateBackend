@@ -45,8 +45,8 @@ jobs:
 
       - id: 'getBranch'
         run: |
-          if [[ $GITHUB_REF_NAME == 'master' ]]; then
-              echo "test=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          if [[ $GITHUB_REF_NAME == 'main' ]]; then
+              echo "test=$(git rev-parse HEAD~1)" >> "$GITHUB_OUTPUT"
           else
               echo "test='HEAD'" >> "$GITHUB_OUTPUT"
           fi
@@ -92,8 +92,8 @@ jobs:
 
       - id: 'getBranch'
         run: |
-          if [[ $GITHUB_REF_NAME == 'master' ]]; then
-              echo "test=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          if [[ $GITHUB_REF_NAME == 'main' ]]; then
+              echo "test=$(git rev-parse HEAD~1)" >> "$GITHUB_OUTPUT"
           else
               echo "test='HEAD'" >> "$GITHUB_OUTPUT"
           fi
@@ -150,6 +150,7 @@ jobs:
           push: always
           runCmd: |
             cd server
+            pnpm run build
             npm run test:${{ matrix.object }}
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
