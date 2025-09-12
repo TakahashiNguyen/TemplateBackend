@@ -5,7 +5,10 @@ include:
 
 services:
   devcontainer:
-    image: ghcr.io/takahashinguyen/templatebackend:nightly
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # image: ghcr.io/takahashinguyen/templatebackend:nightly
     volumes:
       - ../..:/workspaces:cached
       - certificates:/certs

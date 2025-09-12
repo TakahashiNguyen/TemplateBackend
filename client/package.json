@@ -1,11 +1,14 @@
 {
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
+		"dev:website": "vite",
+		"dev": "tauri dev",
 		"types": "pnpm add file:../types",
 		"icon": "tauri icon src-tauri/icons/index.png",
 		"prebuild": "pnpm i && npm run types && npm run icon",
-		"build": "vue-tsc --noEmit && vite build",
+		"build:website": "vue-tsc --noEmit && vite build",
+		"build": "tauri build",
+		"build:android": "tauri android build --apk --split-per-abi",
 		"preview": "vite preview",
 		"tauri": "tauri"
 	},
@@ -17,6 +20,7 @@
 		"axios": "^1.10.0",
 		"flowbite": "^3.1.2",
 		"material-symbols": "^0.34.0",
+		"tailwindcss": "^4.1.12",
 		"types": "file:../types",
 		"vue": "^3.5.13",
 		"vue-router": "^4.5.1"

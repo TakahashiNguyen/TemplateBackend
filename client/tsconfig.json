@@ -3,7 +3,11 @@
 		"allowImportingTsExtensions": true,
 		"isolatedModules": true,
 		"jsx": "preserve",
-		"lib": ["ES2020", "DOM", "DOM.Iterable"],
+		"lib": [
+			"ES2020",
+			"DOM",
+			"DOM.Iterable"
+		],
 		"module": "ESNext",
 		"moduleResolution": "bundler",
 		"noEmit": true,
@@ -14,9 +18,19 @@
 		"skipLibCheck": true,
 		"strict": true,
 		"target": "ES2020",
-		"useDefineForClassFields": true
+		"useDefineForClassFields": true,
+		"paths": {
+			"@/*": [
+				"./src/*"
+			]
+		},
 	},
-	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+	"include": [
+		"src/**/*.ts",
+		"src/**/*.d.ts",
+		"src/**/*.tsx",
+		"src/**/*.vue"
+	],
 	"references": [
 		{
 			"path": "./tsconfig.node.json"

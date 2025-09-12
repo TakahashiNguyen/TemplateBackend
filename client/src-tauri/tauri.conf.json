@@ -7,14 +7,14 @@
 		"windows": [
 			{
 				"height": 600,
-				"title": "mobile",
+				"title": "templatefullstack",
 				"width": 800
 			}
 		]
 	},
 	"build": {
-		"beforeBuildCommand": "pnpm build",
-		"beforeDevCommand": "pnpm dev",
+		"beforeBuildCommand": "pnpm build:website",
+		"beforeDevCommand": "pnpm dev:website",
 		"devUrl": "http://localhost:1420",
 		"frontendDist": "../dist"
 	},
@@ -30,6 +30,6 @@
 		"targets": "all"
 	},
 	"identifier": "com.takahashinguyen.templatefullstack",
-	"productName": "mobile",
-	"version": "0.1.0"
+	"productName": "templatefullstack",
+	"version": "0.0.1"
 }
