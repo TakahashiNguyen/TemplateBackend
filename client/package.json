@@ -15,7 +15,7 @@
 		"tauri": "tauri"
 	},
 	"dependencies": {
-		"@apollo/explorer": "^3.7.2",
+		"@apollo/explorer": "^3.7.3",
 		"@tauri-apps/api": "^2",
 		"@tauri-apps/plugin-opener": "^2",
 		"@vueuse/core": "^13.5.0",
