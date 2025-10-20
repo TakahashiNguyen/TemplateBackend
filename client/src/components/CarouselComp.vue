@@ -8,7 +8,7 @@
 		<!-- Carousel wrapper -->
 		<div
 			ref="carouselWrapper"
-			class="[&>*]:absolute! [&>*]:duration-(--duration) relative h-56 overflow-hidden [&>*]:w-full [&>*]:ease-in-out"
+			class="relative h-56 overflow-hidden [&>*]:absolute! [&>*]:w-full [&>*]:duration-(--duration) [&>*]:ease-in-out"
 		>
 			<DivWrapper v-bind="$attrs">
 				<slot name="content" />
@@ -26,11 +26,11 @@
 				title="previous"
 				ref="carouselPrevious"
 				type="button"
-				class="group absolute left-0 top-0 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
+				class="group absolute top-0 left-0 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
 				:class="{ hidden: !overflowing && !isCycle && isStart }"
 			>
 				<span
-					class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70"
+					class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70"
 				>
 					<svg
 						class="h-4 w-4 text-white dark:text-gray-800"
@@ -53,11 +53,11 @@
 				title="next"
 				ref="carouselNext"
 				type="button"
-				class="group absolute right-0 top-0 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
+				class="group absolute top-0 right-0 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
 				:class="{ hidden: !overflowing && !isCycle && isEnd }"
 			>
 				<span
-					class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70"
+					class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70"
 				>
 					<svg
 						class="h-4 w-4 text-white dark:text-gray-800"
