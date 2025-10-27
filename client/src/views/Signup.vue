@@ -9,11 +9,11 @@
 				activeClasses: 'bg-light-primary/90',
 				inactiveClasses: 'bg-light-primary/50 hover:bg-light-primary/70',
 			}"
-			class="min-h-30 mb-20"
+			class="mb-20 min-h-30"
 		>
 			<template #buttons="{ next, isEnd, previous, isStart }">
 				<div
-					class="-bottom-15 right-0 flex h-8 w-fit items-center justify-center [&>*]:ml-2"
+					class="right-0 -bottom-15 flex h-8 w-fit items-center justify-center [&>*]:ml-2"
 				>
 					<ButtonComp
 						:button-ref="previous"

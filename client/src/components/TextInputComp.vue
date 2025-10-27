@@ -6,7 +6,7 @@
 			'text-success!': isObject && isSuccess,
 		}"
 	>
-		<label class="z-1 bg--0 -mb-2 ml-2 block w-fit text-sm font-medium">
+		<label class="bg--0 z-1 -mb-2 ml-2 block w-fit text-sm font-medium">
 			{{ name }}
 		</label>
 		<div class="relative z-0">

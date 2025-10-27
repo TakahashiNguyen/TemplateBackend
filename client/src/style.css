@@ -1,8 +1,8 @@
 @import 'tailwindcss';
 @import 'material-symbols';
 
-@plugin "flowbite/plugin";
-@source "../node_modules/flowbite";
+@plugin 'flowbite/plugin';
+@source '../node_modules/flowbite';
 
 @theme {
 	--font-sans:
@@ -63,7 +63,7 @@
 	}
 
 	.center {
-		@apply items-center-safe justify-center-safe flex;
+		@apply flex items-center-safe justify-center-safe;
 	}
 
 	* {
