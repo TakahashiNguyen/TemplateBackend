@@ -1638,6 +1638,7 @@ packages:
   '@graphql-tools/prisma-loader@8.0.17':
     resolution: {integrity: sha512-fnuTLeQhqRbA156pAyzJYN0KxCjKYRU5bz1q/SKOwElSnAU4k7/G1kyVsWLh7fneY78LoMNH5n+KlFV8iQlnyg==}
     engines: {node: '>=16.0.0'}
+    deprecated: 'This package was intended to be used with an older versions of Prisma.\nThe newer versions of Prisma has a different approach to GraphQL integration.\nTherefore, this package is no longer needed and has been deprecated and removed.\nLearn more: https://www.prisma.io/graphql'
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
 
@@ -2034,8 +2035,8 @@ packages:
   '@keyv/serialize@1.0.3':
     resolution: {integrity: sha512-qnEovoOp5Np2JDGonIDL6Ayihw0RhnRh6vxPuHo4RDn1UOzwEo4AeIfpL6UGIrsceWrCMiVPgwRjbHu4vYFc3g==}
 
-  '@keyv/serialize@1.1.0':
-    resolution: {integrity: sha512-RlDgexML7Z63Q8BSaqhXdCYNBy/JQnqYIwxofUrNLGCblOMHp+xux2Q8nLMLlPpgHQPoU0Do8Z6btCpRBEqZ8g==}
+  '@keyv/serialize@1.1.1':
+    resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
 
   '@lukeed/csprng@1.1.0':
     resolution: {integrity: sha512-Z7C/xXCiGWsg0KuKsHTKJxbWhpI3Vs5GwLfOean7MGyVFGqdRgBbAjOCh6u4bbjPc/8MJ2pZmK/0DLdCbivLDA==}
@@ -2902,8 +2903,8 @@ packages:
   '@swc/counter@0.1.3':
     resolution: {integrity: sha512-e2BR4lsJkkRlKZ/qCHPw9ZaSxc0MVUd7gtbtaB7aMvHeJVYe8sOB8DBZkP2DtISHGSku9sCK6T6cnY0CtXrOCQ==}
 
-  '@swc/types@0.1.24':
-    resolution: {integrity: sha512-tjTMh3V4vAORHtdTprLlfoMptu1WfTZG9Rsca6yOKyNYsRr+MUXutKmliB17orgSZk5DpnDxs8GUdd/qwYxOng==}
+  '@swc/types@0.1.25':
+    resolution: {integrity: sha512-iAoY/qRhNH8a/hBvm3zKj9qQ4oc2+3w1unPJa2XvTK3XjeLXtzcCingVPw/9e5mn1+0yPqxcBGp9Jf0pkfMb1g==}
 
   '@szmarczak/http-timer@5.0.1':
     resolution: {integrity: sha512-+PmQX0PiAYPMeVYe237LJAYvOMYW1j2rH5YROyS3b4CTVJum34HfRvKvAzozHAQG0TnHNdUfY9nCeUyRAs//cw==}
@@ -3483,8 +3484,13 @@ packages:
   avvio@9.1.0:
     resolution: {integrity: sha512-fYASnYi600CsH/j9EQov7lECAniYiBFiiAtBNuZYLA2leLe9qOvZzqYHFjtIj6gD2VMoMLP14834LFWvr4IfDw==}
 
-  b4a@1.6.7:
-    resolution: {integrity: sha512-OnAYlL5b7LEkALw87fUVafQw5rVR9RjwGd4KUwNQ6DrrNmaVaUCgLipfVlzrPQ4tWOR9P0IXGNOx50jYCCdSJg==}
+  b4a@1.7.3:
+    resolution: {integrity: sha512-5Q2mfq2WfGuFp3uS//0s6baOJLMoVduPYVeNmDYxu5OUA1/cBfvr2RIS7vi62LdNj/urk1hfmj867I3qt6uZ7Q==}
+    peerDependencies:
+      react-native-b4a: '*'
+    peerDependenciesMeta:
+      react-native-b4a:
+        optional: true
 
   babel-jest@29.7.0:
     resolution: {integrity: sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==}
@@ -3548,8 +3554,13 @@ packages:
       bare-url:
         optional: true
 
-  bare-events@2.6.1:
-    resolution: {integrity: sha512-AuTJkq9XmE6Vk0FJVNq5QxETrSA/vKHarWVBG5l/JbdCL1prJemiyJqUS0jrlXO0MftuPq4m3YVYhoNc5+aE/g==}
+  bare-events@2.8.1:
+    resolution: {integrity: sha512-oxSAxTS1hRfnyit2CL5QpAOS5ixfBjj6ex3yTNvXyY/kE719jQ/IjuESJBK2w5v4wwQRAHGseVJXx9QBYOtFGQ==}
+    peerDependencies:
+      bare-abort-controller: '*'
+    peerDependenciesMeta:
+      bare-abort-controller:
+        optional: true
 
   bare-module-resolve@1.11.1:
     resolution: {integrity: sha512-DCxeT9i8sTs3vUMA3w321OX/oXtNEu5EjObQOnTmCdNp5RXHBAvAaBDHvAi9ta0q/948QPz+co6SsGi6aQMYRg==}
@@ -4071,6 +4082,15 @@ packages:
       supports-color:
         optional: true
 
+  debug@4.4.3:
+    resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+
   decache@4.6.2:
     resolution: {integrity: sha512-2LPqkLeu8XWHU8qNCS3kcF6sCcb5zIzvWaAHYSvPfwhdd7mHuah29NssMzrTYyHN4F5oFy2ko9OBYxegtU0FEw==}
 
@@ -4465,6 +4485,9 @@ packages:
 
   eventemitter3@3.1.2:
     resolution: {integrity: sha512-tvtQIeLVHjDkJYnzf2dgVMxfuSGJeM/7UCG17TT4EumTfNtF+0nebF/4zWOIkCreAbtNqhGEboB6BWrwqNaw4Q==}
+
+  events-universal@1.0.1:
+    resolution: {integrity: sha512-LUd5euvbMLpwOF8m6ivPCbhQeSiYVNb8Vs0fQ8QjXo0JTkEHpz8pxdQf0gStltaPpw0Cca8b39KxvK9cfKRiAw==}
 
   events@3.3.0:
     resolution: {integrity: sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==}
@@ -5048,6 +5071,10 @@ packages:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
 
+  iconv-lite@0.7.0:
+    resolution: {integrity: sha512-cf6L2Ds3h57VVmkZe+Pn+5APsT7FpqJtEhhieDCvrE2MK5Qk9MyffgQyuxQTm6BChfeZNtcOLHp9IcWRVcIcBQ==}
+    engines: {node: '>=0.10.0'}
+
   ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
 
@@ -5570,8 +5597,8 @@ packages:
   keyv@5.3.4:
     resolution: {integrity: sha512-ypEvQvInNpUe+u+w8BIcPkQvEqXquyyibWE/1NB5T2BTzIpS5cGEV1LZskDzPSTvNAaT4+5FutvzlvnkxOSKlw==}
 
-  keyv@5.5.0:
-    resolution: {integrity: sha512-QG7qR2tijh1ftOvClut4YKKg1iW6cx3GZsKoGyJPxHkGWK9oJhG9P3j5deP0QQOGDowBMVQFaP+Vm4NpGYvmIQ==}
+  keyv@5.5.3:
+    resolution: {integrity: sha512-h0Un1ieD+HUrzBH6dJXhod3ifSghk5Hw/2Y4/KHBziPlZecrFyE9YOTPU6eOs0V9pYl8gOs86fkr/KN8lUX39A==}
 
   kind-of@6.0.3:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
@@ -5754,6 +5781,7 @@ packages:
 
   mailsplit@5.4.3:
     resolution: {integrity: sha512-PFV0BBh4Tv7Omui5FtXXVtN4ExAxIi8Yvmb9JgBz+J6Hnnrv/YYXLlKKudLhXwd3/qWEATOslRsnzVCWDeCnmQ==}
+    deprecated: This package has been renamed to @zone-eu/mailsplit. Please update your dependencies.
 
   make-dir@4.0.0:
     resolution: {integrity: sha512-hXdUTZYIVOt1Ex//jAQi+wTZZpUpwBj/0QsOzqegb3rGMMeJiSEu5xLHnYfBrRV4RH2+OCSOO95Is/7x1WJ4bw==}
@@ -6229,8 +6257,8 @@ packages:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
 
-  normalize-url@8.0.2:
-    resolution: {integrity: sha512-Ee/R3SyN4BuynXcnTaekmaVdbDAEiNrHqjQIA37mHU8G9pf7aaAD4ZX3XjBLo6rsdcxA/gtkcNYZLt30ACgynw==}
+  normalize-url@8.1.0:
+    resolution: {integrity: sha512-X06Mfd/5aKsRHc0O0J5CUedwnPmnDtLF2+nq+KN9KSDlJHkPuh0JUviWjEWMe0SW/9TDdSLVPuk7L5gGTIA1/w==}
     engines: {node: '>=14.16'}
 
   npm-run-path@2.0.2:
@@ -6698,9 +6726,9 @@ packages:
     resolution: {integrity: sha512-8zGqypfENjCIqGhgXToC8aB2r7YrBX+AQAfIPs/Mlk+BtPTztOvTS01NRW/3Eh60J+a48lt8qsCzirQ6loCVfA==}
     engines: {node: '>= 0.8'}
 
-  raw-body@3.0.0:
-    resolution: {integrity: sha512-RmkhL8CAyCRPXCE28MMH0z2PNWQBNk2Q09ZdxM9IOOXwxwZbN+qbWaatPkdkWIKL2ZVDImrN/pK5HTRz2PcS4g==}
-    engines: {node: '>= 0.8'}
+  raw-body@3.0.1:
+    resolution: {integrity: sha512-9G8cA+tuMS75+6G/TzW8OtLzmBDMo8p1JRxN5AZ+LAp8uxGA8V8GZm4GQ4/N5QNQEnLmg6SS7wyuSmbKepiKqA==}
+    engines: {node: '>= 0.10'}
 
   rc@1.2.8:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
@@ -6915,6 +6943,11 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  semver@7.7.3:
+    resolution: {integrity: sha512-SdsKMrI9TdgjdweUSR9MweHA4EJ8YxHn8DFaDisvhVlUOe4BF1tLD7GAj0lIqWVl+dPb/rExr0Btby5loQm20Q==}
+    engines: {node: '>=10'}
+    hasBin: true
+
   send@0.19.0:
     resolution: {integrity: sha512-dW41u5VfLXu8SJh5bwRmyYUbAoSB3c9uQh6L8h/KtsFREPWpbX1lrljJo186Jc4nmci/sGUZ9a0a0J2zgfq2hw==}
     engines: {node: '>= 0.8.0'}
@@ -7116,8 +7149,8 @@ packages:
     resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}
     engines: {node: '>=10.0.0'}
 
-  streamx@2.22.1:
-    resolution: {integrity: sha512-znKXEBxfatz2GBNK02kRnCXjV+AA4kjZIUxeWSr3UGirZMJfTE9uiwKHobnbgxWyL/JWro8tTq+vOqAK1/qbSA==}
+  streamx@2.23.0:
+    resolution: {integrity: sha512-kn+e44esVfn2Fa/O0CPFcex27fjIL6MkVae0Mm6q+E6f0hWv578YCERbv+4m02cjxvDsPKLnmxral/rR6lBMAg==}
 
   string-env-interpolation@1.0.1:
     resolution: {integrity: sha512-78lwMoCcn0nNu8LszbP1UA7g55OeE4v7rCeWnM5B453rnNr4aq+5it3FEYtZrSEiMvHZOZ9Jlqb0OD0M2VInqg==}
@@ -7260,8 +7293,8 @@ packages:
       uglify-js:
         optional: true
 
-  terser@5.43.1:
-    resolution: {integrity: sha512-+6erLbBm0+LROX2sPXlUYx/ux5PyE9K/a92Wrt6oA+WDAoFTdpHE5tCYCI5PNzq2y8df4rA+QgHLJuR4jNymsg==}
+  terser@5.44.0:
+    resolution: {integrity: sha512-nIVck8DK+GM/0Frwd+nIhZ84pR/BX7rmXMfYwyg+Sri5oGVE99/E3KvXqpC2xHFxyqXyGHTKBSioxxplrO4I4w==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -7539,8 +7572,8 @@ packages:
     resolution: {integrity: sha512-u3xV3X7uzvi5b1MncmZo3i2Aw222Zk1keqLA1YkHldREkAhAqi65wuPfe7lHx8H/Wzy+8CE7S7uS3jekIM5s8g==}
     engines: {node: '>=8'}
 
-  uint8array-extras@1.4.1:
-    resolution: {integrity: sha512-+NWHrac9dvilNgme+gP4YrBSumsaMZP0fNBtXXFIf33RLLKEcBUKaQZ7ULUbS0sBfcjxIZ4V96OTRkCbM7hxpw==}
+  uint8array-extras@1.5.0:
+    resolution: {integrity: sha512-rvKSBiC5zqCCiDZ9kAOszZcDvdAHwwIKJG33Ykj43OKcWsnmcBRL09YTU4nOeHZ8Y2a7l1MgTd08SBe9A8Qj6A==}
     engines: {node: '>=18'}
 
   unbzip2-stream@1.4.3:
@@ -7648,8 +7681,8 @@ packages:
     resolution: {integrity: sha512-jOWVmzVceKlVVdwjNSenT4PbGghU0SBIizAev8ofZVgivk/TVHXSbNL8LP6M3spZvkR9/QolkyJavGSX5Cs0UA==}
     engines: {node: '>=10'}
 
-  validator@13.15.15:
-    resolution: {integrity: sha512-BgWVbCI72aIQy937xbawcs+hrVaN/CZ2UwutgaJ36hGqRrLNM+f5LUT/YPRbo8IV/ASeFzXszezV+y2+rq3l8A==}
+  validator@13.15.20:
+    resolution: {integrity: sha512-KxPOq3V2LmfQPP4eqf3Mq/zrT0Dqp2Vmx2Bn285LwVahLc+CsxOM0crBHczm8ijlcjZ0Q5Xd6LW3z3odTPnlrw==}
     engines: {node: '>= 0.10'}
 
   value-or-promise@1.0.12:
@@ -8641,7 +8674,7 @@ snapshots:
       '@babel/traverse': 7.27.4
       '@babel/types': 7.27.6
       convert-source-map: 2.0.0
-      debug: 4.4.1
+      debug: 4.4.3
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -8693,7 +8726,7 @@ snapshots:
       '@babel/core': 7.25.8
       '@babel/helper-compilation-targets': 7.27.2
       '@babel/helper-plugin-utils': 7.27.1
-      debug: 4.4.1
+      debug: 4.4.3
       lodash.debounce: 4.0.8
       resolve: 1.22.10
     transitivePeerDependencies:
@@ -9339,7 +9372,7 @@ snapshots:
       '@babel/parser': 7.27.5
       '@babel/template': 7.27.2
       '@babel/types': 7.27.6
-      debug: 4.4.1
+      debug: 4.4.3
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -9537,7 +9570,7 @@ snapshots:
   '@eslint/config-array@0.20.1':
     dependencies:
       '@eslint/object-schema': 2.1.6
-      debug: 4.4.1
+      debug: 4.4.3
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -9555,7 +9588,7 @@ snapshots:
   '@eslint/eslintrc@3.3.1':
     dependencies:
       ajv: 6.12.6
-      debug: 4.4.1
+      debug: 4.4.3
       espree: 10.4.0
       globals: 14.0.0
       ignore: 5.3.2
@@ -10087,7 +10120,7 @@ snapshots:
       '@types/js-yaml': 4.0.9
       '@whatwg-node/fetch': 0.10.9
       chalk: 4.1.2
-      debug: 4.4.1
+      debug: 4.4.3
       dotenv: 16.4.7
       graphql: 16.11.0
       graphql-request: 6.1.0(graphql@16.11.0)
@@ -10675,7 +10708,7 @@ snapshots:
     dependencies:
       buffer: 6.0.3
 
-  '@keyv/serialize@1.1.0': {}
+  '@keyv/serialize@1.1.1': {}
 
   '@lukeed/csprng@1.1.0': {}
 
@@ -11517,12 +11550,14 @@ snapshots:
       fast-glob: 3.3.3
       minimatch: 9.0.5
       piscina: 4.9.2
-      semver: 7.7.2
+      semver: 7.7.3
       slash: 3.0.0
       source-map: 0.7.6
     optionalDependencies:
       chokidar: 4.0.3
     transitivePeerDependencies:
+      - bare-abort-controller
+      - react-native-b4a
       - supports-color
     optional: true
 
@@ -11559,7 +11594,7 @@ snapshots:
   '@swc/core@1.13.3':
     dependencies:
       '@swc/counter': 0.1.3
-      '@swc/types': 0.1.24
+      '@swc/types': 0.1.25
     optionalDependencies:
       '@swc/core-darwin-arm64': 1.13.3
       '@swc/core-darwin-x64': 1.13.3
@@ -11576,7 +11611,7 @@ snapshots:
   '@swc/counter@0.1.3':
     optional: true
 
-  '@swc/types@0.1.24':
+  '@swc/types@0.1.25':
     dependencies:
       '@swc/counter': 0.1.3
     optional: true
@@ -11606,7 +11641,7 @@ snapshots:
 
   '@tokenizer/inflate@0.2.7':
     dependencies:
-      debug: 4.4.1
+      debug: 4.4.3
       fflate: 0.8.2
       token-types: 6.1.1
     transitivePeerDependencies:
@@ -11860,7 +11895,7 @@ snapshots:
       '@typescript-eslint/types': 8.34.0
       '@typescript-eslint/typescript-estree': 8.34.0(typescript@5.8.3)
       '@typescript-eslint/visitor-keys': 8.34.0
-      debug: 4.4.1
+      debug: 4.4.3
       eslint: 9.29.0(jiti@2.4.2)
       typescript: 5.8.3
     transitivePeerDependencies:
@@ -11870,7 +11905,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/tsconfig-utils': 8.34.0(typescript@5.8.3)
       '@typescript-eslint/types': 8.34.0
-      debug: 4.4.1
+      debug: 4.4.3
       typescript: 5.8.3
     transitivePeerDependencies:
       - supports-color
@@ -11888,7 +11923,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/typescript-estree': 8.34.0(typescript@5.8.3)
       '@typescript-eslint/utils': 8.34.0(eslint@9.29.0(jiti@2.4.2))(typescript@5.8.3)
-      debug: 4.4.1
+      debug: 4.4.3
       eslint: 9.29.0(jiti@2.4.2)
       ts-api-utils: 2.1.0(typescript@5.8.3)
       typescript: 5.8.3
@@ -11905,11 +11940,11 @@ snapshots:
       '@typescript-eslint/tsconfig-utils': 8.34.0(typescript@5.8.3)
       '@typescript-eslint/types': 8.34.0
       '@typescript-eslint/visitor-keys': 8.34.0
-      debug: 4.4.1
+      debug: 4.4.3
       fast-glob: 3.3.3
       is-glob: 4.0.3
       minimatch: 9.0.5
-      semver: 7.7.2
+      semver: 7.7.3
       ts-api-utils: 2.1.0(typescript@5.8.3)
       typescript: 5.8.3
     transitivePeerDependencies:
@@ -12050,6 +12085,8 @@ snapshots:
       '@xhmikosr/os-filter-obj': 3.0.0
       bin-version-check: 5.1.0
     transitivePeerDependencies:
+      - bare-abort-controller
+      - react-native-b4a
       - supports-color
     optional: true
 
@@ -12059,6 +12096,8 @@ snapshots:
       is-stream: 2.0.1
       tar-stream: 3.1.7
     transitivePeerDependencies:
+      - bare-abort-controller
+      - react-native-b4a
       - supports-color
     optional: true
 
@@ -12070,6 +12109,8 @@ snapshots:
       seek-bzip: 2.0.0
       unbzip2-stream: 1.4.3
     transitivePeerDependencies:
+      - bare-abort-controller
+      - react-native-b4a
       - supports-color
     optional: true
 
@@ -12079,6 +12120,8 @@ snapshots:
       file-type: 20.5.0
       is-stream: 2.0.1
     transitivePeerDependencies:
+      - bare-abort-controller
+      - react-native-b4a
       - supports-color
     optional: true
 
@@ -12100,6 +12143,8 @@ snapshots:
       graceful-fs: 4.2.11
       strip-dirs: 3.0.0
     transitivePeerDependencies:
+      - bare-abort-controller
+      - react-native-b4a
       - supports-color
     optional: true
 
@@ -12115,6 +12160,8 @@ snapshots:
       get-stream: 6.0.1
       got: 13.0.0
     transitivePeerDependencies:
+      - bare-abort-controller
+      - react-native-b4a
       - supports-color
     optional: true
 
@@ -12292,7 +12339,7 @@ snapshots:
       '@fastify/error': 4.2.0
       fastq: 1.19.1
 
-  b4a@1.6.7:
+  b4a@1.7.3:
     optional: true
 
   babel-jest@29.7.0(@babel/core@7.27.4):
@@ -12400,7 +12447,7 @@ snapshots:
     optionalDependencies:
       bare-url: 2.1.6
 
-  bare-events@2.6.1:
+  bare-events@2.8.1:
     optional: true
 
   bare-module-resolve@1.11.1(bare-url@2.1.6):
@@ -12434,7 +12481,7 @@ snapshots:
   bin-version-check@5.1.0:
     dependencies:
       bin-version: 6.0.0
-      semver: 7.7.2
+      semver: 7.7.3
       semver-truncate: 3.0.0
     optional: true
 
@@ -12473,12 +12520,12 @@ snapshots:
     dependencies:
       bytes: 3.1.2
       content-type: 1.0.5
-      debug: 4.4.1
+      debug: 4.4.3
       http-errors: 2.0.0
       iconv-lite: 0.6.3
       on-finished: 2.4.1
       qs: 6.14.0
-      raw-body: 3.0.0
+      raw-body: 3.0.1
       type-is: 2.0.1
     transitivePeerDependencies:
       - supports-color
@@ -12563,7 +12610,7 @@ snapshots:
 
   cache-manager@7.0.0:
     dependencies:
-      keyv: 5.5.0
+      keyv: 5.5.3
 
   cacheable-lookup@7.0.0:
     optional: true
@@ -12575,7 +12622,7 @@ snapshots:
       http-cache-semantics: 4.2.0
       keyv: 4.5.4
       mimic-response: 4.0.0
-      normalize-url: 8.0.2
+      normalize-url: 8.1.0
       responselike: 3.0.0
     optional: true
 
@@ -12725,7 +12772,7 @@ snapshots:
     dependencies:
       '@types/validator': 13.15.1
       libphonenumber-js: 1.12.9
-      validator: 13.15.15
+      validator: 13.15.20
 
   clean-css@5.3.3:
     dependencies:
@@ -12992,6 +13039,10 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
+  debug@4.4.3:
+    dependencies:
+      ms: 2.1.3
+
   decache@4.6.2:
     dependencies:
       callsite: 1.0.0
@@ -13172,7 +13223,7 @@ snapshots:
       '@one-ini/wasm': 0.1.1
       commander: 10.0.1
       minimatch: 9.0.1
-      semver: 7.7.2
+      semver: 7.7.3
     optional: true
 
   ee-first@1.1.1: {}
@@ -13384,6 +13435,13 @@ snapshots:
 
   eventemitter3@3.1.2: {}
 
+  events-universal@1.0.1:
+    dependencies:
+      bare-events: 2.8.1
+    transitivePeerDependencies:
+      - bare-abort-controller
+    optional: true
+
   events@3.3.0: {}
 
   execa@0.10.0:
@@ -13484,7 +13542,7 @@ snapshots:
       content-type: 1.0.5
       cookie: 0.7.2
       cookie-signature: 1.2.2
-      debug: 4.4.1
+      debug: 4.4.3
       encodeurl: 2.0.0
       escape-html: 1.0.3
       etag: 1.8.1
@@ -13588,7 +13646,7 @@ snapshots:
 
   fastify-plugin@2.3.4:
     dependencies:
-      semver: 7.7.2
+      semver: 7.7.3
 
   fastify-plugin@4.5.1: {}
 
@@ -13666,7 +13724,7 @@ snapshots:
       '@tokenizer/inflate': 0.2.7
       strtok3: 10.3.4
       token-types: 6.1.1
-      uint8array-extras: 1.4.1
+      uint8array-extras: 1.5.0
     transitivePeerDependencies:
       - supports-color
     optional: true
@@ -13676,7 +13734,7 @@ snapshots:
       '@tokenizer/inflate': 0.2.7
       strtok3: 10.3.4
       token-types: 6.1.1
-      uint8array-extras: 1.4.1
+      uint8array-extras: 1.5.0
     transitivePeerDependencies:
       - supports-color
 
@@ -13722,7 +13780,7 @@ snapshots:
 
   finalhandler@2.1.0:
     dependencies:
-      debug: 4.4.1
+      debug: 4.4.3
       encodeurl: 2.0.0
       escape-html: 1.0.3
       on-finished: 2.4.1
@@ -13791,7 +13849,7 @@ snapshots:
       minimatch: 3.1.2
       node-abort-controller: 3.1.1
       schema-utils: 3.3.0
-      semver: 7.7.2
+      semver: 7.7.3
       tapable: 2.2.2
       typescript: 5.8.3
       webpack: 5.99.6(@swc/core@1.13.3)
@@ -14086,7 +14144,7 @@ snapshots:
       entities: 4.5.0
       param-case: 3.0.4
       relateurl: 0.2.7
-      terser: 5.43.1
+      terser: 5.44.0
     optional: true
 
   html-to-text@9.0.5:
@@ -14153,7 +14211,7 @@ snapshots:
   http-proxy-agent@7.0.2:
     dependencies:
       agent-base: 7.1.4
-      debug: 4.4.1
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 
@@ -14166,7 +14224,7 @@ snapshots:
   https-proxy-agent@7.0.6:
     dependencies:
       agent-base: 7.1.4
-      debug: 4.4.1
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 
@@ -14183,6 +14241,11 @@ snapshots:
       safer-buffer: 2.1.2
 
   iconv-lite@0.6.3:
+    dependencies:
+      safer-buffer: 2.1.2
+    optional: true
+
+  iconv-lite@0.7.0:
     dependencies:
       safer-buffer: 2.1.2
     optional: true
@@ -14373,7 +14436,7 @@ snapshots:
       '@babel/parser': 7.27.5
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.2
-      semver: 7.7.2
+      semver: 7.7.3
     transitivePeerDependencies:
       - supports-color
 
@@ -14385,7 +14448,7 @@ snapshots:
 
   istanbul-lib-source-maps@4.0.1:
     dependencies:
-      debug: 4.4.1
+      debug: 4.4.3
       istanbul-lib-coverage: 3.2.2
       source-map: 0.6.1
     transitivePeerDependencies:
@@ -14736,7 +14799,7 @@ snapshots:
       jest-util: 29.7.0
       natural-compare: 1.4.0
       pretty-format: 29.7.0
-      semver: 7.7.2
+      semver: 7.7.3
     transitivePeerDependencies:
       - supports-color
 
@@ -14761,7 +14824,7 @@ snapshots:
       jest-message-util: 30.0.5
       jest-util: 30.0.5
       pretty-format: 30.0.5
-      semver: 7.7.2
+      semver: 7.7.3
       synckit: 0.11.11
     transitivePeerDependencies:
       - supports-color
@@ -14925,7 +14988,7 @@ snapshots:
       lodash.isstring: 4.0.1
       lodash.once: 4.1.1
       ms: 2.1.3
-      semver: 7.7.2
+      semver: 7.7.3
 
   jstransformer@1.0.0:
     dependencies:
@@ -14965,9 +15028,9 @@ snapshots:
     dependencies:
       '@keyv/serialize': 1.0.3
 
-  keyv@5.5.0:
+  keyv@5.5.3:
     dependencies:
-      '@keyv/serialize': 1.1.0
+      '@keyv/serialize': 1.1.1
 
   kind-of@6.0.3:
     optional: true
@@ -15149,7 +15212,7 @@ snapshots:
 
   make-dir@4.0.0:
     dependencies:
-      semver: 7.7.2
+      semver: 7.7.3
 
   make-error@1.3.6: {}
 
@@ -15486,7 +15549,7 @@ snapshots:
   micromark@4.0.2:
     dependencies:
       '@types/debug': 4.1.12
-      debug: 4.4.1
+      debug: 4.4.3
       decode-named-character-reference: 1.2.0
       devlop: 1.1.0
       micromark-core-commonmark: 2.0.3
@@ -15985,7 +16048,7 @@ snapshots:
 
   normalize-path@3.0.0: {}
 
-  normalize-url@8.0.2:
+  normalize-url@8.1.0:
     optional: true
 
   npm-run-path@2.0.2:
@@ -16521,11 +16584,11 @@ snapshots:
       iconv-lite: 0.4.24
       unpipe: 1.0.0
 
-  raw-body@3.0.0:
+  raw-body@3.0.1:
     dependencies:
       bytes: 3.1.2
       http-errors: 2.0.0
-      iconv-lite: 0.6.3
+      iconv-lite: 0.7.0
       unpipe: 1.0.0
     optional: true
 
@@ -16665,7 +16728,7 @@ snapshots:
 
   router@2.2.0:
     dependencies:
-      debug: 4.4.1
+      debug: 4.4.3
       depd: 2.0.0
       is-promise: 4.0.0
       parseurl: 1.3.3
@@ -16737,7 +16800,7 @@ snapshots:
 
   semver-truncate@3.0.0:
     dependencies:
-      semver: 7.7.2
+      semver: 7.7.3
     optional: true
 
   semver@5.7.2:
@@ -16746,6 +16809,8 @@ snapshots:
   semver@6.3.1: {}
 
   semver@7.7.2: {}
+
+  semver@7.7.3: {}
 
   send@0.19.0:
     dependencies:
@@ -16767,7 +16832,7 @@ snapshots:
 
   send@1.2.0:
     dependencies:
-      debug: 4.4.1
+      debug: 4.4.3
       encodeurl: 2.0.0
       escape-html: 1.0.3
       etag: 1.8.1
@@ -17001,12 +17066,14 @@ snapshots:
 
   streamsearch@1.1.0: {}
 
-  streamx@2.22.1:
+  streamx@2.23.0:
     dependencies:
+      events-universal: 1.0.1
       fast-fifo: 1.3.2
       text-decoder: 1.2.3
-    optionalDependencies:
-      bare-events: 2.6.1
+    transitivePeerDependencies:
+      - bare-abort-controller
+      - react-native-b4a
     optional: true
 
   string-env-interpolation@1.0.1: {}
@@ -17086,7 +17153,7 @@ snapshots:
     dependencies:
       component-emitter: 1.3.1
       cookiejar: 2.1.4
-      debug: 4.4.1
+      debug: 4.4.3
       fast-safe-stringify: 2.1.1
       form-data: 4.0.4
       formidable: 3.5.4
@@ -17143,9 +17210,12 @@ snapshots:
 
   tar-stream@3.1.7:
     dependencies:
-      b4a: 1.6.7
+      b4a: 1.7.3
       fast-fifo: 1.3.2
-      streamx: 2.22.1
+      streamx: 2.23.0
+    transitivePeerDependencies:
+      - bare-abort-controller
+      - react-native-b4a
     optional: true
 
   terser-webpack-plugin@5.3.14(@swc/core@1.13.3)(webpack@5.99.6(@swc/core@1.13.3)):
@@ -17154,12 +17224,12 @@ snapshots:
       jest-worker: 27.5.1
       schema-utils: 4.3.2
       serialize-javascript: 6.0.2
-      terser: 5.43.1
+      terser: 5.44.0
       webpack: 5.99.6(@swc/core@1.13.3)
     optionalDependencies:
       '@swc/core': 1.13.3
 
-  terser@5.43.1:
+  terser@5.44.0:
     dependencies:
       '@jridgewell/source-map': 0.3.11
       acorn: 8.15.0
@@ -17174,7 +17244,9 @@ snapshots:
 
   text-decoder@1.2.3:
     dependencies:
-      b4a: 1.6.7
+      b4a: 1.7.3
+    transitivePeerDependencies:
+      - react-native-b4a
     optional: true
 
   text-decoding@1.0.0: {}
@@ -17250,7 +17322,7 @@ snapshots:
       json5: 2.2.3
       lodash.memoize: 4.1.2
       make-error: 1.3.6
-      semver: 7.7.2
+      semver: 7.7.3
       type-fest: 4.41.0
       typescript: 5.8.3
       yargs-parser: 21.1.1
@@ -17408,7 +17480,7 @@ snapshots:
     dependencies:
       '@lukeed/csprng': 1.1.0
 
-  uint8array-extras@1.4.1: {}
+  uint8array-extras@1.5.0: {}
 
   unbzip2-stream@1.4.3:
     dependencies:
@@ -17504,7 +17576,7 @@ snapshots:
   valid-data-url@3.0.1:
     optional: true
 
-  validator@13.15.15: {}
+  validator@13.15.20: {}
 
   value-or-promise@1.0.12: {}
 
