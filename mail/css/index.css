@@ -10,7 +10,7 @@
 }
 
 p.text-normal {
-	@apply font-inter p-0 pt-6 text-lg font-normal;
+	@apply p-0 pt-6 font-inter text-lg font-normal;
 }
 
 p.text-title {

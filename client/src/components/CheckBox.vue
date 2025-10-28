@@ -1,6 +1,6 @@
 <template>
 	<div class="flex h-7 items-center p-1">
-		<div class="h-9/12 flex aspect-square">
+		<div class="flex aspect-square h-9/12">
 			<input
 				:title="(5).string"
 				v-model="model"
