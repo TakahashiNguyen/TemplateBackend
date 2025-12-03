@@ -14,8 +14,8 @@
 		"build": "pnpm run -r --if-present --parallel --filter \"!./types\" build"
 	},
 	"devDependencies": {
-		"@trivago/prettier-plugin-sort-imports": "^5.2.2",
-		"@vue/compiler-sfc": "^3.5.22",
+		"@trivago/prettier-plugin-sort-imports": "^6.0.0",
+		"@vue/compiler-sfc": "^3.5.25",
 		"prettier": "^3.5.3",
 		"prettier-plugin-jsdoc": "^1.5.0",
 		"prettier-plugin-sort-json": "^4.1.1",
