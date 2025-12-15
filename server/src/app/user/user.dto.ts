@@ -10,9 +10,9 @@ import { User } from './user.entity';
 import { UserRole } from './user.model';
 
 /** User login dto. */
-export class UserLoginDto
-	implements DeepAttributesOnly<Pick<User, 'authentication' | 'email'>>
-{
+export class UserLoginDto implements DeepAttributesOnly<
+	Pick<User, 'authentication' | 'email'>
+> {
 	/** User's email. */
 	@IsDefined()
 	@IsEmail()
@@ -24,12 +24,9 @@ export class UserLoginDto
 }
 
 /** User sign up dto. */
-export class UserSignupDto
-	implements
-		DeepAttributesOnly<
-			Omitting<Subtract<User, BaseEntity>, 'role' | 'files' | 'avatarPath'>
-		>
-{
+export class UserSignupDto implements DeepAttributesOnly<
+	Omitting<Subtract<User, BaseEntity>, 'role' | 'files' | 'avatarPath'>
+> {
 	/** User authentication. */
 	@IsDefined()
 	authentication!: DeepAttributesOnly<Authentication>;
@@ -74,12 +71,9 @@ export class RequestModifyingAuthenticationDto implements Pick<User, 'email'> {
 
 /** Find user dto. */
 @InputType()
-export class UserFind
-	implements
-		DeepAttributesOnly<
-			Omitting<User, 'authentication' | 'createdAt' | 'updatedAt' | 'files'>
-		>
-{
+export class UserFind implements DeepAttributesOnly<
+	Omitting<User, 'authentication' | 'createdAt' | 'updatedAt' | 'files'>
+> {
 	/** User's email. */
 	@Field({ nullable: true }) email!: string;
 	/** User's phone number. */
