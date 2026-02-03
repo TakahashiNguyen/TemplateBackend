@@ -18,7 +18,7 @@
 		"@vue/compiler-sfc": "^3.5.26",
 		"prettier": "^3.8.1",
 		"prettier-plugin-jsdoc": "^1.8.0",
-		"prettier-plugin-sort-json": "^4.1.1",
+		"prettier-plugin-sort-json": "^4.2.0",
 		"commitizen": "^4.3.1",
 		"cz-conventional-changelog": "^3.3.0",
 		"prettier-plugin-tailwindcss": "^0.7.2"
