@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@maizzle/framework':
         specifier: latest
-        version: 5.4.0(jiti@1.21.7)(yaml@2.8.0)
+        version: 5.4.1(jiti@1.21.7)(yaml@2.8.0)
       tailwindcss-box-shadow:
         specifier: ^2.0.3
         version: 2.0.3(tailwindcss@3.4.17)
@@ -106,8 +106,8 @@ packages:
     resolution: {integrity: sha512-ZTvEM58L5ndRtnxtBykMAFUjsFYZU2gpYEC9eSs2mqIAJ3ogT10p7ehq+YacwAXOHpCm5uk04pJRNvg6TcA40w==}
     hasBin: true
 
-  '@maizzle/framework@5.4.0':
-    resolution: {integrity: sha512-muKmAseHSSVnMGzPpY7RXGuuG/zaZBkEEti26aIuzoIDkMsamc2h9UWg1M1nnrHuaUW75LRFy9USrBmHC3/Ecg==}
+  '@maizzle/framework@5.4.1':
+    resolution: {integrity: sha512-ueyIGPY/hmj0JllIBu3ViOXOn8zQae1LZWsuVeHulQdj3UBwWZa8RgBmecE/uIhsraVYgfPROiBBXjNONU95lA==}
     engines: {node: '>=18.20'}
     hasBin: true
 
@@ -603,6 +603,7 @@ packages:
 
   glob@10.5.0:
     resolution: {integrity: sha512-DfXN8DfhJ7NH3Oe7cFmu3NCu1wKbkReJ8TorzSAFbSKrlNaQSKfIzqYqVY8zlbs2NLBbWpRiU52GX2PbaBVNkg==}
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
 
   gopd@1.2.0:
@@ -776,11 +777,11 @@ packages:
   linkify-it@5.0.0:
     resolution: {integrity: sha512-5aHCbzQRADcdP+ATqnDuhhJ/MRIqDkZX5pyjFHRRysS8vZ5AbqGEoFIb6pYHPZ+L/OC2Lc+xT8uHVVR5CAK/wQ==}
 
-  lodash-es@4.17.21:
-    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+  lodash-es@4.17.23:
+    resolution: {integrity: sha512-kVI48u3PZr38HdYz98UmfPnXl2DXrpdctLrFLCd3kOx1xUkOmpFPx7gCWWM5MPkL/fD8zb+Ph0QzjGFs4+hHWg==}
 
-  lodash@4.17.21:
-    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+  lodash@4.17.23:
+    resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
 
   log-symbols@6.0.0:
     resolution: {integrity: sha512-i24m8rpwhmPIS4zscNzK6MSEhk0DUWa/8iYQWxhffV8jkI4Phvs3F+quL5xvS0gdQR0FyTCMMH33Y78dDTzzIw==}
@@ -1657,7 +1658,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@maizzle/framework@5.4.0(jiti@1.21.7)(yaml@2.8.0)':
+  '@maizzle/framework@5.4.1(jiti@1.21.7)(yaml@2.8.0)':
     dependencies:
       '@maizzle/cli': 2.0.0
       cheerio: 1.0.0
@@ -1673,7 +1674,7 @@ snapshots:
       is-url-superb: 6.1.0
       istextorbinary: 9.5.0
       juice: 11.1.0
-      lodash-es: 4.17.21
+      lodash-es: 4.17.23
       morphdom: 2.7.5
       ora: 8.2.0
       pathe: 2.0.3
@@ -2399,9 +2400,9 @@ snapshots:
     dependencies:
       uc.micro: 2.1.0
 
-  lodash-es@4.17.21: {}
+  lodash-es@4.17.23: {}
 
-  lodash@4.17.21: {}
+  lodash@4.17.23: {}
 
   log-symbols@6.0.0:
     dependencies:
@@ -2698,7 +2699,7 @@ snapshots:
 
   posthtml-component@2.1.1:
     dependencies:
-      lodash: 4.17.21
+      lodash: 4.17.23
       posthtml: 0.16.6
       posthtml-attrs-parser: 1.1.2
       posthtml-expressions: 1.11.4
@@ -3009,7 +3010,7 @@ snapshots:
       '@types/lodash-es': 4.17.12
       codsen-utils: 1.6.7
       html-entities: 2.6.0
-      lodash-es: 4.17.21
+      lodash-es: 4.17.23
       ranges-apply: 7.0.19
       ranges-push: 7.0.18
       string-left-right: 6.0.20
