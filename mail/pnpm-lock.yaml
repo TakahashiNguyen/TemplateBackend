@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@maizzle/framework':
         specifier: latest
-        version: 5.4.1(jiti@1.21.7)(yaml@2.8.0)
+        version: 5.5.0(jiti@1.21.7)(yaml@2.8.0)
       tailwindcss-box-shadow:
         specifier: ^2.0.3
         version: 2.0.3(tailwindcss@3.4.17)
@@ -106,8 +106,8 @@ packages:
     resolution: {integrity: sha512-ZTvEM58L5ndRtnxtBykMAFUjsFYZU2gpYEC9eSs2mqIAJ3ogT10p7ehq+YacwAXOHpCm5uk04pJRNvg6TcA40w==}
     hasBin: true
 
-  '@maizzle/framework@5.4.1':
-    resolution: {integrity: sha512-ueyIGPY/hmj0JllIBu3ViOXOn8zQae1LZWsuVeHulQdj3UBwWZa8RgBmecE/uIhsraVYgfPROiBBXjNONU95lA==}
+  '@maizzle/framework@5.5.0':
+    resolution: {integrity: sha512-FST9aaEzbUQB9Z0gaubgKbxzeukZy5VKBtVLqVK7AQbcd24VFIVFxwvCr96Cqbe8xV9vDOHVSe7T2AO+hokdzQ==}
     engines: {node: '>=18.20'}
     hasBin: true
 
@@ -790,8 +790,8 @@ packages:
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
 
-  markdown-it@14.1.0:
-    resolution: {integrity: sha512-a54IwgWPaeBCAAsv13YgmALOF1elABB08FxO9i+r4VFk5Vl4pKokRPeX8u5TCgSsPi6ec1otfLjdOpVcgbpshg==}
+  markdown-it@14.1.1:
+    resolution: {integrity: sha512-BuU2qnTti9YKgK5N+IeMubp14ZUKUUw7yeJbkjtosvHiP0AZ5c8IAgEMk79D0eC8F23r4Ac/q8cAIFdm2FtyoA==}
     hasBin: true
 
   matcher@5.0.0:
@@ -1088,6 +1088,12 @@ packages:
     resolution: {integrity: sha512-8sLjZwK0R+JlxlYcTuVnyT2v+htpdrjDOKuMcOVdYjt52Lh8hWRYpxBPoKx/Zg+bcjc3wx6fmQevMmUztS/ccA==}
     engines: {node: '>=4'}
 
+  postcss-sort-media-queries@5.2.0:
+    resolution: {integrity: sha512-AZ5fDMLD8SldlAYlvi8NIqo0+Z8xnXU2ia0jxmuhxAU+Lqt9K+AlmLNJ/zWEnE9x+Zx3qL3+1K20ATgNOr3fAA==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      postcss: ^8.4.23
+
   postcss-value-parser@4.2.0:
     resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
 
@@ -1323,6 +1329,10 @@ packages:
 
   slick@1.12.2:
     resolution: {integrity: sha512-4qdtOGcBjral6YIBCWJ0ljFSKNLz9KkhbWtuGvUyRowl1kxfuE1x/Z/aJcaiilpb3do9bl5K7/1h9XC5wWpY/A==}
+
+  sort-css-media-queries@2.2.0:
+    resolution: {integrity: sha512-0xtkGhWCC9MGt/EzgnvbbbKhqWjl1+/rncmhTh5qCpbYguXh6S/qwePfv/JQ8jePXXmqingylxoC49pCkSPIbA==}
+    engines: {node: '>= 6.3.0'}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -1658,7 +1668,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@maizzle/framework@5.4.1(jiti@1.21.7)(yaml@2.8.0)':
+  '@maizzle/framework@5.5.0(jiti@1.21.7)(yaml@2.8.0)':
     dependencies:
       '@maizzle/cli': 2.0.0
       cheerio: 1.0.0
@@ -1684,6 +1694,7 @@ snapshots:
       postcss-css-variables: 0.19.0(postcss@8.5.6)
       postcss-import: 16.1.1(postcss@8.5.6)
       postcss-safe-parser: 7.0.1(postcss@8.5.6)
+      postcss-sort-media-queries: 5.2.0(postcss@8.5.6)
       posthtml: 0.16.6
       posthtml-attrs-parser: 1.1.2
       posthtml-base-url: 3.1.8(posthtml@0.16.6)
@@ -2411,7 +2422,7 @@ snapshots:
 
   lru-cache@10.4.3: {}
 
-  markdown-it@14.1.0:
+  markdown-it@14.1.1:
     dependencies:
       argparse: 2.0.1
       entities: 4.5.0
@@ -2677,6 +2688,11 @@ snapshots:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
+  postcss-sort-media-queries@5.2.0(postcss@8.5.6):
+    dependencies:
+      postcss: 8.5.6
+      sort-css-media-queries: 2.2.0
+
   postcss-value-parser@4.2.0: {}
 
   postcss@8.5.6:
@@ -2734,7 +2750,7 @@ snapshots:
 
   posthtml-markdownit@3.1.2:
     dependencies:
-      markdown-it: 14.1.0
+      markdown-it: 14.1.1
       min-indent: 1.0.1
       posthtml: 0.16.6
       posthtml-parser: 0.12.1
@@ -2969,6 +2985,8 @@ snapshots:
   sisteransi@1.0.5: {}
 
   slick@1.12.2: {}
+
+  sort-css-media-queries@2.2.0: {}
 
   source-map-js@1.2.1: {}
 
