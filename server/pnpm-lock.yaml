@@ -23,7 +23,7 @@ importers:
         version: 2.11.0(graphql@16.11.0)
       '@as-integrations/fastify':
         specifier: ^2.1.1
-        version: 2.1.1(@apollo/server@5.4.0(graphql@16.11.0))(fastify@5.7.4)
+        version: 2.1.1(@apollo/server@5.4.0(graphql@16.11.0))(fastify@5.8.1)
       '@aws-sdk/client-s3':
         specifier: ^3.837.0
         version: 3.837.0
@@ -50,10 +50,10 @@ importers:
         version: 4.4.0(keyv@5.3.4)
       '@nestjs-modules/mailer':
         specifier: ^2.0.2
-        version: 2.0.2(@nestjs/common@11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(nodemailer@7.0.3)
+        version: 2.0.2(@nestjs/common@11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(nodemailer@8.0.2)
       '@nestjs/apollo':
         specifier: ^13.1.0
-        version: 13.1.0(@apollo/server@5.4.0(graphql@16.11.0))(@apollo/subgraph@2.11.0(graphql@16.11.0))(@as-integrations/fastify@2.1.1(@apollo/server@5.4.0(graphql@16.11.0))(fastify@5.7.4))(@nestjs/common@11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(@nestjs/graphql@13.1.0(@apollo/subgraph@2.11.0(graphql@16.11.0))(@nestjs/common@11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(class-transformer@0.5.1)(class-validator@0.14.2)(graphql@16.11.0)(reflect-metadata@0.2.2)(ts-morph@24.0.0))(graphql@16.11.0)
+        version: 13.1.0(@apollo/server@5.4.0(graphql@16.11.0))(@apollo/subgraph@2.11.0(graphql@16.11.0))(@as-integrations/fastify@2.1.1(@apollo/server@5.4.0(graphql@16.11.0))(fastify@5.8.1))(@nestjs/common@11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(@nestjs/graphql@13.1.0(@apollo/subgraph@2.11.0(graphql@16.11.0))(@nestjs/common@11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(class-transformer@0.5.1)(class-validator@0.14.2)(graphql@16.11.0)(reflect-metadata@0.2.2)(ts-morph@24.0.0))(graphql@16.11.0)
       '@nestjs/cache-manager':
         specifier: ^3.0.1
         version: 3.0.1(@nestjs/common@11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(cache-manager@7.0.0)(keyv@5.3.4)(rxjs@7.8.2)
@@ -109,8 +109,8 @@ importers:
         specifier: ^17.2.0
         version: 17.2.0
       fastify:
-        specifier: 5.7.4
-        version: 5.7.4
+        specifier: 5.8.1
+        version: 5.8.1
       fastify-multer:
         specifier: ^2.0.3
         version: 2.0.3
@@ -3319,6 +3319,9 @@ packages:
   '@xtuc/long@4.2.2':
     resolution: {integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==}
 
+  '@zone-eu/mailsplit@5.4.8':
+    resolution: {integrity: sha512-eEyACj4JZ7sjzRvy26QhLgKEMWwQbsw1+QZnlLX+/gihcNH07lVPOcnwf5U6UAL7gkc//J3jVd76o/WS+taUiA==}
+
   abbrev@2.0.0:
     resolution: {integrity: sha512-6/mh1E2u2YgEsCHdY0Yx5oW+61gZU+1vXaoiHHrpKeuRNNgFvS+/jrwHiQhB5apAf5oB7UB7E19ol2R2LKH8hQ==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
@@ -3512,8 +3515,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  avvio@9.1.0:
-    resolution: {integrity: sha512-fYASnYi600CsH/j9EQov7lECAniYiBFiiAtBNuZYLA2leLe9qOvZzqYHFjtIj6gD2VMoMLP14834LFWvr4IfDw==}
+  avvio@9.2.0:
+    resolution: {integrity: sha512-2t/sy01ArdHHE0vRH5Hsay+RtCZt3dLPji7W7/MMOCEgze5b7SNDC4j5H6FnVgPkI1MTNFGzHdHrVXDDl7QSSQ==}
 
   b4a@1.8.0:
     resolution: {integrity: sha512-qRuSmNSkGQaHwNbM7J78Wwy+ghLEYF1zNrSeMxj4Kgw6y33O3mXcQ6Ie9fRvfU/YnxWkOchPXbaLb73TkIsfdg==}
@@ -4649,6 +4652,9 @@ packages:
   fastify@5.7.4:
     resolution: {integrity: sha512-e6l5NsRdaEP8rdD8VR0ErJASeyaRbzXYpmkrpr2SuvuMq6Si3lvsaVy5C+7gLanEkvjpMDzBXWE5HPeb/hgTxA==}
 
+  fastify@5.8.1:
+    resolution: {integrity: sha512-y0kicFvvn7CYWoPOVLOcvn4YyKQz03DIY7UxmyOy21/J8eXm09R+tmb+tVDBW5h+pja30cHI5dqUcSlvY86V2A==}
+
   fastq@1.19.1:
     resolution: {integrity: sha512-GwLTyxkCXjXbxqIhTsMI2Nui8huMPtnxg7krajPJAjnEG/iiOS7i+zCtWGZR9G0NBKbXKh6X9m9UIsYX/N6vvQ==}
 
@@ -4727,6 +4733,10 @@ packages:
 
   find-my-way@9.4.0:
     resolution: {integrity: sha512-5Ye4vHsypZRYtS01ob/iwHzGRUDELlsoCftI/OZFhcLs1M0tkGPcXldE80TAZC5yYuJMBPJQQ43UHlqbJWiX2w==}
+    engines: {node: '>=20'}
+
+  find-my-way@9.5.0:
+    resolution: {integrity: sha512-VW2RfnmscZO5KgBY5XVyKREMW5nMZcxDy+buTOsL+zIPnBlbKm+00sgzoQzq1EVh4aALZLfKdwv6atBGcjvjrQ==}
     engines: {node: '>=20'}
 
   find-up@4.1.0:
@@ -5678,8 +5688,8 @@ packages:
   libbase64@1.3.0:
     resolution: {integrity: sha512-GgOXd0Eo6phYgh0DJtjQ2tO8dc0IVINtZJeARPeiIJqge+HdsWSuaDTe8ztQ7j/cONByDZ3zeB325AHiv5O0dg==}
 
-  libmime@5.3.6:
-    resolution: {integrity: sha512-j9mBC7eiqi6fgBPAGvKCXJKJSIASanYF4EeA4iBzSG0HxQxmXnR3KbyWqTn4CwsKSebqCv2f5XZfAO6sKzgvwA==}
+  libmime@5.3.7:
+    resolution: {integrity: sha512-FlDb3Wtha8P01kTL3P9M+ZDNDWPKPmKHWaU/cG/lg5pfuAwdflVpZE+wm9m7pKmC5ww6s+zTxBKS1p6yl3KpSw==}
 
   libphonenumber-js@1.12.9:
     resolution: {integrity: sha512-VWwAdNeJgN7jFOD+wN4qx83DTPMVPPAUyx9/TUkBXKLiNkuWWk6anV0439tgdtwaJDrEdqkvdN22iA6J4bUCZg==}
@@ -5696,9 +5706,9 @@ packages:
   linkify-it@5.0.0:
     resolution: {integrity: sha512-5aHCbzQRADcdP+ATqnDuhhJ/MRIqDkZX5pyjFHRRysS8vZ5AbqGEoFIb6pYHPZ+L/OC2Lc+xT8uHVVR5CAK/wQ==}
 
-  liquidjs@10.21.1:
-    resolution: {integrity: sha512-NZXmCwv3RG5nire3fmIn9HsOyJX3vo+ptp0yaXUHAMzSNBhx74Hm+dAGJvscUA6lNqbLuYfXgNavRQ9UbUJhQQ==}
-    engines: {node: '>=14'}
+  liquidjs@10.25.0:
+    resolution: {integrity: sha512-XpO7AiGULTG4xcTlwkcTI5JreFG7b6esLCLp+aUSh7YuQErJZEoUXre9u9rbdb0057pfWG4l0VursvLd5Q/eAw==}
+    engines: {node: '>=16'}
     hasBin: true
 
   listr2@4.0.5:
@@ -5832,12 +5842,8 @@ packages:
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
 
-  mailparser@3.7.3:
-    resolution: {integrity: sha512-0RM14cZF0gO1y2Q/82hhWranispZOUSYHwvQ21h12x90NwD6+D5q59S5nOLqCtCdYitHN58LJXWEHa4RWm7BYA==}
-
-  mailsplit@5.4.3:
-    resolution: {integrity: sha512-PFV0BBh4Tv7Omui5FtXXVtN4ExAxIi8Yvmb9JgBz+J6Hnnrv/YYXLlKKudLhXwd3/qWEATOslRsnzVCWDeCnmQ==}
-    deprecated: This package has been renamed to @zone-eu/mailsplit. Please update your dependencies.
+  mailparser@3.9.4:
+    resolution: {integrity: sha512-ZmCnrMnRod+Cq6h7afn9DMFlT1B5gf484Ji+55NhUR4+w4q9z9d7lHHvL8pXP6kp/ehr8pGLQZBmjHpjvItuTQ==}
 
   make-dir@4.0.0:
     resolution: {integrity: sha512-hXdUTZYIVOt1Ex//jAQi+wTZZpUpwBj/0QsOzqegb3rGMMeJiSEu5xLHnYfBrRV4RH2+OCSOO95Is/7x1WJ4bw==}
@@ -6219,8 +6225,8 @@ packages:
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
-  multer@2.1.0:
-    resolution: {integrity: sha512-TBm6j41rxNohqawsxlsWsNNh/VdV4QFXcBvRcPhXaA05EZ79z0qJ2bQFpync6JBoHTeNY5Q1JpG7AlTjdlfAEA==}
+  multer@2.1.1:
+    resolution: {integrity: sha512-mo+QTzKlx8R7E5ylSXxWzGoXoZbOsRMpyitcht8By2KHvMbf3tjwosZ/Mu/XYU6UuJ3VZnODIrak5ZrPiPyB6A==}
     engines: {node: '>= 10.16.0'}
 
   mute-stream@0.0.8:
@@ -6288,8 +6294,8 @@ packages:
     resolution: {integrity: sha512-Z+iLaBGVaSjbIzQ4pX6XV41HrooLsQ10ZWPUehGmuantvzWoDVBnmsdUcOIDM1t+yPor5pDhVlDESgOMEGxhHA==}
     engines: {node: '>=6.0.0'}
 
-  nodemailer@7.0.3:
-    resolution: {integrity: sha512-Ajq6Sz1x7cIK3pN6KesGTah+1gnwMnx5gKl3piQlQQE/PwyJ4Mbc8is2psWYxK3RJTVeqsDaCv8ZzXLCDHMTZw==}
+  nodemailer@8.0.2:
+    resolution: {integrity: sha512-zbj002pZAIkWQFxyAaqoxvn+zoIwRnS40hgjqTXudKOOJkiFFgBeNqjgD3/YCR12sZnrghWYBY+yP1ZucdDRpw==}
     engines: {node: '>=6.0.0'}
 
   nopt@7.2.1:
@@ -6551,20 +6557,20 @@ packages:
   pg-cloudflare@1.3.0:
     resolution: {integrity: sha512-6lswVVSztmHiRtD6I8hw4qP/nDm1EJbKMRhf3HCYaqud7frGysPv7FYJ5noZQdhQtN2xJnimfMtvQq21pdbzyQ==}
 
-  pg-connection-string@2.11.0:
-    resolution: {integrity: sha512-kecgoJwhOpxYU21rZjULrmrBJ698U2RxXofKVzOn5UDj61BPj/qMb7diYUR1nLScCDbrztQFl1TaQZT0t1EtzQ==}
+  pg-connection-string@2.12.0:
+    resolution: {integrity: sha512-U7qg+bpswf3Cs5xLzRqbXbQl85ng0mfSV/J0nnA31MCLgvEaAo7CIhmeyrmJpOr7o+zm0rXK+hNnT5l9RHkCkQ==}
 
   pg-int8@1.0.1:
     resolution: {integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==}
     engines: {node: '>=4.0.0'}
 
-  pg-pool@3.12.0:
-    resolution: {integrity: sha512-eIJ0DES8BLaziFHW7VgJEBPi5hg3Nyng5iKpYtj3wbcAUV9A1wLgWiY7ajf/f/oO1wfxt83phXPY8Emztg7ITg==}
+  pg-pool@3.13.0:
+    resolution: {integrity: sha512-gB+R+Xud1gLFuRD/QgOIgGOBE2KCQPaPwkzBBGC9oG69pHTkhQeIuejVIk3/cnDyX39av2AxomQiyPT13WKHQA==}
     peerDependencies:
       pg: '>=8.0'
 
-  pg-protocol@1.12.0:
-    resolution: {integrity: sha512-uOANXNRACNdElMXJ0tPz6RBM0XQ61nONGAwlt8da5zs/iUOOCLBQOHSXnrC6fMsvtjxbOJrZZl5IScGv+7mpbg==}
+  pg-protocol@1.13.0:
+    resolution: {integrity: sha512-zzdvXfS6v89r6v7OcFCHfHlyG/wvry1ALxZo4LqgUoy7W9xhBDMaqOuMiF3qEV45VqsN6rdlcehHrfDtlCPc8w==}
 
   pg-types@2.2.0:
     resolution: {integrity: sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==}
@@ -7364,8 +7370,8 @@ packages:
   title-case@3.0.3:
     resolution: {integrity: sha512-e1zGYRvbffpcHIrnuqT0Dh+gEJtDaxDSoG4JAIpq4oDFyooziLBIiYQv0GBT4FUAnUop5uZ1hiIAj7oAF6sOCA==}
 
-  tlds@1.259.0:
-    resolution: {integrity: sha512-AldGGlDP0PNgwppe2quAvuBl18UcjuNtOnDuUkqhd6ipPqrYYBt3aTxK1QTsBVknk97lS2JcafWMghjGWFtunw==}
+  tlds@1.261.0:
+    resolution: {integrity: sha512-QXqwfEl9ddlGBaRFXIvNKK6OhipSiLXuRuLJX5DErz0o0Q0rYxulWLdFryTkV5PkdZct5iMInwYEGe/eR++1AA==}
     hasBin: true
 
   tmp@0.0.33:
@@ -8186,10 +8192,10 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@as-integrations/fastify@2.1.1(@apollo/server@5.4.0(graphql@16.11.0))(fastify@5.7.4)':
+  '@as-integrations/fastify@2.1.1(@apollo/server@5.4.0(graphql@16.11.0))(fastify@5.8.1)':
     dependencies:
       '@apollo/server': 5.4.0(graphql@16.11.0)
-      fastify: 5.7.4
+      fastify: 5.8.1
       fastify-plugin: 4.5.1
 
   '@aws-crypto/crc32@5.2.0':
@@ -10811,27 +10817,27 @@ snapshots:
       '@tybys/wasm-util': 0.9.0
     optional: true
 
-  '@nestjs-modules/mailer@2.0.2(@nestjs/common@11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(nodemailer@7.0.3)':
+  '@nestjs-modules/mailer@2.0.2(@nestjs/common@11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(nodemailer@8.0.2)':
     dependencies:
       '@css-inline/css-inline': 0.14.1
       '@nestjs/common': 11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.1.3(@nestjs/common@11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.3)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       glob: 10.3.12
-      nodemailer: 7.0.3
+      nodemailer: 8.0.2
     optionalDependencies:
       '@types/ejs': 3.1.5
       '@types/mjml': 4.7.4
       '@types/pug': 2.0.10
       ejs: 3.1.10
       handlebars: 4.7.8
-      liquidjs: 10.21.1
+      liquidjs: 10.25.0
       mjml: 4.15.3
       preview-email: 3.1.0
       pug: 3.0.3
     transitivePeerDependencies:
       - encoding
 
-  '@nestjs/apollo@13.1.0(@apollo/server@5.4.0(graphql@16.11.0))(@apollo/subgraph@2.11.0(graphql@16.11.0))(@as-integrations/fastify@2.1.1(@apollo/server@5.4.0(graphql@16.11.0))(fastify@5.7.4))(@nestjs/common@11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(@nestjs/graphql@13.1.0(@apollo/subgraph@2.11.0(graphql@16.11.0))(@nestjs/common@11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(class-transformer@0.5.1)(class-validator@0.14.2)(graphql@16.11.0)(reflect-metadata@0.2.2)(ts-morph@24.0.0))(graphql@16.11.0)':
+  '@nestjs/apollo@13.1.0(@apollo/server@5.4.0(graphql@16.11.0))(@apollo/subgraph@2.11.0(graphql@16.11.0))(@as-integrations/fastify@2.1.1(@apollo/server@5.4.0(graphql@16.11.0))(fastify@5.8.1))(@nestjs/common@11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(@nestjs/graphql@13.1.0(@apollo/subgraph@2.11.0(graphql@16.11.0))(@nestjs/common@11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(class-transformer@0.5.1)(class-validator@0.14.2)(graphql@16.11.0)(reflect-metadata@0.2.2)(ts-morph@24.0.0))(graphql@16.11.0)':
     dependencies:
       '@apollo/server': 5.4.0(graphql@16.11.0)
       '@apollo/server-plugin-landing-page-graphql-playground': 4.0.1(@apollo/server@5.4.0(graphql@16.11.0))
@@ -10844,7 +10850,7 @@ snapshots:
       tslib: 2.8.1
     optionalDependencies:
       '@apollo/subgraph': 2.11.0(graphql@16.11.0)
-      '@as-integrations/fastify': 2.1.1(@apollo/server@5.4.0(graphql@16.11.0))(fastify@5.7.4)
+      '@as-integrations/fastify': 2.1.1(@apollo/server@5.4.0(graphql@16.11.0))(fastify@5.8.1)
 
   '@nestjs/cache-manager@3.0.1(@nestjs/common@11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(cache-manager@7.0.0)(keyv@5.3.4)(rxjs@7.8.2)':
     dependencies:
@@ -10976,7 +10982,7 @@ snapshots:
       '@nestjs/core': 11.1.3(@nestjs/common@11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.3)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       cors: 2.8.5
       express: 5.1.0
-      multer: 2.1.0
+      multer: 2.1.1
       path-to-regexp: 8.2.0
       tslib: 2.8.1
     transitivePeerDependencies:
@@ -12238,6 +12244,13 @@ snapshots:
 
   '@xtuc/long@4.2.2': {}
 
+  '@zone-eu/mailsplit@5.4.8':
+    dependencies:
+      libbase64: 1.3.0
+      libmime: 5.3.7
+      libqp: 2.1.1
+    optional: true
+
   abbrev@2.0.0:
     optional: true
 
@@ -12407,7 +12420,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  avvio@9.1.0:
+  avvio@9.2.0:
     dependencies:
       '@fastify/error': 4.2.0
       fastq: 1.20.1
@@ -13712,9 +13725,27 @@ snapshots:
       '@fastify/fast-json-stringify-compiler': 5.0.3
       '@fastify/proxy-addr': 5.1.0
       abstract-logging: 2.0.1
-      avvio: 9.1.0
+      avvio: 9.2.0
       fast-json-stringify: 6.3.0
       find-my-way: 9.4.0
+      light-my-request: 6.6.0
+      pino: 10.3.1
+      process-warning: 5.0.0
+      rfdc: 1.4.1
+      secure-json-parse: 4.1.0
+      semver: 7.7.4
+      toad-cache: 3.7.0
+
+  fastify@5.8.1:
+    dependencies:
+      '@fastify/ajv-compiler': 4.0.5
+      '@fastify/error': 4.2.0
+      '@fastify/fast-json-stringify-compiler': 5.0.3
+      '@fastify/proxy-addr': 5.1.0
+      abstract-logging: 2.0.1
+      avvio: 9.2.0
+      fast-json-stringify: 6.3.0
+      find-my-way: 9.5.0
       light-my-request: 6.6.0
       pino: 10.3.1
       process-warning: 5.0.0
@@ -13835,6 +13866,12 @@ snapshots:
       - supports-color
 
   find-my-way@9.4.0:
+    dependencies:
+      fast-deep-equal: 3.1.3
+      fast-querystring: 1.1.2
+      safe-regex2: 5.0.0
+
+  find-my-way@9.5.0:
     dependencies:
       fast-deep-equal: 3.1.3
       fast-querystring: 1.1.2
@@ -15105,7 +15142,7 @@ snapshots:
   libbase64@1.3.0:
     optional: true
 
-  libmime@5.3.6:
+  libmime@5.3.7:
     dependencies:
       encoding-japanese: 2.2.0
       iconv-lite: 0.6.3
@@ -15131,7 +15168,7 @@ snapshots:
       uc.micro: 2.1.0
     optional: true
 
-  liquidjs@10.21.1:
+  liquidjs@10.25.0:
     dependencies:
       commander: 10.0.1
     optional: true
@@ -15244,25 +15281,18 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  mailparser@3.7.3:
+  mailparser@3.9.4:
     dependencies:
+      '@zone-eu/mailsplit': 5.4.8
       encoding-japanese: 2.2.0
       he: 1.2.0
       html-to-text: 9.0.5
-      iconv-lite: 0.6.3
-      libmime: 5.3.6
+      iconv-lite: 0.7.2
+      libmime: 5.3.7
       linkify-it: 5.0.0
-      mailsplit: 5.4.3
-      nodemailer: 7.0.3
+      nodemailer: 8.0.2
       punycode.js: 2.3.1
-      tlds: 1.259.0
-    optional: true
-
-  mailsplit@5.4.3:
-    dependencies:
-      libbase64: 1.3.0
-      libmime: 5.3.6
-      libqp: 2.1.1
+      tlds: 1.261.0
     optional: true
 
   make-dir@4.0.0:
@@ -16025,7 +16055,7 @@ snapshots:
 
   ms@2.1.3: {}
 
-  multer@2.1.0:
+  multer@2.1.1:
     dependencies:
       append-field: 1.0.0
       busboy: 1.6.0
@@ -16080,7 +16110,7 @@ snapshots:
   nodemailer@6.10.1:
     optional: true
 
-  nodemailer@7.0.3: {}
+  nodemailer@8.0.2: {}
 
   nopt@7.2.1:
     dependencies:
@@ -16348,18 +16378,18 @@ snapshots:
   pg-cloudflare@1.3.0:
     optional: true
 
-  pg-connection-string@2.11.0:
+  pg-connection-string@2.12.0:
     optional: true
 
   pg-int8@1.0.1:
     optional: true
 
-  pg-pool@3.12.0(pg@8.16.0):
+  pg-pool@3.13.0(pg@8.16.0):
     dependencies:
       pg: 8.16.0
     optional: true
 
-  pg-protocol@1.12.0:
+  pg-protocol@1.13.0:
     optional: true
 
   pg-types@2.2.0:
@@ -16373,9 +16403,9 @@ snapshots:
 
   pg@8.16.0:
     dependencies:
-      pg-connection-string: 2.11.0
-      pg-pool: 3.12.0(pg@8.16.0)
-      pg-protocol: 1.12.0
+      pg-connection-string: 2.12.0
+      pg-pool: 3.13.0(pg@8.16.0)
+      pg-protocol: 1.13.0
       pg-types: 2.2.0
       pgpass: 1.0.5
     optionalDependencies:
@@ -16462,7 +16492,7 @@ snapshots:
       display-notification: 2.0.0
       fixpack: 4.0.0
       get-port: 5.1.1
-      mailparser: 3.7.3
+      mailparser: 3.9.4
       nodemailer: 6.10.1
       open: 7.4.2
       p-event: 4.2.0
@@ -17290,7 +17320,7 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  tlds@1.259.0:
+  tlds@1.261.0:
     optional: true
 
   tmp@0.0.33:
